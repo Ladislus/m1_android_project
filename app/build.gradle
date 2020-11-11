@@ -8,13 +8,17 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.isoka_challenge"
+        applicationId "univ.orleans.ttl.isokachallenge"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
     }
 
     buildTypes {
