@@ -5,16 +5,16 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class User {
 
-    private final String _userame;
+    private final String _username;
     private final LocalDateTime _date;
 
     public User(String username, LocalDateTime date) {
-        this._userame = username;
+        this._username = username;
         this._date = date;
     }
 
     public String getUsername() {
-        return this._userame;
+        return this._username;
     }
 
     public String getDate() {
