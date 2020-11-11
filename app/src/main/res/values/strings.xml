@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Isoka_challenge</string>
+    <string name="nomChall">Nom du challenge</string>
+    <string name="descChall">Scelerisque lorem fermentum arcu odio nibh duis hac dictumst? Lectus maecenas taciti, sem eros neque mus netus eleifend. A nullam vel aliquet interdum eget. Erat sagittis nunc iaculis. Vitae, mi sit venenatis? Magnis cubilia est tortor elit mi sed. Aptent massa felis eleifend mollis eu. Vestibulum lorem urna consequat taciti sollicitudin placerat quis tellus habitant quis mattis tristique. Eleifend vivamus est blandit? Vulputate, magnis pharetra ligula cum commodo sagittis. Dapibus varius ridiculus etiam scelerisque.</string>
+    <string name="desctitle">Description</string>
+    <string name="imgtitleplaceholder">Thème du challenge</string>
+    <string name="temps">Temps de dessin :</string>
+    <string name="placeholderTemps">30 min</string>
+    <string name="dateFinph">"Termine le 17/11/2020 "</string>
+    <string name="btnBrowse">Parcourir</string>
+    <string name="btnParticipe">Participer</string>
 </resources>
