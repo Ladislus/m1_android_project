@@ -15,11 +15,9 @@ const val DB_LOG: String = "isoka_db_log"
 
 const val USER_TABLE: String = "USER"
 const val USER_NAME: String = "u_username"
-const val USER_PASSWORD: String = "u_password"
-const val USER_SALT: String = "u_salt"
 const val USER_DATE: String = "u_date"
 
-const val USER_CREATE: String = "CREATE TABLE $USER_TABLE($USER_NAME VARCHAR(255) PRIMARY KEY, $USER_PASSWORD VARCHAR(255) NOT NULL, $USER_SALT VARCHAR(255) NOT NULL, $USER_DATE DATE NOT NULL);"
+const val USER_CREATE: String = "CREATE TABLE $USER_TABLE($USER_NAME VARCHAR(255) PRIMARY KEY, $USER_DATE DATE NOT NULL);"
 
 //  ####################
 //  #   DRAWING TABLE  #
