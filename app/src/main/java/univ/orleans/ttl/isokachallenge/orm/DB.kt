@@ -228,7 +228,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             values.put(PARTICIPATION_USER_ID, participation.user.username)
             values.put(PARTICIPATION_DRAWING_ID, participation.drawing.id)
             values.put(PARTICIPATION_CHALLENGE_ID, participation.challenge.id)
-            values.put(PARTICIPATION_IS_CREATOR, participation.is_creator)
+            values.put(PARTICIPATION_IS_CREATOR, participation.isCreator)
             values.put(PARTICIPATION_VOTES, participation.votes)
 
             writableDatabase.insertOrThrow(PARTICIPATION_TABLE, null, values)
@@ -244,7 +244,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         values.put(PARTICIPATION_USER_ID, participation.user.username)
         values.put(PARTICIPATION_DRAWING_ID, participation.drawing.id)
         values.put(PARTICIPATION_CHALLENGE_ID, participation.challenge.id)
-        values.put(PARTICIPATION_IS_CREATOR, participation.is_creator)
+        values.put(PARTICIPATION_IS_CREATOR, participation.isCreator)
         values.put(PARTICIPATION_VOTES, participation.votes)
 
         writableDatabase.update(PARTICIPATION_TABLE, values, "$PARTICIPATION_USER_ID = ${participation.user.username} AND $PARTICIPATION_DRAWING_ID = ${participation.drawing.id} AND $PARTICIPATION_CHALLENGE_ID = ${participation.challenge.id}", null)
@@ -340,8 +340,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         try {
             val values = ContentValues()
             values.put(USER_NAME, user.username)
-            values.put(USER_PASSWORD, user.password)
-            values.put(USER_SALT, user.salt)
             values.put(USER_DATE, user.date)
 
             writableDatabase.insertOrThrow(USER_TABLE, null, values)
@@ -355,8 +353,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     fun update(user: User) {
         val values = ContentValues()
         values.put(USER_NAME, user.username)
-        values.put(USER_PASSWORD, user.password)
-        values.put(USER_SALT, user.salt)
         values.put(USER_DATE, user.date)
 
         writableDatabase.update(USER_TABLE, values, "$USER_NAME = ${user.username}", null)
@@ -371,7 +367,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
         writableDatabase.query(
                 USER_TABLE,
-                arrayOf(USER_NAME, USER_PASSWORD, USER_SALT, USER_DATE),
+                arrayOf(USER_NAME, USER_DATE),
                 null,
                 null,
                 null,
@@ -379,7 +375,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
                 "$USER_NAME ASC",
         ).use {
             while (it.moveToNext()) {
-                list.add(User(it.getString(0), it.getString(1), it.getString(2), LocalDateTime.parse(it.getString(3))))
+                list.add(User(it.getString(0), LocalDateTime.parse(it.getString(1))))
             }
         }
 
@@ -396,7 +392,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
             writableDatabase.query(
                     USER_TABLE,
-                    arrayOf(USER_NAME, USER_PASSWORD, USER_SALT, USER_DATE),
+                    arrayOf(USER_NAME, USER_DATE),
                     sb.toString(),
                     null,
                     null,
@@ -404,7 +400,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
                     "$USER_NAME ASC",
             ).use {
                 while (it.moveToNext()) {
-                    list.add(User(it.getString(0), it.getString(1), it.getString(2), LocalDateTime.parse(it.getString(3))))
+                    list.add(User(it.getString(0), LocalDateTime.parse(it.getString(1))))
                 }
 
                 list
@@ -415,7 +411,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     fun getUser(username: String): User? {
         writableDatabase.query(
                 USER_TABLE,
-                arrayOf(USER_NAME, USER_PASSWORD, USER_SALT, USER_DATE),
+                arrayOf(USER_NAME, USER_DATE),
                 "$USER_NAME = $username",
                 null,
                 null,
@@ -423,7 +419,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
                 null
         ).use {
             return if (it.moveToFirst()) {
-                User(it.getString(0), it.getString(1), it.getString(2), LocalDateTime.parse(it.getString(3)))
+                User(it.getString(0), LocalDateTime.parse(it.getString(1)))
             } else {
                 null
             }
