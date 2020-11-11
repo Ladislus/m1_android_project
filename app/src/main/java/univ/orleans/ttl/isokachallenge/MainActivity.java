@@ -1,10 +1,7 @@
 package univ.orleans.ttl.isokachallenge;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
-import com.example.isoka_challenge.R;
 
 public class MainActivity extends AppCompatActivity {
 
