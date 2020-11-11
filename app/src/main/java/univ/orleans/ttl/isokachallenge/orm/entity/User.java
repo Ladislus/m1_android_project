@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class User {
 
-    private String _userame;
+    private final String _userame;
     private final LocalDateTime _date;
 
     public User(String username, LocalDateTime date) {
