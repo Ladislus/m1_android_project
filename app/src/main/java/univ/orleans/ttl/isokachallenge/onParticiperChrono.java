@@ -1,4 +1,4 @@
-package com.example.isoka_challenge;
+package univ.orleans.ttl.isokachallenge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
