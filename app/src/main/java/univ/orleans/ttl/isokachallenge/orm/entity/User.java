@@ -24,4 +24,9 @@ public class User {
     public static String hash(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
+
+    @Override
+    public String toString() {
+        return "USER: " + this._username + " (" + this._date + ")";
+    }
 }

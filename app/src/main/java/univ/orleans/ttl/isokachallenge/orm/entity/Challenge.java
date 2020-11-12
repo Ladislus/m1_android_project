@@ -51,4 +51,9 @@ public class Challenge {
     public Integer getTimer() {
         return this._timer;
     }
+
+    @Override
+    public String toString() {
+        return "CHALLENGE: " + this._id + " (" + this._name + ", " + this._type + this._theme + ", " + this._date + ", " + this._timer + ")";
+    }
 }

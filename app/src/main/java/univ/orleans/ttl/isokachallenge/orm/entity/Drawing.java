@@ -33,4 +33,9 @@ public class Drawing {
     public String getDate() {
         return this._date.toString();
     }
+
+    @Override
+    public String toString() {
+        return "DRAWING: " + this._id + " (" + this._link + ", " + this._date + ")";
+    }
 }

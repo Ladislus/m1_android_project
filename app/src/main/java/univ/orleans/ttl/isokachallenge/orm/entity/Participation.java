@@ -39,4 +39,8 @@ public class Participation {
     public Integer getVotes() {
         return this._votes;
     }
+
+    public String toString() {
+        return "PARTICIPATION: [ " + this._user.getUsername() + ", " + this._drawing.getId() + ", " + this._challenge.getId() + " ](" + this._isCreator + ", " + this._votes + ")";
+    }
 }
