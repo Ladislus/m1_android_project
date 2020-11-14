@@ -6,7 +6,8 @@
     <string name="imgtitleplaceholder">Thème du challenge</string>
     <string name="temps">Temps de dessin :</string>
     <string name="placeholderTemps">30 min</string>
-    <string name="dateFinph">"Termine le 17/11/2020 "</string>
+    <string name="dateFinph">Termine le 17/11/2020</string>
     <string name="btnBrowse">Parcourir</string>
     <string name="btnParticipe">Participer</string>
+    <string name="chronoTitle">Temps de dessin</string>
 </resources>
