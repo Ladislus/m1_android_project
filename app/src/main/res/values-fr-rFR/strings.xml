@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Test_ViewPage2</string>
+    <string name="challengeEnCours">Challenges en cours</string>
+    <string name="titreChallenge">Titre</string>
+    <string name="image_dessin">dessin</string>
+</resources>
