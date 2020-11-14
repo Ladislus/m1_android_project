@@ -14,9 +14,9 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-public class ChallengeAdapter extends RecyclerView.Adapter<com.example.test_viewpage2.ChallengeAdapter.MyViewHolder> {
+public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyViewHolder> {
 
-    private final List<com.example.test_viewpage2.Challenge> challenges;
+    private final List<Challenge> challenges;
     private OnItemClickListener mListener;
 
     public  interface  OnItemClickListener{
@@ -27,20 +27,20 @@ public class ChallengeAdapter extends RecyclerView.Adapter<com.example.test_view
         mListener = listener;
     }
 
-    public ChallengeAdapter(List<com.example.test_viewpage2.Challenge> challenges) {
+    public ChallengeAdapter(List<Challenge> challenges) {
         this.challenges = challenges;
     }
 
     @NonNull
     @Override
-    public com.example.test_viewpage2.ChallengeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChallengeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.challenge_item,parent,false);
         return new MyViewHolder(view,mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.example.test_viewpage2.ChallengeAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChallengeAdapter.MyViewHolder holder, int position) {
         holder.display(this.challenges.get(position));
     }
 
@@ -69,13 +69,13 @@ public class ChallengeAdapter extends RecyclerView.Adapter<com.example.test_view
             });
         }
 
-        void display (com.example.test_viewpage2.Challenge challenge){
+        void display (Challenge challenge){
             this.titreChallenge.setText(challenge.getTitre());
             ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
             dessinAdapter.setOnItemClickListener(
                     position -> {
-                        com.example.test_viewpage2.ImageDessin user = challenge.getImageDessinList().get(position);
-                        Toast.makeText(com.example.test_viewpage2.MainActivity.getAppContext(),
+                        ImageDessin user = challenge.getImageDessinList().get(position);
+                        Toast.makeText(MainActivity.getAppContext(),
                                 "Image : Auteur = "+user.getAuteur()+" avec "+user.getStartRating()+" votes.",
                                 Toast.LENGTH_SHORT).show();
                     }
