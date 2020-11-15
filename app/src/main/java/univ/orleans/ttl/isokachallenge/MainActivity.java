@@ -76,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
         imageDessinTestAnime.startRating = 45;
         imageDessins.add(imageDessinTestAnime);
 
-
-
-
         List<ImageDessin> test = new ArrayList<>();
-
 
         ImageDessin imageDessinAnime = new ImageDessin();
         imageDessinAnime.imageUrl = "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915";
@@ -88,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
         imageDessinAnime.dateSoumission = "8/11/2020 à 18h10";
         imageDessinAnime.startRating = 450;
         test.add(imageDessinAnime);
-
-
         Challenge challenge1 = new Challenge("Test",imageDessins);
         Challenge challenge2 = new Challenge("Ishigami Senku",test);
         challenges.add(challenge1);
