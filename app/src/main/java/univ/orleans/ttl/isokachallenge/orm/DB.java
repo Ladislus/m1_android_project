@@ -7,9 +7,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.Pair;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import univ.orleans.ttl.isokachallenge.orm.entity.*;
 
@@ -121,7 +126,7 @@ public class DB extends SQLiteOpenHelper {
         values.put(Tables.USER_NAME, user.getUsername());
         values.put(Tables.USER_DATE, user.getDate());
 
-        int nbAffected = this.getWritableDatabase().update(Tables.USER_TABLE, values, Tables.USER_NAME + " = \"" + user.getUsername() + "\"", null);
+        int nbAffected = this.getWritableDatabase().update(Tables.USER_TABLE, values, Tables.USER_NAME + " = ?", new String[] { user.getUsername() });
         Log.d(Tables.DB_LOG, "(USER) NUMBER OF ROWS AFFECTED: " + nbAffected);
         return nbAffected;
     }
@@ -132,7 +137,7 @@ public class DB extends SQLiteOpenHelper {
         values.put(Tables.DRAWING_LINK, drawing.getLink());
         values.put(Tables.DRAWING_DATE, drawing.getDate());
 
-        int nbAffected = this.getWritableDatabase().update(Tables.DRAWING_TABLE, values, Tables.DRAWING_ID + " = " + drawing.getId(), null);
+        int nbAffected = this.getWritableDatabase().update(Tables.DRAWING_TABLE, values, Tables.DRAWING_ID + " = ?", new String[] { String.valueOf(drawing.getId()) });
         Log.d(Tables.DB_LOG, "(DRAWING) NUMBER OF ROWS AFFECTED: " + nbAffected);
         return nbAffected;
     }
@@ -146,7 +151,7 @@ public class DB extends SQLiteOpenHelper {
         values.put(Tables.CHALLENGE_DURATION, challenge.getDate());
         values.put(Tables.CHALLENGE_TIMER, challenge.getTimer());
 
-        int nbAffected = this.getWritableDatabase().update(Tables.CHALLENGE_TABLE, values, Tables.CHALLENGE_ID + " = " + challenge.getId(), null);
+        int nbAffected = this.getWritableDatabase().update(Tables.CHALLENGE_TABLE, values, Tables.CHALLENGE_ID + " = ?", new String[] { String.valueOf(challenge.getId()) });
         Log.d(Tables.DB_LOG, "(CHALLENGE) NUMBER OF ROWS AFFECTED: " + nbAffected);
         return nbAffected;
     }
@@ -159,7 +164,7 @@ public class DB extends SQLiteOpenHelper {
         values.put(Tables.PARTICIPATION_IS_CREATOR, participation.isCreator());
         values.put(Tables.PARTICIPATION_VOTES, participation.getVotes());
 
-        int nbAffected = this.getWritableDatabase().update(Tables.PARTICIPATION_TABLE, values, Tables.PARTICIPATION_USER_ID + " = \"" + participation.getUser().getUsername() + "\" AND " + Tables.PARTICIPATION_DRAWING_ID + " = " + participation.getDrawing().getId() + " AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = " + participation.getChallenge().getId(), null);
+        int nbAffected = this.getWritableDatabase().update(Tables.PARTICIPATION_TABLE, values, Tables.PARTICIPATION_USER_ID + " = ? AND " + Tables.PARTICIPATION_DRAWING_ID + " = ? AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = ?", new String[] { participation.getUser().getUsername(), String.valueOf(participation.getDrawing().getId()), String.valueOf(participation.getChallenge().getId()) });
         Log.d(Tables.DB_LOG, "(PARTICIPATION) NUMBER OF ROWS AFFECTED: " + nbAffected);
         return nbAffected;
     }
@@ -169,25 +174,25 @@ public class DB extends SQLiteOpenHelper {
     //////////////////////////////
 
     public int delete(User user) {
-        int nbAffected = this.getWritableDatabase().delete(Tables.USER_TABLE, Tables.USER_NAME + " = \"" + user.getUsername() + "\"", null);
+        int nbAffected = this.getWritableDatabase().delete(Tables.USER_TABLE, Tables.USER_NAME + " = ?", new String[] { user.getUsername() });
         Log.d(Tables.DB_LOG, "(USER) NUMBER OF ROWS DELETED: " + nbAffected);
         return nbAffected;
     }
 
     public int delete(Drawing drawing) {
-        int nbAffected = this.getWritableDatabase().delete(Tables.DRAWING_TABLE, Tables.DRAWING_ID + " = " + drawing.getId(), null);
+        int nbAffected = this.getWritableDatabase().delete(Tables.DRAWING_TABLE, Tables.DRAWING_ID + " = ?", new String[] { String.valueOf(drawing.getId()) });
         Log.d(Tables.DB_LOG, "(DRAWING) NUMBER OF ROWS DELETED: " + nbAffected);
         return nbAffected;
     }
 
     public int delete(Challenge challenge) {
-        int nbAffected = this.getWritableDatabase().delete(Tables.CHALLENGE_TABLE, Tables.CHALLENGE_ID + " = " + challenge.getId(), null);
+        int nbAffected = this.getWritableDatabase().delete(Tables.CHALLENGE_TABLE, Tables.CHALLENGE_ID + " = ?", new String[] { String.valueOf(challenge.getId() )});
         Log.d(Tables.DB_LOG, "(CHALLENGE) NUMBER OF ROWS DELETED: " + nbAffected);
         return nbAffected;
     }
 
     public int delete(Participation participation) {
-        int nbAffected =  this.getWritableDatabase().delete(Tables.PARTICIPATION_TABLE, Tables.PARTICIPATION_USER_ID + " = \"" + participation.getUser().getUsername() + "\" AND " + Tables.PARTICIPATION_DRAWING_ID + " = " + participation.getDrawing().getId() + " AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = " + participation.getChallenge().getId(), null);
+        int nbAffected =  this.getWritableDatabase().delete(Tables.PARTICIPATION_TABLE, Tables.PARTICIPATION_USER_ID + " = ? AND " + Tables.PARTICIPATION_DRAWING_ID + " = ? AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = ?", new String[] { participation.getUser().getUsername(), String.valueOf(participation.getDrawing().getId()), String.valueOf(participation.getChallenge().getId()) });
         Log.d(Tables.DB_LOG, "(PARTICIPATION) NUMBER OF ROWS DELETED: " + nbAffected);
         return nbAffected;
     }
@@ -209,9 +214,278 @@ public class DB extends SQLiteOpenHelper {
             )
         ) {
            if (c.moveToFirst()) {
-               return new User(c.getString(0), LocalDateTime.parse(c.getString(1)));
+               return new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX)));
+           } else {
+               return null;
            }
         }
-        return null;
+    }
+
+    public Drawing getDrawing(int id) {
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.DRAWING_TABLE,
+                        new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
+                        Tables.DRAWING_ID + " = ?",
+                        new String[] { String.valueOf(id) },
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            if (c.moveToFirst()) {
+                return new Drawing(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.DRAWING_LINK_INDEX), LocalDateTime.parse(c.getString(Tables.DRAWING_DATE_INDEX)));
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public Challenge getChallenge(int id) {
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.CHALLENGE_TABLE,
+                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER },
+                        Tables.CHALLENGE_ID + " = ?",
+                        new String[] { String.valueOf(id) },
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            if (c.moveToFirst()) {
+                return new Challenge(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX));
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public Participation getParticipation(String id_user, int id_drawing, int id_challenge) {
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.PARTICIPATION_TABLE,
+                        new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
+                        Tables.PARTICIPATION_USER_ID + " = ? AND " + Tables.PARTICIPATION_DRAWING_ID + " = ? AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = ?",
+                        new String[] { id_user, String.valueOf(id_drawing), String.valueOf(id_challenge) },
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            if (c.moveToFirst()) {
+                return new Participation(getUser(c.getString(Tables.PARTICIPATION_USER_ID_INDEX)), getDrawing(c.getInt(Tables.PARTICIPATION_DRAWING_ID_INDEX)), getChallenge(c.getInt(Tables.PARTICIPATION_CHALLENGE_ID_INDEX)), c.getInt(Tables.PARTICIPATION_IS_CREATOR_INDEX) > 0, c.getInt(Tables.PARTICIPATION_VOTES_INDEX));
+            } else {
+                return null;
+            }
+        }
+    }
+
+    //////////////////////////////
+    //          GETALL          //
+    //////////////////////////////
+
+    public Collection<User> getAllUsers() {
+        Collection<User> users = new ArrayList<>();
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.USER_TABLE,
+                        new String[] { Tables.USER_NAME, Tables.USER_DATE },
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                users.add(new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX))));
+            }
+        }
+        return users;
+    }
+
+    public Collection<Drawing> getAllDrawings() {
+        Collection<Drawing> drawings = new ArrayList<>();
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.DRAWING_TABLE,
+                        new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                drawings.add(new Drawing(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.DRAWING_LINK_INDEX), LocalDateTime.parse(c.getString(Tables.DRAWING_DATE_INDEX))));
+            }
+        }
+        return drawings;
+    }
+
+    public Collection<Challenge> getAllChallenges() {
+        Collection<Challenge> challenges = new ArrayList<>();
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.CHALLENGE_TABLE,
+                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER },
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                challenges.add(new Challenge(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX)));
+            }
+        }
+        return challenges;
+    }
+
+    public Collection<Participation> getAllParticipations() {
+        Collection<Participation> participations = new ArrayList<>();
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.PARTICIPATION_TABLE,
+                        new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                 participations.add(new Participation(getUser(c.getString(Tables.PARTICIPATION_USER_ID_INDEX)), getDrawing(c.getInt(Tables.PARTICIPATION_DRAWING_ID_INDEX)), getChallenge(c.getInt(Tables.PARTICIPATION_CHALLENGE_ID_INDEX)), c.getInt(Tables.PARTICIPATION_IS_CREATOR_INDEX) > 0, c.getInt(Tables.PARTICIPATION_VOTES_INDEX)));
+            }
+        }
+        return participations;
+    }
+
+    //////////////////////////////
+    //         GET WHERE        //
+    //////////////////////////////
+
+    public Collection<User> getUsers(Map<String, Pair<String, String>> wheres) {
+        Collection<User> users = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("1");
+        String[] args = new String[wheres.size()];
+
+        int index = 0;
+        for (String key : wheres.keySet()) {
+            query.append(" AND ").append(key).append(wheres.get(key).first).append("?");
+            args[index++] = wheres.get(key).second;
+        }
+
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.USER_TABLE,
+                        new String[] { Tables.USER_NAME, Tables.USER_DATE },
+                        query.toString(),
+                        args,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                users.add(new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX))));
+            }
+        }
+        return users;
+    }
+
+    public Collection<Drawing> getDrawings(Map<String, Pair<String, String>> wheres) {
+        Collection<Drawing> drawings = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("1");
+        String[] args = new String[wheres.size()];
+
+        int index = 0;
+        for (String key : wheres.keySet()) {
+            query.append(" AND ").append(key).append(wheres.get(key).first).append("?");
+            args[index++] = wheres.get(key).second;
+        }
+
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.DRAWING_TABLE,
+                        new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
+                        query.toString(),
+                        args,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                drawings.add(new Drawing(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.DRAWING_LINK_INDEX), LocalDateTime.parse(c.getString(Tables.DRAWING_DATE_INDEX))));
+            }
+        }
+        return drawings;
+    }
+
+    public Collection<Challenge> getChallenges(Map<String, Pair<String, String>> wheres) {
+        Collection<Challenge> challenges = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("1");
+        String[] args = new String[wheres.size()];
+
+        int index = 0;
+        for (String key : wheres.keySet()) {
+            query.append(" AND ").append(key).append(wheres.get(key).first).append("?");
+            args[index++] = wheres.get(key).second;
+        }
+
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.CHALLENGE_TABLE,
+                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER },
+                        query.toString(),
+                        args,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                challenges.add(new Challenge(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX)));
+            }
+        }
+        return challenges;
+    }
+
+    public Collection<Participation> getParticipations(Map<String, Pair<String, String>> wheres) {
+        Collection<Participation> participations = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("1");
+        String[] args = new String[wheres.size()];
+
+        int index = 0;
+        for (String key : wheres.keySet()) {
+            query.append(" AND ").append(key).append(wheres.get(key).first).append("?");
+            args[index++] = wheres.get(key).second;
+        }
+
+        try (
+                Cursor c = getWritableDatabase().query(
+                        Tables.PARTICIPATION_TABLE,
+                        new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
+                        query.toString(),
+                        args,
+                        null,
+                        null,
+                        null
+                )
+        ) {
+            while (c.moveToNext()) {
+                participations.add(new Participation(getUser(c.getString(Tables.PARTICIPATION_USER_ID_INDEX)), getDrawing(c.getInt(Tables.PARTICIPATION_DRAWING_ID_INDEX)), getChallenge(c.getInt(Tables.PARTICIPATION_CHALLENGE_ID_INDEX)), c.getInt(Tables.PARTICIPATION_IS_CREATOR_INDEX) > 0, c.getInt(Tables.PARTICIPATION_VOTES_INDEX)));
+            }
+        }
+        return participations;
     }
 }
