@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".onConfirmationParticipation"
+        android:layout_width="match_parent"
+        android:padding="30px"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:padding="30px"
+
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_marginBottom="30px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_weight="0"
+            android:text="@string/confirmePartTitle" />
+        <ImageView
+            android:id="@+id/imageViewConfirmation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:padding="30px"
+
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:layout_weight="12"
+            android:text="@string/confirmerLabel" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_marginRight="10px"
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Oui" />
+
+        <Button
+            android:layout_marginLeft="10px"
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onReprendrePhoto"
+            android:text="Reprendre une photo" />
+    </LinearLayout>
+</LinearLayout>
+
+
+</LinearLayout>

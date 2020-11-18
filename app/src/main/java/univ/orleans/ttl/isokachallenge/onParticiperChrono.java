@@ -2,12 +2,22 @@ package univ.orleans.ttl.isokachallenge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class onParticiperChrono extends AppCompatActivity {
+
+    private ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,11 +25,12 @@ public class onParticiperChrono extends AppCompatActivity {
         setContentView(R.layout.activity_on_participer_chrono);
         TextView labelChrono = findViewById(R.id.chronoLabel);
         labelChrono.setText("Temps total : 00:01:30");
-
-        ProgressBar pg = findViewById(R.id.progressChrono);
+        this.iv = findViewById(R.id.imageViewChrono);
+        Picasso.get().load("https://histoire-image.org/sites/default/dor7_delacroix_001f.jpg").into(iv);
+//        ProgressBar pg = findViewById(R.id.progressChrono);
         int tempsTotal = 10000; //Temps total de dessin : 1m30 secondes
-        pg.setProgress(0);
-        pg.setMax(tempsTotal);
+//        pg.setProgress(0);
+//        pg.setMax(tempsTotal);
         new CountDownTimer(tempsTotal, 1) {
             long tempsEcoule = 0;
             String labelSecondes = "00";
@@ -67,17 +78,40 @@ public class onParticiperChrono extends AppCompatActivity {
                 labelChrono.setText(labelHeures+":"+labelMinutes+":"+labelSecondes);
 
 
-                pg.setProgress((int) ((( tempsEcoule * tempsTotal) / tempsTotal) % tempsTotal));
+//                pg.setProgress((int) ((( tempsEcoule * tempsTotal) / tempsTotal) % tempsTotal));
 
 
             }
 
             public void onFinish() {
                 labelChrono.setText("Fini ! Prennez le en photo !");
-                pg.setProgress(0);
+//                pg.setProgress(0);
             }
         }.start();
 
-        pg.setProgress(0);
+//        pg.setProgress(0);
     }
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    public void onPhoto(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Intent intent = new Intent(this, onConfirmationParticipation.class);
+            intent.putExtra("bitmap", imageBitmap);
+            startActivity(intent);
+        }
+    }
+
 }

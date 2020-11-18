@@ -10,4 +10,6 @@
     <string name="btnBrowse">Parcourir</string>
     <string name="btnParticipe">Participer</string>
     <string name="chronoTitle">Temps de dessin</string>
+    <string name="confirmePartTitle">Confirmer votre participation</string>
+    <string name="confirmerLabel">Confirmer ?</string>
 </resources>
