@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 import univ.orleans.ttl.isokachallenge.orm.entity.*;
 
@@ -400,6 +401,9 @@ public class DB extends SQLiteOpenHelper {
     //////////////////////////////
 
     public Collection<User> getUsers(Map<String, Pair<String, String>> wheres) {
+
+        if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllUsers();
+
         Collection<User> users = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
@@ -434,6 +438,9 @@ public class DB extends SQLiteOpenHelper {
     }
 
     public Collection<Drawing> getDrawings(Map<String, Pair<String, String>> wheres) {
+
+        if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllDrawings();
+
         Collection<Drawing> drawings = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
@@ -468,6 +475,9 @@ public class DB extends SQLiteOpenHelper {
     }
 
     public Collection<Challenge> getChallenges(Map<String, Pair<String, String>> wheres) {
+
+        if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllChallenges();
+
         Collection<Challenge> challenges = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
@@ -502,6 +512,9 @@ public class DB extends SQLiteOpenHelper {
     }
 
     public Collection<Participation> getParticipations(Map<String, Pair<String, String>> wheres) {
+
+        if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllParticipations();
+
         Collection<Participation> participations = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
