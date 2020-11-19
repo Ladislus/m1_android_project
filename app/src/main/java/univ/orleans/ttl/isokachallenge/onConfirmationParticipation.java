@@ -79,6 +79,11 @@ public class onConfirmationParticipation extends AppCompatActivity {
         }
     }
 
+    public void onConfirmer(View view) {
+        //Upload dans imgur
+        finish();
+    }
+
 //    @Override
 //    protected void onDestroy() {
 //        super.onDestroy();
