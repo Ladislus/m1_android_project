@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 
 public class onConfirmationParticipation extends AppCompatActivity {
 
+
     private ImageView imageViewConfirmation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
