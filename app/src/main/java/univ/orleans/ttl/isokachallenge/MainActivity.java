@@ -1,13 +1,22 @@
 package univ.orleans.ttl.isokachallenge;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private ChallengeAdapter monAdapteur;
     private static Context context;
 
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView navigationView;
+
     public static Context getAppContext() {
         return MainActivity.context;
     }
@@ -27,6 +40,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MainActivity.context = getApplicationContext();
         setContentView(R.layout.activity_main);
+        setUpToolbar();
+        navigationView = (NavigationView) findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId())
+                {
+                    case  R.id.nav_home:
+                        Log.d("Bonjour","CAVA");
+                        break;
+                }
+                return false;
+            }
+        });
 
         recyclerView = findViewById(R.id.myRecyclerView);
 
@@ -76,7 +103,11 @@ public class MainActivity extends AppCompatActivity {
         imageDessinTestAnime.startRating = 45;
         imageDessins.add(imageDessinTestAnime);
 
+
+
+
         List<ImageDessin> test = new ArrayList<>();
+
 
         ImageDessin imageDessinAnime = new ImageDessin();
         imageDessinAnime.imageUrl = "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915";
@@ -84,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         imageDessinAnime.dateSoumission = "8/11/2020 à 18h10";
         imageDessinAnime.startRating = 450;
         test.add(imageDessinAnime);
+
+
         Challenge challenge1 = new Challenge("Test",imageDessins);
         Challenge challenge2 = new Challenge("Ishigami Senku",test);
         challenges.add(challenge1);
@@ -101,5 +134,16 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         });
 
-        }
+    }
+
+    public void setUpToolbar() {
+        drawerLayout = findViewById(R.id.drawerLayout);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+        actionBarDrawerToggle.syncState();
+
+    }
 }

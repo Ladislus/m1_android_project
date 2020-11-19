@@ -1,5 +1,6 @@
 package univ.orleans.ttl.isokachallenge;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +54,11 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
 
         private final TextView titreChallenge;
         private final ViewPager2 imagesCaroussel;
+        private Context context;
 
         public MyViewHolder(@NonNull View itemView,OnItemClickListener listener) {
             super(itemView);
-
+            context = itemView.getContext();
             this.titreChallenge = itemView.findViewById(R.id.textTitreChallenge);
             this.imagesCaroussel = itemView.findViewById(R.id.locationsViewPager);
             itemView.setOnClickListener(v -> {
@@ -75,7 +77,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             dessinAdapter.setOnItemClickListener(
                     position -> {
                         ImageDessin user = challenge.getImageDessinList().get(position);
-                        Toast.makeText(MainActivity.getAppContext(),
+                        Toast.makeText(context,
                                 "Image : Auteur = "+user.getAuteur()+" avec "+user.getStartRating()+" votes.",
                                 Toast.LENGTH_SHORT).show();
                     }

@@ -4,4 +4,16 @@
     <string name="challengeEnCours">Challenges en cours</string>
     <string name="titreChallenge">Titre</string>
     <string name="image_dessin">dessin</string>
+    <string name="title_activity_menu">ActivitéMenu</string>
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+    <string name="action_settings">Parametres</string>
+    <string name="menu_gallery">Galerie</string>
+    <string name="menu_home">Accueil</string>
+    <string name="menu_slideshow">Diaporama</string>
+    <string name="menu_connexion">Connexion</string>
+    <string name="menu_challenge_en_cours">Challenges en cours</string>
+    <string name="menu_stats">Statistiques</string>
+    <string name="menu_param">Paramètres</string>
 </resources>
