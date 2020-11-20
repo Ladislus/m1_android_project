@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
-                case  R.id.nav_home:
+                case  R.id.nav_connexion:
                     Log.d("Bonjour","CAVA");
                     break;
             }

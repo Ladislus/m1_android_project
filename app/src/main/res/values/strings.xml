@@ -18,4 +18,8 @@
     <string name="menu_challenge_en_cours">Ongoing Challenges</string>
     <string name="menu_stats">Statistics</string>
     <string name="menu_param">Settings</string>
+    <string name="connexion">Connexion</string>
+    <string name="challenge_en_cours">Ongoing challenge</string>
+    <string name="statistiques">Statistics</string>
+    <string name="parametres">Settings</string>
 </resources>

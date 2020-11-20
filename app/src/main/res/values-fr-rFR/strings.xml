@@ -16,4 +16,8 @@
     <string name="menu_challenge_en_cours">Challenges en cours</string>
     <string name="menu_stats">Statistiques</string>
     <string name="menu_param">Paramètres</string>
+    <string name="connexion">Connexion</string>
+    <string name="challenge_en_cours">Challenge en cours</string>
+    <string name="statistiques">Statistiques</string>
+    <string name="parametres">Paramètres</string>
 </resources>
