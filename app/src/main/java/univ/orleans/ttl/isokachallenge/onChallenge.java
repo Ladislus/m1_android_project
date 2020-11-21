@@ -12,14 +12,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -29,78 +36,61 @@ import java.util.Scanner;
 public class onChallenge extends AppCompatActivity {
     static final int ID_CHALL = 1; //Test avec l'id 1
     static final String BASE_URL = "https://thlato.pythonanywhere.com/api/";
+    static final String API_KEY = "1321321321321";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_challenge);
         ImageView iv = findViewById(R.id.imageView);
-        FetchChallengeInfo fm = new FetchChallengeInfo();
-        fm.execute(String.valueOf(ID_CHALL));
+        AndroidNetworking.initialize(getApplicationContext());
+
+        callApi();
+
+
+
 //        Picasso.get().load("https://histoire-image.org/sites/default/dor7_delacroix_001f.jpg").into(iv);
+    }
+
+    private void callApi() {
+        AndroidNetworking.get(BASE_URL+"challenge/get?id={id}")
+                .addPathParameter("id", String.valueOf(ID_CHALL))
+                .addHeaders("apiKey", API_KEY)
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("prout", response.toString());
+                        try {
+                            TextView title = findViewById(R.id.nomChall);
+                            title.setText(response.getString("name"));
+                            ImageView iv = findViewById(R.id.imageView);
+                            Picasso.get().load(response.getString("theme")).into(iv);
+
+                            TextView timer = findViewById(R.id.timer);
+                            timer.setText(response.getString("timer")+" minutes");
+
+                            TextView dateFin = findViewById(R.id.dateFin);
+                            dateFin.setText("Termine le : "+response.getString("date"));
+
+                            TextView desc = findViewById(R.id.textView2);
+                            desc.setText(response.getString("desc"));
+                        }catch (JSONException e){
+                        }
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        Log.d("prout", error.getMessage());
+                    }
+                });
     }
 
     public void onParticiper(View view) {
         Intent intent = new Intent(this, onParticiperChrono.class);
         intent.putExtra("id_chall", ID_CHALL);
         startActivity(intent);
-    }
-    private class FetchChallengeInfo extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        protected String doInBackground(String... strings) {
-            Log.d("prout","je rentre dans doinbg avec strings : "+strings[0]+"");
-            try {
-                URL url = new URL(BASE_URL+"GetChallenge/"+strings[0]+"/123456");
-                Log.d("prout",url.toString());
-                URLConnection cnx = url.openConnection();
-                InputStream retour = cnx.getInputStream();
-                String text = null;
-                try (Scanner scanner = new Scanner(retour, StandardCharsets.UTF_8.name())) {
-                    text = scanner.useDelimiter("\\A").next();
-                }
-                Log.d("prout", "text : " +text);
-                return text;
-            } catch (MalformedURLException e) {
-                Log.d("prout", e.getMessage());
-            } catch (IOException e) {
-                Log.d("prout", e.getMessage());
-            }
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            try {
-                JSONObject obj = new JSONObject(s);
-                TextView title = findViewById(R.id.nomChall);
-                title.setText(obj.getString("nomImgTheme"));
-                ImageView iv = findViewById(R.id.imageView);
-                Picasso.get().load(obj.getString("theme")).into(iv);
-
-                TextView timer = findViewById(R.id.timer);
-                timer.setText(obj.getString("timer")+" minutes");
-
-                TextView dateFin = findViewById(R.id.dateFin);
-                dateFin.setText("Termine le : "+obj.getString("duree"));
-
-                TextView desc = findViewById(R.id.textView2);
-                desc.setText(obj.getString("description"));
-//                TextView tx = findViewById(R.id.textView);
-//                tx.setText(obj.getString("name")+" : "+obj.getJSONObject("main").getString("temp"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
     }
 
 }
