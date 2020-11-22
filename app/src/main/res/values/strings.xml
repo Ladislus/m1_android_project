@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Isoka_challenge</string>
+    <string name="challengeEnCours">Ongoing Challenges</string>
+    <string name="titreChallenge">Title</string>
+    <string name="image_dessin">drawing</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_connexion">Login</string>
+    <string name="menu_challenge_en_cours">Ongoing Challenges</string>
+    <string name="menu_stats">Statistics</string>
+    <string name="menu_param">Settings</string>
+    <string name="connexion">Connexion</string>
+    <string name="challenge_en_cours">Ongoing challenge</string>
+    <string name="statistiques">Statistics</string>
+    <string name="parametres">Settings</string>
 </resources>
