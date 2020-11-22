@@ -11,11 +11,24 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ConnexionView extends AppCompatActivity {
 
     private EditText mdp, login;
     private CheckBox checkLogin;
     private boolean remember;
+
+    static final String BASE_URL = "https://thlato.pythonanywhere.com/api/";
+    static final String API_KEY = "1321321321321";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +41,24 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onConnexion(View view) {
-        Log.d("login", "login : "+this.login.getText()+" / mdp : "+this.mdp.getText());
+        AndroidNetworking.get(BASE_URL+"user/get?username={pseudo}")
+                .addPathParameter("pseudo", String.valueOf(this.login.getText()))
+                .addHeaders("apiKey", API_KEY)
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("login", "Reponse : "+response.toString()+"\n");
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        Log.d("login", error.toString());
+                    }
+                });
     }
 
     @Override
