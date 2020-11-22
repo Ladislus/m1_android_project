@@ -5,12 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="30px"
+    android:gravity="center"
     tools:context=".ConnexionView">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/connexionNom"
-        android:layout_weight="1">
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_weight="0">
 
     </TextView>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="@string/loginTitle" />
+
+    <EditText
+        android:id="@+id/inputLogin"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:ems="10"
+        android:hint="@string/hintLogin"
+        android:inputType="textPersonName"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="@string/passwordTitle" />
+
+    <EditText
+        android:id="@+id/inputMDP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:ems="10"
+        android:hint="@string/hintpassword"
+        android:inputType="textPassword"
+        android:text="" />
+
+    <CheckBox
+        android:id="@+id/checkLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:onClick="onChecked"
+        android:text="@string/labelCheckLogin" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onConnexion"
+        android:text="@string/connexionButton"
+        ></Button>
 </LinearLayout>
