@@ -554,4 +554,9 @@ public class DB extends SQLiteOpenHelper {
 
         return participations;
     }
+
+    Boolean login(String username, String password) {
+        //TODO
+        return true;
+    }
 }
