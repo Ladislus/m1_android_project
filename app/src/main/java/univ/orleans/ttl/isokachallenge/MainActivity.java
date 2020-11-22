@@ -3,6 +3,8 @@ package univ.orleans.ttl.isokachallenge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
                 case  R.id.nav_connexion:
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
+                    break;
+
+                case R.id.nav_challengeTest:
+                    Intent act = new Intent(this, onChallenge.class);
+                    startActivity(act);
                     break;
             }
             return false;
@@ -161,5 +168,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+//    public void gotoOnChallenge(View view) {
+//        Intent act = new Intent(this, onChallenge.class);
+//        startActivity(act);
+//    }
 
 }

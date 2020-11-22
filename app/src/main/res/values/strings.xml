@@ -38,4 +38,8 @@
     <string name="confirmePartTitle">Confirm participation</string>
     <string name="confirmerLabel">Confirm ?</string>
     <string name="nomChall">"Challenge's name "</string>
+    <string name="testActivityChall" translatable="false">GotoActivityChallTEST</string>
+    <string name="descChall" translatable="false">desc</string>
+    <string name="placeholderTemps">placeHolder</string>
+    <string name="dateFinph">plaxceHoleccccsfv</string>
 </resources>

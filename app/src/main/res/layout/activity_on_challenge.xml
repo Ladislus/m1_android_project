@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".onChallenge"
+    android:layout_height="match_parent"
+    android:layout_margin="30px"
+
+    android:layout_width="match_parent">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30px"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/nomChall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:paddingBottom="30px"
+            android:text="@string/nomChall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/desctitle"
+
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:paddingBottom="30px"
+            android:text="@string/descChall" />
+
+        <TextView
+            android:id="@+id/imgTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/imgtitleplaceholder"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="241dp"
+            android:layout_weight="0"
+            />
+        <TextView
+            android:id="@+id/temps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:paddingTop="30px"
+            android:text="@string/temps"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholderTemps"
+            />
+        <TextView
+            android:id="@+id/dateFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:paddingTop="30px"
+            android:text="@string/dateFinph"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBrowse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="15px"
+                android:text="@string/btnBrowse" />
+
+            <Button
+                android:id="@+id/btnParticipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15px"
+                android:layout_weight="1"
+
+                android:onClick="onParticiper"
+                android:text="@string/btnParticipe" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>
+
