@@ -2,22 +2,27 @@ package univ.orleans.ttl.isokachallenge.orm;
 
 import android.content.ContentValues;
 import android.content.Context;
+
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import android.util.Log;
 import android.util.Pair;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
+import java.time.LocalDateTime;
+
 import univ.orleans.ttl.isokachallenge.orm.entity.*;
 
 public class DB extends SQLiteOpenHelper {
+
+    private final RequestWrapper _wrapper = new RequestWrapper(this.getWritableDatabase());
 
     public DB(Context context) {
         super(context, Tables.DB_NAME, null, Tables.DB_VERSION);
@@ -88,6 +93,7 @@ public class DB extends SQLiteOpenHelper {
             values.put(Tables.CHALLENGE_THEME, challenge.getTheme());
             values.put(Tables.CHALLENGE_DURATION, challenge.getDate());
             values.put(Tables.CHALLENGE_TIMER, challenge.getTimer());
+            values.put(Tables.CHALLENGE_DESCRIPTION, challenge.getDesc());
 
             this.getWritableDatabase().insertOrThrow(Tables.CHALLENGE_TABLE, null, values);
             Log.d(Tables.DB_LOG, "SAVED " + challenge);
@@ -149,6 +155,7 @@ public class DB extends SQLiteOpenHelper {
         values.put(Tables.CHALLENGE_THEME, challenge.getTheme());
         values.put(Tables.CHALLENGE_DURATION, challenge.getDate());
         values.put(Tables.CHALLENGE_TIMER, challenge.getTimer());
+        values.put(Tables.CHALLENGE_DESCRIPTION, challenge.getDesc());
 
         int nbAffected = this.getWritableDatabase().update(Tables.CHALLENGE_TABLE, values, Tables.CHALLENGE_ID + " = ?", new String[] { String.valueOf(challenge.getId()) });
         Log.d(Tables.DB_LOG, "(CHALLENGE) NUMBER OF ROWS AFFECTED: " + nbAffected);
@@ -250,7 +257,7 @@ public class DB extends SQLiteOpenHelper {
         try (
                 Cursor c = getWritableDatabase().query(
                         Tables.CHALLENGE_TABLE,
-                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER },
+                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         Tables.CHALLENGE_ID + " = ?",
                         new String[] { String.valueOf(id) },
                         null,
@@ -259,7 +266,7 @@ public class DB extends SQLiteOpenHelper {
                 )
         ) {
             if (c.moveToFirst()) {
-                Challenge returned = new Challenge(c.getInt(Tables.CHALLENGE_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX));
+                Challenge returned = new Challenge(c.getInt(Tables.CHALLENGE_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX), c.getString(Tables.CHALLENGE_DESCRIPTION_INDEX));
                 Log.d(Tables.DB_LOG, "(CHALLENGE) FOUND " + returned);
                 return returned;
             } else {
@@ -352,7 +359,7 @@ public class DB extends SQLiteOpenHelper {
         try (
                 Cursor c = getWritableDatabase().query(
                         Tables.CHALLENGE_TABLE,
-                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER },
+                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         null,
                         null,
                         null,
@@ -361,7 +368,7 @@ public class DB extends SQLiteOpenHelper {
                 )
         ) {
             while (c.moveToNext()) {
-                challenges.add(new Challenge(c.getInt(Tables.CHALLENGE_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX)));
+                challenges.add(new Challenge(c.getInt(Tables.CHALLENGE_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX), c.getString(Tables.CHALLENGE_DESCRIPTION_INDEX)));
             }
         }
         StringBuilder sb = new StringBuilder("ALL CHALLENGES :\n\t[\n");
@@ -492,7 +499,7 @@ public class DB extends SQLiteOpenHelper {
         try (
                 Cursor c = getWritableDatabase().query(
                         Tables.CHALLENGE_TABLE,
-                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER },
+                        new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         query.toString(),
                         args,
                         null,
@@ -501,7 +508,7 @@ public class DB extends SQLiteOpenHelper {
                 )
         ) {
             while (c.moveToNext()) {
-                challenges.add(new Challenge(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX)));
+                challenges.add(new Challenge(c.getInt(Tables.DRAWING_ID_INDEX), c.getString(Tables.CHALLENGE_NAME_INDEX), c.getInt(Tables.CHALLENGE_TYPE_INDEX) > 0, c.getString(Tables.CHALLENGE_THEME_INDEX), LocalDateTime.parse(c.getString(Tables.CHALLENGE_DURATION_INDEX)), c.getInt(Tables.CHALLENGE_TIMER_INDEX), c.getString(Tables.CHALLENGE_DESCRIPTION_INDEX)));
             }
         }
         StringBuilder sb = new StringBuilder("CHALLENGES FOUND :\n\t[\n");
