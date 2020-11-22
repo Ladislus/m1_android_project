@@ -57,6 +57,8 @@ public class Tables {
     public static final int CHALLENGE_DURATION_INDEX = 4;
     public static final String CHALLENGE_TIMER = "c_timer";
     public static final int CHALLENGE_TIMER_INDEX = 5;
+    public static final String CHALLENGE_DESCRIPTION = "c_desc";
+    public static final int CHALLENGE_DESCRIPTION_INDEX = 6;
 
     public static final String CHALLENGE_CREATE = "CREATE TABLE " + CHALLENGE_TABLE + "("
             + CHALLENGE_ID + " INTEGER PRIMARY KEY,"
@@ -64,7 +66,8 @@ public class Tables {
             + CHALLENGE_TYPE + " BOOLEAN NOT NULL,"
             + CHALLENGE_THEME + " VARCHAR(255) NOT NULL,"
             + CHALLENGE_DURATION + " DATE NOT NULL,"
-            + CHALLENGE_TIMER + " INTEGER NOT NULL);";
+            + CHALLENGE_TIMER + " INTEGER NOT NULL,"
+            + CHALLENGE_DESCRIPTION + " VARCHAR(255) NOT NULL);";
 
     //  ##########################
     //  #   PARTICIPATION TABLE  #
