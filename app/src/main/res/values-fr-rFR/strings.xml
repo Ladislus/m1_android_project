@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Isoka_challenge</string>
+    <string name="challengeEnCours">Challenges en cours</string>
+    <string name="titreChallenge">Titre</string>
+    <string name="image_dessin">dessin</string>
+    <string name="title_activity_menu">ActivitéMenu</string>
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+    <string name="action_settings">Parametres</string>
+    <string name="menu_gallery">Galerie</string>
+    <string name="menu_home">Accueil</string>
+    <string name="menu_slideshow">Diaporama</string>
+    <string name="menu_connexion">Connexion</string>
+    <string name="menu_challenge_en_cours">Challenges en cours</string>
+    <string name="menu_stats">Statistiques</string>
+    <string name="menu_param">Paramètres</string>
+    <string name="connexion">Connexion</string>
+    <string name="challenge_en_cours">Challenge en cours</string>
+    <string name="statistiques">Statistiques</string>
+    <string name="parametres">Paramètres</string>
+    <string name="desctitle">Description</string>
+    <string name="imgtitleplaceholder">Thème du challenge</string>
+    <string name="temps">Temps de dessin :</string>
+    <string name="btnBrowse">Parcourir</string>
+    <string name="btnParticipe">Participer</string>
+    <string name="chronoTitle">Temps de dessin</string>
+    <string name="confirmePartTitle">Confirmer votre participation</string>
+    <string name="confirmerLabel">Confirmer ?</string>
+    <string name="connexionNom">Connexion</string>
+    <string name="loginTitle">Login</string>
+    <string name="hintLogin">Pseudo</string>
+    <string name="passwordTitle">Mot de passe</string>
+    <string name="connexionButton">Se connecter</string>
+    <string name="labelCheckLogin">Se souvenir de moi</string>
+    <string name="nomChall">Nom du challenge</string>
+</resources>

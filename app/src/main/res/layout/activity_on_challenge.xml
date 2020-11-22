@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:paddingBottom="30px"
-
             android:text="@string/descChall" />
 
         <TextView
