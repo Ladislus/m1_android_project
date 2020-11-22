@@ -4,7 +4,7 @@
     <string name="loginTitle">Login</string>
     <string name="hintLogin">Pseudo</string>
     <string name="passwordTitle">Mot de passe</string>
-    <string name="hintpassword">Mot de passe</string>
+    <string name="hintpassword">******</string>
     <string name="connexionButton">Se connecter</string>
     <string name="labelCheckLogin">Se souvenir de moi</string>
 </resources>

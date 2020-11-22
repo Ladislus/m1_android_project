@@ -41,24 +41,25 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onConnexion(View view) {
-        AndroidNetworking.get(BASE_URL+"user/get?username={pseudo}")
-                .addPathParameter("pseudo", String.valueOf(this.login.getText()))
-                .addHeaders("apiKey", API_KEY)
-                .setTag("test")
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("login", "Reponse : "+response.toString()+"\n");
 
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        Log.d("login", error.toString());
-                    }
-                });
+//        AndroidNetworking.get(BASE_URL+"user/get?username={pseudo}")
+//                .addPathParameter("pseudo", String.valueOf(this.login.getText()))
+//                .addHeaders("apiKey", API_KEY)
+//                .setTag("test")
+//                .setPriority(Priority.LOW)
+//                .build()
+//                .getAsJSONArray(new JSONArrayRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        Log.d("login", "Reponse : "+response.toString()+"\n");
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        Log.d("login", error.toString());
+//                    }
+//                });
     }
 
     @Override
