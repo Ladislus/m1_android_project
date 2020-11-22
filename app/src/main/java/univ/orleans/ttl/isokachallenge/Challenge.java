@@ -43,25 +43,26 @@ public class Challenge {
         }
 
         this.imageDessinList.sort((o1, o2) -> {
+            Date d1 = null;
+            Date d2 = null;
             try {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy 'à' hh'h'mm");
-                Date d1 = format.parse(o1.dateSoumission);
-                Date d2 = format.parse(o2.dateSoumission);
-                if(d1.after(d2) ) {
-                    Log.d("Sort","1");
-                    return -1;
-                } else if(d1.before(d2)) {
-                    Log.d("Sort","-1");
-                    return 1;
-                } else {
-                    Log.d("Sort","0");
-                    return 0;
-                }
+                d1 = format.parse(o1.dateSoumission);
+                d2 = format.parse(o2.dateSoumission);
+
             }catch (Exception e){
                 e.printStackTrace();
             }
-            Log.d("Sort","10");
-            return 10;
+            if(d1.after(d2) ) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(d1.before(d2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
         });
 
 
