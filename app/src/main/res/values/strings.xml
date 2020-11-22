@@ -29,4 +29,13 @@
     <string name="challenge_en_cours">Ongoing challenge</string>
     <string name="statistiques">Statistics</string>
     <string name="parametres">Settings</string>
+    <string name="desctitle">Description</string>
+    <string name="imgtitleplaceholder">Challenge\'s Theme</string>
+    <string name="temps">Time to draw :</string>
+    <string name="btnBrowse">Browse</string>
+    <string name="btnParticipe">Participate</string>
+    <string name="chronoTitle">Time to draw</string>
+    <string name="confirmePartTitle">Confirm participation</string>
+    <string name="confirmerLabel">Confirm ?</string>
+    <string name="nomChall">"Challenge's name "</string>
 </resources>
