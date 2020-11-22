@@ -20,4 +20,19 @@
     <string name="challenge_en_cours">Challenge en cours</string>
     <string name="statistiques">Statistiques</string>
     <string name="parametres">Paramètres</string>
+    <string name="desctitle">Description</string>
+    <string name="imgtitleplaceholder">Thème du challenge</string>
+    <string name="temps">Temps de dessin :</string>
+    <string name="btnBrowse">Parcourir</string>
+    <string name="btnParticipe">Participer</string>
+    <string name="chronoTitle">Temps de dessin</string>
+    <string name="confirmePartTitle">Confirmer votre participation</string>
+    <string name="confirmerLabel">Confirmer ?</string>
+    <string name="connexionNom">Connexion</string>
+    <string name="loginTitle">Login</string>
+    <string name="hintLogin">Pseudo</string>
+    <string name="passwordTitle">Mot de passe</string>
+    <string name="connexionButton">Se connecter</string>
+    <string name="labelCheckLogin">Se souvenir de moi</string>
+    <string name="nomChall">Nom du challenge</string>
 </resources>

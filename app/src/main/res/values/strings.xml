@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Isoka_challenge</string>
+    <string name="connexionNom">Connection</string>
+    <string name="loginTitle">Login</string>
+    <string name="hintLogin">Username</string>
+    <string name="passwordTitle">password</string>
+    <string name="hintpassword" translatable="false">******</string>
+    <string name="connexionButton">Connect</string>
+    <string name="labelCheckLogin">Remember me</string>
     <string name="challengeEnCours">Ongoing Challenges</string>
     <string name="titreChallenge">Title</string>
     <string name="image_dessin">drawing</string>

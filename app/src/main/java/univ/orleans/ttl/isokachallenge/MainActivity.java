@@ -1,5 +1,8 @@
 package univ.orleans.ttl.isokachallenge;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         setUpToolbar();
         DB db = new DB(this);
         navigationView = findViewById(R.id.navigation_menu);
@@ -52,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId())
             {
                 case  R.id.nav_connexion:
-                    Log.d("Bonjour","CAVA");
+                    Intent intent = new Intent(this, ConnexionView.class);
+                    startActivity(intent);
                     break;
             }
             return false;
@@ -132,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
                     "RecyclerView : Challenge Title : "+user.getTitre(),
                     Toast.LENGTH_SHORT).show();
         });
-
     }
 
     public void setUpToolbar() {
