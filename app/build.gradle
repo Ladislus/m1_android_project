@@ -7,13 +7,17 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.isoka_challenge"
-        minSdkVersion 21
+        applicationId "univ.orleans.ttl.isokachallenge"
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
     }
 
     buildTypes {
@@ -39,4 +43,9 @@ dependencies {
 
     // Picasso - Image Loading
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '3.1.0.RELEASE'
+}
+repositories {
+    mavenCentral()
 }
