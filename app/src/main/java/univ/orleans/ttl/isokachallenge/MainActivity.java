@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,47 +62,49 @@ public class MainActivity extends AppCompatActivity {
 
         List<ImageDessin> imageDessins = new ArrayList<>();
 
+        Challenge challenge1 = new Challenge("Test");
+
         ImageDessin imageDessinTourEiffel = new ImageDessin();
         imageDessinTourEiffel.imageUrl = "https://www.infinityandroid.com/images/france_eiffel_tower.jpg";
         imageDessinTourEiffel.auteur = "France";
         imageDessinTourEiffel.dateSoumission = "08/11/2020 à 18h12";
         imageDessinTourEiffel.startRating = 48;
-        imageDessins.add(imageDessinTourEiffel);
+        challenge1.ajout(imageDessinTourEiffel);
 
         ImageDessin imageDessinMoutainView = new ImageDessin();
         imageDessinMoutainView.imageUrl = "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg";
         imageDessinMoutainView.auteur = "Indonesia";
         imageDessinMoutainView.dateSoumission = "08/11/2020 à 18h12";
         imageDessinMoutainView.startRating = 45;
-        imageDessins.add(imageDessinMoutainView);
+        challenge1.ajout(imageDessinMoutainView);
 
         ImageDessin imageDessinTajMahal = new ImageDessin();
         imageDessinTajMahal.imageUrl = "https://www.infinityandroid.com/images/india_taj_mahal.jpg";
         imageDessinTajMahal.auteur = "India";
         imageDessinTajMahal.dateSoumission = "08/11/2020 à 18h12";
         imageDessinTajMahal.startRating = 43;
-        imageDessins.add(imageDessinTajMahal);
+        challenge1.ajout(imageDessinTajMahal);
 
         ImageDessin imageDessinLakeView = new ImageDessin();
         imageDessinLakeView.imageUrl = "https://www.infinityandroid.com/images/canada_lake_view.jpg";
         imageDessinLakeView.auteur = "Canada";
         imageDessinLakeView.dateSoumission = "21/11/2020 à 1h12";
         imageDessinLakeView.startRating = 10 ;
-        imageDessins.add(imageDessinLakeView);
+        challenge1.ajout(imageDessinLakeView);
 
         ImageDessin imageDessinTest = new ImageDessin();
         imageDessinTest.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/71wvedvViFL._AC_SY679_.jpg";
         imageDessinTest.auteur = "Tom99";
         imageDessinTest.dateSoumission = "21/11/2020 à 16h12";
         imageDessinTest.startRating = 42;
-        imageDessins.add(imageDessinTest);
+        challenge1.ajout(imageDessinTest);
 
         ImageDessin imageDessinTestAnime = new ImageDessin();
         imageDessinTestAnime.imageUrl = "https://wallpapercave.com/wp/wp4443741.jpg";
         imageDessinTestAnime.auteur = "Paysage";
         imageDessinTestAnime.dateSoumission = "08/11/2020 à 18h12";
         imageDessinTestAnime.startRating = 45;
-        imageDessins.add(imageDessinTestAnime);
+        challenge1.ajout(imageDessinTestAnime);
 
         List<ImageDessin> test = new ArrayList<>();
 
@@ -115,30 +115,6 @@ public class MainActivity extends AppCompatActivity {
         imageDessinAnime.startRating = 450;
         test.add(imageDessinAnime);
 
-        imageDessins.sort((o1, o2) -> {
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy 'à' hh'h'mm");
-                Date d1 = format.parse(o1.dateSoumission);
-                Date d2 = format.parse(o2.dateSoumission);
-                if(d1.after(d2) ) {
-                    Log.d("Sort","1");
-                    return -1;
-                } else if(d1.before(d2)) {
-                    Log.d("Sort","-1");
-                    return 1;
-                } else {
-                    Log.d("Sort","0");
-                    return 0;
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            Log.d("Sort","10");
-            return 10;
-        });
-
-
-        Challenge challenge1 = new Challenge("Test",imageDessins);
         Challenge challenge2 = new Challenge("Ishigami Senku",test);
         challenges.add(challenge1);
         challenges.add(challenge2);
