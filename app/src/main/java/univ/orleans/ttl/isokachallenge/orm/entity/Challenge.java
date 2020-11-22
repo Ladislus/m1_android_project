@@ -10,18 +10,20 @@ public class Challenge {
     private final String _theme;
     private final LocalDateTime _date;
     private final Integer _timer;
+    private final String _desc;
 
-    public Challenge(Integer id, String name, Boolean type, String theme, LocalDateTime date, Integer timer) {
+    public Challenge(Integer id, String name, Boolean type, String theme, LocalDateTime date, Integer timer, String desc) {
         this._id = id;
         this._name = name;
         this._type = type;
         this._theme = theme;
         this._date = date;
         this._timer = timer;
+        this._desc = desc;
     }
 
-    public Challenge(String name, Boolean type, String theme, LocalDateTime date, Integer timer) {
-        this(null, name, type, theme, date, timer);
+    public Challenge(String name, Boolean type, String theme, LocalDateTime date, Integer timer, String desc) {
+        this(null, name, type, theme, date, timer, desc);
     }
 
     public Integer getId() {
@@ -52,8 +54,10 @@ public class Challenge {
         return this._timer;
     }
 
+    public String getDesc() { return this._desc; }
+
     @Override
     public String toString() {
-        return "CHALLENGE: " + this._id + " (" + this._name + ", " + this._type + this._theme + ", " + this._date + ", " + this._timer + ")";
+        return "CHALLENGE: " + this._id + " (" + this._name + ", " + this._type + this._theme + ", " + this._date + ", " + this._timer + ", " + this._desc + ")";
     }
 }
