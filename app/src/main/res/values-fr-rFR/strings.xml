@@ -35,4 +35,5 @@
     <string name="connexionButton">Se connecter</string>
     <string name="labelCheckLogin">Se souvenir de moi</string>
     <string name="nomChall">Nom du challenge</string>
+    <string name="error">Erreur : Challenge introuvable</string>
 </resources>

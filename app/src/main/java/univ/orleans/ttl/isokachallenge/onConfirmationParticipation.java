@@ -1,6 +1,8 @@
 package univ.orleans.ttl.isokachallenge;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -14,32 +16,79 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
+import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
+import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
+
 public class onConfirmationParticipation extends AppCompatActivity {
 
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView navigationView;
 
     private ImageView imageViewConfirmation;
+    private DB db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_confirmation_participation);
+
+
+        setUpToolbar();
+        this.db = new DB(this);
+        navigationView = findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId())
+            {
+                case  R.id.nav_connexion:
+                    Intent intent2 = new Intent(this, ConnexionView.class);
+                    startActivity(intent2);
+                    break;
+
+                case R.id.nav_challengeTest:
+                    Intent act = new Intent(this, onChallenge.class);
+                    startActivity(act);
+                    break;
+            }
+            return false;
+        });
+
         Intent intent = getIntent();
         Bitmap image = (Bitmap) intent.getParcelableExtra("bitmap");
         imageViewConfirmation = findViewById(R.id.imageViewConfirmation);
-//        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-//        String imageS = sharedPref.getString("bitmap","");
-//        if(!(imageS.equals(""))){
-//            image = StringToBitMap(imageS);
-//            Log.d("imageConf","il y a une image dans le sharedpref");
-//        }
         imageViewConfirmation.setImageBitmap(image);
+
    }
+    public void setUpToolbar() {
+        drawerLayout = findViewById(R.id.drawerLayout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+        actionBarDrawerToggle.syncState();
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze_24);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -62,6 +111,8 @@ public class onConfirmationParticipation extends AppCompatActivity {
         }
     }
 
+
+
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
@@ -82,29 +133,12 @@ public class onConfirmationParticipation extends AppCompatActivity {
 
     public void onConfirmer(View view) {
         //Upload dans imgur
+//        User user = this.db.getUser("username");
+//
+//        Participation participation = new Participation(User, drawing, chall, bool);
+//        this.db.save(participation)
+        // TODO: 23/11/2020
         finish();
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        BitmapDrawable bmD = (BitmapDrawable) imageViewConfirmation.getDrawable();
-//        editor.putString("bitmap",BitMapToString(bmD.getBitmap()));
-//        editor.apply();
-//    }
-
-
-/*    @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        String imageS = sharedPref.getString("bitmap","");
-        if(!(imageS.equals(""))){
-            Bitmap image = StringToBitMap(imageS);
-            imageViewConfirmation.setImageBitmap(image);
-        }
-
-    }*/
 }
