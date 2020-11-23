@@ -35,4 +35,11 @@
     <string name="connexionButton">Se connecter</string>
     <string name="labelCheckLogin">Se souvenir de moi</string>
     <string name="nomChall">Nom du challenge</string>
+    <string name="InscriptionTitle">Inscription</string>
+    <string name="passwordTitleConf">Confirmer le mot de passe</string>
+    <string name="inscriptionButton">M\'inscrire !</string>
+    <string name="signup">Inscription</string>
+    <string name="ErrorInscriptionMDP">Oups ! Les deux mots de passe ne correspondes pas !</string>
+    <string name="ErrorInscriptionUsername">Désolé, mais ce pseudo est déjà prit !</string>
+    <string name="ErrorInscriptionInput">Veuillez remplir tous les champs.</string>
 </resources>

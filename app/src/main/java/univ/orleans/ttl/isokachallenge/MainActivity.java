@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
                     break;
+                case  R.id.nav_inscription:
+                    Intent inscription = new Intent(this, InscriptionActivity.class);
+                    startActivity(inscription);
+                    break;
 
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);

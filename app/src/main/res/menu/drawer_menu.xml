@@ -6,6 +6,10 @@
             android:icon="@drawable/ic_account"
             android:title="@string/connexion">
         </item>
+        <item android:id="@+id/nav_inscription"
+            android:icon="@drawable/ic_login"
+            android:title="@string/signup">
+        </item>
         <item android:id="@+id/nav_challenge"
             android:icon="@drawable/ic_challenge"
             android:title="@string/challenge_en_cours">

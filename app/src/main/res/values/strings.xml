@@ -40,6 +40,14 @@
     <string name="nomChall">"Challenge's name "</string>
     <string name="testActivityChall" translatable="false">GotoActivityChallTEST</string>
     <string name="descChall" translatable="false">desc</string>
-    <string name="placeholderTemps">placeHolder</string>
-    <string name="dateFinph">plaxceHoleccccsfv</string>
+    <string name="placeholderTemps" translatable="false">placeHolder</string>
+    <string name="dateFinph" translatable="false">plaxceHoleccccsfv</string>
+    <string name="InscriptionTitle">Sign up</string>
+    <string name="passwordTitleConf">Confirm password</string>
+    <string name="inscriptionButton">Sign up !</string>
+    <string name="signup">Sign up</string>
+    <string name="ErrorInscriptionMDP">Oops ! Make sure both password are the same !</string>
+    <string name="ErrorInscriptionUsername">Sorry, this username is already taken.</string>
+    <string name="ErrorInscriptionInput">Make sure all fields are completed.</string>
+
 </resources>
