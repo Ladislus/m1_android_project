@@ -12,7 +12,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -53,7 +54,9 @@ public class DB extends SQLiteOpenHelper {
     //          SAVE            //
     //////////////////////////////
 
-    public boolean save(User user) {
+    public boolean save(User user, String password) {
+        //TODO Send hashed passwor to distant DB
+        String hashed = User.hash(password);
         try {
             ContentValues values = new ContentValues();
             values.put(Tables.USER_NAME, user.getUsername());
@@ -209,7 +212,7 @@ public class DB extends SQLiteOpenHelper {
 
     public User getUser(String username) {
         try (
-            Cursor c = getWritableDatabase().query(
+            Cursor c =getReadableDatabase().query(
                 Tables.USER_TABLE,
                 new String[] { Tables.USER_NAME, Tables.USER_DATE },
                 Tables.USER_NAME + " = ?",
@@ -232,7 +235,7 @@ public class DB extends SQLiteOpenHelper {
 
     public Drawing getDrawing(int id) {
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.DRAWING_TABLE,
                         new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
                         Tables.DRAWING_ID + " = ?",
@@ -255,7 +258,7 @@ public class DB extends SQLiteOpenHelper {
 
     public Challenge getChallenge(int id) {
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.CHALLENGE_TABLE,
                         new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         Tables.CHALLENGE_ID + " = ?",
@@ -278,7 +281,7 @@ public class DB extends SQLiteOpenHelper {
 
     public Participation getParticipation(String id_user, int id_drawing, int id_challenge) {
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.PARTICIPATION_TABLE,
                         new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
                         Tables.PARTICIPATION_USER_ID + " = ? AND " + Tables.PARTICIPATION_DRAWING_ID + " = ? AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = ?",
@@ -303,11 +306,11 @@ public class DB extends SQLiteOpenHelper {
     //          GETALL          //
     //////////////////////////////
 
-    public Collection<User> getAllUsers() {
-        Collection<User> users = new ArrayList<>();
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.USER_TABLE,
                         new String[] { Tables.USER_NAME, Tables.USER_DATE },
                         null,
@@ -328,11 +331,11 @@ public class DB extends SQLiteOpenHelper {
         return users;
     }
 
-    public Collection<Drawing> getAllDrawings() {
-        Collection<Drawing> drawings = new ArrayList<>();
+    public List<Drawing> getAllDrawings() {
+        List<Drawing> drawings = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.DRAWING_TABLE,
                         new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
                         null,
@@ -353,11 +356,11 @@ public class DB extends SQLiteOpenHelper {
         return drawings;
     }
 
-    public Collection<Challenge> getAllChallenges() {
-        Collection<Challenge> challenges = new ArrayList<>();
+    public List<Challenge> getAllChallenges() {
+        List<Challenge> challenges = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.CHALLENGE_TABLE,
                         new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         null,
@@ -378,11 +381,11 @@ public class DB extends SQLiteOpenHelper {
         return challenges;
     }
 
-    public Collection<Participation> getAllParticipations() {
-        Collection<Participation> participations = new ArrayList<>();
+    public List<Participation> getAllParticipations() {
+        List<Participation> participations = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.PARTICIPATION_TABLE,
                         new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
                         null,
@@ -407,11 +410,11 @@ public class DB extends SQLiteOpenHelper {
     //         GET WHERE        //
     //////////////////////////////
 
-    public Collection<User> getUsers(Map<String, Pair<String, String>> wheres) {
+    public List<User> getUsers(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllUsers();
 
-        Collection<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -423,7 +426,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.USER_TABLE,
                         new String[] { Tables.USER_NAME, Tables.USER_DATE },
                         query.toString(),
@@ -444,11 +447,11 @@ public class DB extends SQLiteOpenHelper {
         return users;
     }
 
-    public Collection<Drawing> getDrawings(Map<String, Pair<String, String>> wheres) {
+    public List<Drawing> getDrawings(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllDrawings();
 
-        Collection<Drawing> drawings = new ArrayList<>();
+        List<Drawing> drawings = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -460,7 +463,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.DRAWING_TABLE,
                         new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
                         query.toString(),
@@ -481,11 +484,11 @@ public class DB extends SQLiteOpenHelper {
         return drawings;
     }
 
-    public Collection<Challenge> getChallenges(Map<String, Pair<String, String>> wheres) {
+    public List<Challenge> getChallenges(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllChallenges();
 
-        Collection<Challenge> challenges = new ArrayList<>();
+        List<Challenge> challenges = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -497,7 +500,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.CHALLENGE_TABLE,
                         new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         query.toString(),
@@ -518,11 +521,11 @@ public class DB extends SQLiteOpenHelper {
         return challenges;
     }
 
-    public Collection<Participation> getParticipations(Map<String, Pair<String, String>> wheres) {
+    public List<Participation> getParticipations(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllParticipations();
 
-        Collection<Participation> participations = new ArrayList<>();
+        List<Participation> participations = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -534,7 +537,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.PARTICIPATION_TABLE,
                         new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
                         query.toString(),
@@ -555,8 +558,54 @@ public class DB extends SQLiteOpenHelper {
         return participations;
     }
 
+    //////////////////////////////
+    //         SPECIALS         //
+    //////////////////////////////
+
     Boolean login(String username, String password) {
         //TODO
         return true;
+    }
+
+    User getUserFromDrawing(int id) {
+        Drawing d = getDrawing(id);
+        if (Objects.isNull(d)) return null;
+
+        HashMap<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_DRAWING_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(d.getId())));
+        List<Participation> participations = getParticipations(wheres);
+
+        if (participations.isEmpty()) return null;
+        return participations.get(0).getUser();
+    }
+
+    List<Drawing> getDrawingsFromUser(String username) {
+        Map<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_USER_ID, new Pair<>(Tables.OPERATOR_EQ, username));
+        List<Participation> participations = getParticipations(wheres);
+
+        List<Drawing> drawings = new ArrayList<>();
+        for (Participation p : participations) { drawings.add(p.getDrawing()); }
+        return drawings;
+    }
+
+    List<User> getUsersFromChallenge(int id) {
+        Map<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(id)));
+        List<Participation> participations = getParticipations(wheres);
+
+        List<User> users = new ArrayList<>();
+        for (Participation p : participations) { users.add(p.getUser()); }
+        return users;
+    }
+
+    List<Drawing> getDrawingsFromChallenge(int id) {
+        Map<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(id)));
+        List<Participation> participations = getParticipations(wheres);
+
+        List<Drawing> drawings = new ArrayList<>();
+        for (Participation p : participations) { drawings.add(p.getDrawing()); }
+        return drawings;
     }
 }
