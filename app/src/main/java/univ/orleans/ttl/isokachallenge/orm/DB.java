@@ -570,11 +570,42 @@ public class DB extends SQLiteOpenHelper {
     User getUserFromDrawing(int id) {
         Drawing d = getDrawing(id);
         if (Objects.isNull(d)) return null;
+
         HashMap<String, Pair<String, String>> wheres = new HashMap<>();
-        wheres.put(Tables.PARTICIPATION_DRAWING_ID, new Pair<>(Tables.OPERATOR_EQ, d.getId().toString()));
+        wheres.put(Tables.PARTICIPATION_DRAWING_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(d.getId())));
         List<Participation> participations = getParticipations(wheres);
+
         if (participations.isEmpty()) return null;
-        Participation p = participations.get(0);
-        return p.getUser();
+        return participations.get(0).getUser();
+    }
+
+    List<Drawing> getDrawingsFromUser(String username) {
+        Map<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_USER_ID, new Pair<>(Tables.OPERATOR_EQ, username));
+        List<Participation> participations = getParticipations(wheres);
+
+        List<Drawing> drawings = new ArrayList<>();
+        for (Participation p : participations) { drawings.add(p.getDrawing()); }
+        return drawings;
+    }
+
+    List<User> getUsersFromChallenge(int id) {
+        Map<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(id)));
+        List<Participation> participations = getParticipations(wheres);
+
+        List<User> users = new ArrayList<>();
+        for (Participation p : participations) { users.add(p.getUser()); }
+        return users;
+    }
+
+    List<Drawing> getDrawingsFromChallenge(int id) {
+        Map<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(id)));
+        List<Participation> participations = getParticipations(wheres);
+
+        List<Drawing> drawings = new ArrayList<>();
+        for (Participation p : participations) { drawings.add(p.getDrawing()); }
+        return drawings;
     }
 }
