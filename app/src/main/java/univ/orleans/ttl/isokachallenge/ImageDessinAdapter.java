@@ -9,14 +9,18 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter.ImageDessinViewHolder>{
 
-    private final List<ImageDessin> imageDessin;
+    private final List<Drawing> dessin;
     private OnItemClickListener mListenerDessin;
 
     public  interface  OnItemClickListener{
@@ -27,8 +31,8 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         mListenerDessin = listener;
     }
 
-    public ImageDessinAdapter(List<ImageDessin> imageDessin){
-        this.imageDessin = imageDessin;
+    public ImageDessinAdapter(List<Drawing> dessin){
+        this.dessin = dessin;
     }
 
     @NonNull
@@ -45,12 +49,12 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ImageDessinViewHolder holder, int position) {
-        holder.setLocationData(imageDessin.get(position));
+        holder.setLocationData(dessin.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return this.imageDessin.size();
+        return this.dessin.size();
     }
 
     static class ImageDessinViewHolder extends RecyclerView.ViewHolder    {
@@ -79,15 +83,21 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
 
         }
 
-        void setLocationData(ImageDessin imageDessin){
+        void setLocationData(Drawing dessin){
             Log.d("Load","Image");
-            Picasso.get().load(imageDessin.imageUrl).into(imageView);
-            textTitle.setText(imageDessin.auteur);
-            textLocation.setText(imageDessin.dateSoumission);
-            textStarRating.setText(String.valueOf(imageDessin.startRating));
+            User user = MainActivity.db.getUserFromDrawing(dessin.getId());
+            Picasso.get().load(dessin.getLink()).into(imageView);
+            textTitle.setText(user.getUsername());
+
+            String dateString = dessin.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
+            String dessinDate = dateTime.format(formatter2);
+            textLocation.setText(dessinDate);
+            //textStarRating.setText(String.valueOf(dessin.startRating));
 
         }
-
 
     }
 

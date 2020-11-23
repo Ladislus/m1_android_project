@@ -554,6 +554,7 @@ public class DB extends SQLiteOpenHelper {
         StringBuilder sb = new StringBuilder("PARTICIPATIONS FOUND :\n\t[\n");
         for (Participation p : participations) sb.append("\t\t").append(p).append("\n");
         Log.d(Tables.DB_LOG, sb.append("\t]").toString());
+        Log.d(Tables.DB_LOG, sb.append("\t]").toString());
 
         return participations;
     }
@@ -567,7 +568,7 @@ public class DB extends SQLiteOpenHelper {
         return true;
     }
 
-    User getUserFromDrawing(int id) {
+    public User getUserFromDrawing(int id) {
         Drawing d = getDrawing(id);
         if (Objects.isNull(d)) return null;
 
@@ -579,7 +580,7 @@ public class DB extends SQLiteOpenHelper {
         return participations.get(0).getUser();
     }
 
-    List<Drawing> getDrawingsFromUser(String username) {
+    public List<Drawing> getDrawingsFromUser(String username) {
         Map<String, Pair<String, String>> wheres = new HashMap<>();
         wheres.put(Tables.PARTICIPATION_USER_ID, new Pair<>(Tables.OPERATOR_EQ, username));
         List<Participation> participations = getParticipations(wheres);
@@ -589,7 +590,7 @@ public class DB extends SQLiteOpenHelper {
         return drawings;
     }
 
-    List<User> getUsersFromChallenge(int id) {
+    public List<User> getUsersFromChallenge(int id) {
         Map<String, Pair<String, String>> wheres = new HashMap<>();
         wheres.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(id)));
         List<Participation> participations = getParticipations(wheres);
@@ -599,7 +600,7 @@ public class DB extends SQLiteOpenHelper {
         return users;
     }
 
-    List<Drawing> getDrawingsFromChallenge(int id) {
+    public List<Drawing> getDrawingsFromChallenge(int id) {
         Map<String, Pair<String, String>> wheres = new HashMap<>();
         wheres.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair<>(Tables.OPERATOR_EQ, String.valueOf(id)));
         List<Participation> participations = getParticipations(wheres);

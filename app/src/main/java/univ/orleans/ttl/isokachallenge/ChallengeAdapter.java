@@ -1,12 +1,15 @@
 package univ.orleans.ttl.isokachallenge;
 
 import android.content.Context;
+import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
+import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
+import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 
 public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyViewHolder> {
 
@@ -72,14 +77,17 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         }
 
         void display (Challenge challenge){
-            this.titreChallenge.setText(challenge.getTitre());
-            ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
+            this.titreChallenge.setText(challenge.getName());
+            ArrayList<Drawing> listDessinChallenge = new ArrayList<>(MainActivity.db.getDrawingsFromChallenge(challenge.getId()));
+            ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(listDessinChallenge);
+            Log.d("bonjour", "display: "+listDessinChallenge);
+            //ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
             dessinAdapter.setOnItemClickListener(
                     position -> {
-                        ImageDessin user = challenge.getImageDessinList().get(position);
-                        Toast.makeText(context,
-                                "Image : Auteur = "+user.getAuteur()+" avec "+user.getStartRating()+" votes.",
-                                Toast.LENGTH_SHORT).show();
+                        Drawing dessin = listDessinChallenge.get(position);
+//                        Toast.makeText(context,
+//                                "Image : Auteur = "+user.getAuteur()+" avec "+user.getStartRating()+" votes.",
+//                                Toast.LENGTH_SHORT).show();
                     }
             );
             this.imagesCaroussel.setAdapter(dessinAdapter);
