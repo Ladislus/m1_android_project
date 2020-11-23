@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
                     break;
+                case R.id.nav_profil:
+                    Intent profil = new Intent(this, Profil.class);
+                    startActivity(profil);
+                    break;
             }
             return false;
         });

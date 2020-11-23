@@ -40,6 +40,11 @@
     <string name="nomChall">"Challenge's name "</string>
     <string name="testActivityChall" translatable="false">GotoActivityChallTEST</string>
     <string name="descChall" translatable="false">desc</string>
-    <string name="placeholderTemps">placeHolder</string>
-    <string name="dateFinph">plaxceHoleccccsfv</string>
+    <string name="placeholderTemps" translatable="false">placeHolder</string>
+    <string name="dateFinph" translatable="false">plaxceHoleccccsfv</string>
+    <string name="pseudoTitre">Your username is :</string>
+    <string name="btn_modifier">Modify</string>
+    <string name="hintUsername">"new Username "</string>
+    <string name="profil">Account</string>
+    <string name="btn_valider">Confirm</string>
 </resources>
