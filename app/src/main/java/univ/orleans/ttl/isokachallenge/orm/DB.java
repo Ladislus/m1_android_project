@@ -53,7 +53,9 @@ public class DB extends SQLiteOpenHelper {
     //          SAVE            //
     //////////////////////////////
 
-    public boolean save(User user) {
+    public boolean save(User user, String password) {
+        //TODO Send hashed passwor to distant DB
+        String hashed = User.hash(password);
         try {
             ContentValues values = new ContentValues();
             values.put(Tables.USER_NAME, user.getUsername());
@@ -209,7 +211,7 @@ public class DB extends SQLiteOpenHelper {
 
     public User getUser(String username) {
         try (
-            Cursor c = getWritableDatabase().query(
+            Cursor c =getReadableDatabase().query(
                 Tables.USER_TABLE,
                 new String[] { Tables.USER_NAME, Tables.USER_DATE },
                 Tables.USER_NAME + " = ?",
@@ -232,7 +234,7 @@ public class DB extends SQLiteOpenHelper {
 
     public Drawing getDrawing(int id) {
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.DRAWING_TABLE,
                         new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
                         Tables.DRAWING_ID + " = ?",
@@ -255,7 +257,7 @@ public class DB extends SQLiteOpenHelper {
 
     public Challenge getChallenge(int id) {
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.CHALLENGE_TABLE,
                         new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         Tables.CHALLENGE_ID + " = ?",
@@ -278,7 +280,7 @@ public class DB extends SQLiteOpenHelper {
 
     public Participation getParticipation(String id_user, int id_drawing, int id_challenge) {
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.PARTICIPATION_TABLE,
                         new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
                         Tables.PARTICIPATION_USER_ID + " = ? AND " + Tables.PARTICIPATION_DRAWING_ID + " = ? AND " + Tables.PARTICIPATION_CHALLENGE_ID + " = ?",
@@ -307,7 +309,7 @@ public class DB extends SQLiteOpenHelper {
         Collection<User> users = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.USER_TABLE,
                         new String[] { Tables.USER_NAME, Tables.USER_DATE },
                         null,
@@ -332,7 +334,7 @@ public class DB extends SQLiteOpenHelper {
         Collection<Drawing> drawings = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.DRAWING_TABLE,
                         new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
                         null,
@@ -357,7 +359,7 @@ public class DB extends SQLiteOpenHelper {
         Collection<Challenge> challenges = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.CHALLENGE_TABLE,
                         new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         null,
@@ -382,7 +384,7 @@ public class DB extends SQLiteOpenHelper {
         Collection<Participation> participations = new ArrayList<>();
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.PARTICIPATION_TABLE,
                         new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
                         null,
@@ -423,7 +425,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.USER_TABLE,
                         new String[] { Tables.USER_NAME, Tables.USER_DATE },
                         query.toString(),
@@ -460,7 +462,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.DRAWING_TABLE,
                         new String[] { Tables.DRAWING_ID, Tables.DRAWING_LINK, Tables.DRAWING_DATE },
                         query.toString(),
@@ -497,7 +499,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.CHALLENGE_TABLE,
                         new String[] { Tables.CHALLENGE_ID, Tables.CHALLENGE_NAME, Tables.CHALLENGE_TYPE, Tables.CHALLENGE_THEME, Tables.CHALLENGE_DURATION, Tables.CHALLENGE_TIMER, Tables.CHALLENGE_DESCRIPTION },
                         query.toString(),
@@ -534,7 +536,7 @@ public class DB extends SQLiteOpenHelper {
         }
 
         try (
-                Cursor c = getWritableDatabase().query(
+                Cursor c = getReadableDatabase().query(
                         Tables.PARTICIPATION_TABLE,
                         new String[] { Tables.PARTICIPATION_USER_ID, Tables.PARTICIPATION_DRAWING_ID, Tables.PARTICIPATION_CHALLENGE_ID, Tables.PARTICIPATION_IS_CREATOR, Tables.PARTICIPATION_VOTES },
                         query.toString(),
@@ -555,8 +557,14 @@ public class DB extends SQLiteOpenHelper {
         return participations;
     }
 
+    //////////////////////////////
+    //         SPECIALS         //
+    //////////////////////////////
+
     Boolean login(String username, String password) {
         //TODO
         return true;
     }
+
+
 }
