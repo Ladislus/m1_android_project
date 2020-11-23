@@ -21,7 +21,7 @@ public class Tables {
     public static final String USER_DATE = "u_date";
     public static final int USER_DATE_INDEX = 1;
 
-    public static final String USER_CREATE = "CREATE TABLE " + USER_TABLE + "(" + USER_NAME + " VARCHAR(255) PRIMARY KEY," + USER_DATE + " DATE NOT NULL);";
+    public static final String USER_CREATE = "CREATE TABLE " + USER_TABLE + "(" + USER_NAME + " VARCHAR(255) PRIMARY KEY NOT NULL," + USER_DATE + " DATE NOT NULL);";
 
     //  ####################
     //  #   DRAWING TABLE  #
@@ -36,7 +36,7 @@ public class Tables {
     public static final int DRAWING_DATE_INDEX = 2;
 
     public static final String DRAWING_CREATE = "CREATE TABLE " + DRAWING_TABLE + "("
-            + DRAWING_ID + " INTEGER PRIMARY KEY,"
+            + DRAWING_ID + " INTEGER PRIMARY KEY NOT NULL,"
             + DRAWING_LINK + " VARCHAR(512) NOT NULL,"
             + DRAWING_DATE + " DATE NOT NULL);";
 
@@ -61,7 +61,7 @@ public class Tables {
     public static final int CHALLENGE_DESCRIPTION_INDEX = 6;
 
     public static final String CHALLENGE_CREATE = "CREATE TABLE " + CHALLENGE_TABLE + "("
-            + CHALLENGE_ID + " INTEGER PRIMARY KEY,"
+            + CHALLENGE_ID + " INTEGER PRIMARY KEY NOT NULL,"
             + CHALLENGE_NAME + " VARCHAR(255) NOT NULL,"
             + CHALLENGE_TYPE + " BOOLEAN NOT NULL,"
             + CHALLENGE_THEME + " VARCHAR(255) NOT NULL,"
@@ -86,9 +86,9 @@ public class Tables {
     public static final int PARTICIPATION_VOTES_INDEX = 4;
 
     public static final String PARTICIPATION_CREATE = "CREATE TABLE " + PARTICIPATION_TABLE + "("
-            + PARTICIPATION_USER_ID + " VARCHAR(255),"
-            + PARTICIPATION_DRAWING_ID + " INTEGER,"
-            + PARTICIPATION_CHALLENGE_ID + " INTEGER,"
+            + PARTICIPATION_USER_ID + " VARCHAR(255) NOT NULL,"
+            + PARTICIPATION_DRAWING_ID + " INTEGER NOT NULL,"
+            + PARTICIPATION_CHALLENGE_ID + " INTEGER NOT NULL,"
             + PARTICIPATION_IS_CREATOR + " BOOLEAN NOT NULL,"
             + PARTICIPATION_VOTES + " INTEGER DEFAULT 0,"
             + "FOREIGN KEY(" + PARTICIPATION_USER_ID + ") REFERENCES " + USER_TABLE + "(" + USER_NAME + ") ON DELETE CASCADE,"
