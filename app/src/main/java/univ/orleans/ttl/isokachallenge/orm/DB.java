@@ -12,7 +12,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -305,8 +306,8 @@ public class DB extends SQLiteOpenHelper {
     //          GETALL          //
     //////////////////////////////
 
-    public Collection<User> getAllUsers() {
-        Collection<User> users = new ArrayList<>();
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
 
         try (
                 Cursor c = getReadableDatabase().query(
@@ -330,8 +331,8 @@ public class DB extends SQLiteOpenHelper {
         return users;
     }
 
-    public Collection<Drawing> getAllDrawings() {
-        Collection<Drawing> drawings = new ArrayList<>();
+    public List<Drawing> getAllDrawings() {
+        List<Drawing> drawings = new ArrayList<>();
 
         try (
                 Cursor c = getReadableDatabase().query(
@@ -355,8 +356,8 @@ public class DB extends SQLiteOpenHelper {
         return drawings;
     }
 
-    public Collection<Challenge> getAllChallenges() {
-        Collection<Challenge> challenges = new ArrayList<>();
+    public List<Challenge> getAllChallenges() {
+        List<Challenge> challenges = new ArrayList<>();
 
         try (
                 Cursor c = getReadableDatabase().query(
@@ -380,8 +381,8 @@ public class DB extends SQLiteOpenHelper {
         return challenges;
     }
 
-    public Collection<Participation> getAllParticipations() {
-        Collection<Participation> participations = new ArrayList<>();
+    public List<Participation> getAllParticipations() {
+        List<Participation> participations = new ArrayList<>();
 
         try (
                 Cursor c = getReadableDatabase().query(
@@ -409,11 +410,11 @@ public class DB extends SQLiteOpenHelper {
     //         GET WHERE        //
     //////////////////////////////
 
-    public Collection<User> getUsers(Map<String, Pair<String, String>> wheres) {
+    public List<User> getUsers(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllUsers();
 
-        Collection<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -446,11 +447,11 @@ public class DB extends SQLiteOpenHelper {
         return users;
     }
 
-    public Collection<Drawing> getDrawings(Map<String, Pair<String, String>> wheres) {
+    public List<Drawing> getDrawings(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllDrawings();
 
-        Collection<Drawing> drawings = new ArrayList<>();
+        List<Drawing> drawings = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -483,11 +484,11 @@ public class DB extends SQLiteOpenHelper {
         return drawings;
     }
 
-    public Collection<Challenge> getChallenges(Map<String, Pair<String, String>> wheres) {
+    public List<Challenge> getChallenges(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllChallenges();
 
-        Collection<Challenge> challenges = new ArrayList<>();
+        List<Challenge> challenges = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -520,11 +521,11 @@ public class DB extends SQLiteOpenHelper {
         return challenges;
     }
 
-    public Collection<Participation> getParticipations(Map<String, Pair<String, String>> wheres) {
+    public List<Participation> getParticipations(Map<String, Pair<String, String>> wheres) {
 
         if (Objects.isNull(wheres) || wheres.isEmpty()) return getAllParticipations();
 
-        Collection<Participation> participations = new ArrayList<>();
+        List<Participation> participations = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("1");
         String[] args = new String[wheres.size()];
@@ -566,5 +567,14 @@ public class DB extends SQLiteOpenHelper {
         return true;
     }
 
-
+    User getUserFromDrawing(int id) {
+        Drawing d = getDrawing(id);
+        if (Objects.isNull(d)) return null;
+        HashMap<String, Pair<String, String>> wheres = new HashMap<>();
+        wheres.put(Tables.PARTICIPATION_DRAWING_ID, new Pair<>(Tables.OPERATOR_EQ, d.getId().toString()));
+        List<Participation> participations = getParticipations(wheres);
+        if (participations.isEmpty()) return null;
+        Participation p = participations.get(0);
+        return p.getUser();
+    }
 }
