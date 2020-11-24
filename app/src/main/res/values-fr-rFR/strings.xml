@@ -54,7 +54,21 @@
     <string name="navDeco">Deconnexion</string>
     <string name="decoLabel">Félicitation ! Déconnecté avec succès !</string>
     <string name="buttonDeco">Retour à l\'accueil</string>
+
     <string name="txtNewPassword">Enter un nouveau mot de passe :</string>
     <string name="theme">Theme</string>
+
+    <string name="titleCreationChall">Creation d\'un challenge !</string>
+    <string name="NomChallLabel">Nom</string>
+    <string name="descChalllabel">Description</string>
+    <string name="hintDescChall">Entrez votre texte de description</string>
+    <string name="themeLabel">Theme du challenge</string>
+    <string name="infoTheme">Url de l\'image</string>
+    <string name="labelTimer">Temps de dessin (minutes)</string>
+    <string name="dateFinLabel">Date de fin</string>
+    <string name="btnCreate">Créer le challenge !</string>
+    <string name="gotoCreateChall">Créer un challenge</string>
+    <string name="errorCreateChallEmpty">Veuillez compléter tous les champs.</string>
+
 
 </resources>

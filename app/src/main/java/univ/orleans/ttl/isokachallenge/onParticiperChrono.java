@@ -89,6 +89,10 @@ public class onParticiperChrono extends AppCompatActivity {
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
                     break;
+                case R.id.nav_createChall:
+                    Intent create = new Intent(this, CreationChallActivity.class);
+                    startActivity(create);
+                    break;
             }
             return false;
         });

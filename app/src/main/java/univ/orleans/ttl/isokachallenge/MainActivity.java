@@ -77,6 +77,118 @@ public class MainActivity extends AppCompatActivity {
         setUpToolbar();
         if (Objects.isNull(db)){
             db = new DB(this);
+
+            User user1 = new User(
+                    "Tom99",
+                    LocalDateTime.now()
+            );
+
+            Challenge challenge1 = new Challenge(
+                    "Test",
+                    true,
+                    "test",
+                    LocalDateTime.now(),
+                    30,
+                    "test de challenge"
+            );
+
+            Challenge challenge2 = new Challenge(
+                    "Ishigami Senku",
+                    true,
+                    "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
+                    LocalDateTime.now(),
+                    30,
+                    "Dessiner Ishigamis Senku en 30 min"
+            );
+
+            Challenge challenge3 = new Challenge(
+                    "Ishigami Senku 2",
+                    true,
+                    "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
+                    LocalDateTime.now(),
+                    30,
+                    "Dessiner Ishigamis Senku en 30 min"
+            );
+
+            Drawing dessin1 = new Drawing(
+                    "https://www.infinityandroid.com/images/france_eiffel_tower.jpg",
+                    LocalDateTime.now().minusDays(100)
+            );
+            Drawing dessin2 = new Drawing(
+                    "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg",
+                    LocalDateTime.now().minusDays(10)
+            );
+            Drawing dessin3 = new Drawing(
+                    "https://www.infinityandroid.com/images/india_taj_mahal.jpg",
+                    LocalDateTime.now().minusDays(5)
+            );
+            Drawing dessin4 = new Drawing(
+                    "https://www.infinityandroid.com/images/canada_lake_view.jpg",
+                    LocalDateTime.now().minusDays(2)
+            );
+            Drawing dessin5 = new Drawing(
+                    "https://images-na.ssl-images-amazon.com/images/I/71wvedvViFL._AC_SY679_.jpg",
+                    LocalDateTime.now()
+            );
+            Drawing dessin6 = new Drawing(
+                    "https://wallpapercave.com/wp/wp4443741.jpg",
+                    LocalDateTime.now().minusDays(1)
+            );
+
+
+            Participation p1 = new Participation(
+                    user1,
+                    dessin1,
+                    challenge1,
+                    true
+            );
+            Participation p2 = new Participation(
+                    user1,
+                    dessin2,
+                    challenge1,
+                    true
+            );
+            Participation p3 = new Participation(
+                    user1,
+                    dessin3,
+                    challenge1,
+                    true
+            );
+            Participation p4 = new Participation(
+                    user1,
+                    dessin4,
+                    challenge1,
+                    true
+            );
+            Participation p5 = new Participation(
+                    user1,
+                    dessin5,
+                    challenge1,
+                    true
+            );
+            Participation p6 = new Participation(
+                    user1,
+                    dessin6,
+                    challenge1,
+                    true
+            );
+
+            db.save(user1, "tom");
+            db.save(challenge1);
+            db.save(challenge2);
+            db.save(challenge3);
+            db.save(dessin1);
+            db.save(dessin2);
+            db.save(dessin3);
+            db.save(dessin4);
+            db.save(dessin5);
+            db.save(dessin6);
+            db.save(p1);
+            db.save(p2);
+            db.save(p3);
+            db.save(p4);
+            db.save(p5);
+            db.save(p6);
         }
         navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
@@ -102,123 +214,17 @@ public class MainActivity extends AppCompatActivity {
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
                     break;
+                case R.id.nav_createChall:
+                    Intent create = new Intent(this, CreationChallActivity.class);
+                    startActivity(create);
+                    break;
             }
             return false;
         });
 
         recyclerView = findViewById(R.id.myRecyclerView);
 
-        User user1 = new User(
-                "Tom99",
-                LocalDateTime.now()
-        );
 
-        Challenge challenge1 = new Challenge(
-                "Test",
-                true,
-                "test",
-                LocalDateTime.now(),
-                30,
-                "test de challenge"
-        );
-
-        Challenge challenge2 = new Challenge(
-                "Ishigami Senku",
-                true,
-                "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
-                LocalDateTime.now(),
-                30,
-                "Dessiner Ishigamis Senku en 30 min"
-        );
-
-        Challenge challenge3 = new Challenge(
-                "Ishigami Senku 2",
-                true,
-                "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
-                LocalDateTime.now(),
-                30,
-                "Dessiner Ishigamis Senku en 30 min"
-        );
-
-        Drawing dessin1 = new Drawing(
-                "https://www.infinityandroid.com/images/france_eiffel_tower.jpg",
-                LocalDateTime.now().minusDays(100)
-        );
-        Drawing dessin2 = new Drawing(
-                "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg",
-                LocalDateTime.now().minusDays(10)
-        );
-        Drawing dessin3 = new Drawing(
-                "https://www.infinityandroid.com/images/india_taj_mahal.jpg",
-                LocalDateTime.now().minusDays(5)
-        );
-        Drawing dessin4 = new Drawing(
-                "https://www.infinityandroid.com/images/canada_lake_view.jpg",
-                LocalDateTime.now().minusDays(2)
-        );
-        Drawing dessin5 = new Drawing(
-                "https://images-na.ssl-images-amazon.com/images/I/71wvedvViFL._AC_SY679_.jpg",
-                LocalDateTime.now()
-        );
-        Drawing dessin6 = new Drawing(
-                "https://wallpapercave.com/wp/wp4443741.jpg",
-                LocalDateTime.now().minusDays(1)
-        );
-
-
-        Participation p1 = new Participation(
-                user1,
-                dessin1,
-                challenge1,
-                true
-        );
-        Participation p2 = new Participation(
-                user1,
-                dessin2,
-                challenge1,
-                true
-        );
-        Participation p3 = new Participation(
-                user1,
-                dessin3,
-                challenge1,
-                true
-        );
-        Participation p4 = new Participation(
-                user1,
-                dessin4,
-                challenge1,
-                true
-        );
-        Participation p5 = new Participation(
-                user1,
-                dessin5,
-                challenge1,
-                true
-        );
-        Participation p6 = new Participation(
-                user1,
-                dessin6,
-                challenge1,
-                true
-        );
-
-        db.save(user1, "tom");
-        db.save(challenge1);
-        db.save(challenge2);
-        db.save(challenge3);
-        db.save(dessin1);
-        db.save(dessin2);
-        db.save(dessin3);
-        db.save(dessin4);
-        db.save(dessin5);
-        db.save(dessin6);
-        db.save(p1);
-        db.save(p2);
-        db.save(p3);
-        db.save(p4);
-        db.save(p5);
-        db.save(p6);
 
         challenges = db.getAllChallenges();
 //

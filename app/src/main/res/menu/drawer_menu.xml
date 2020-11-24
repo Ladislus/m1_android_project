@@ -16,6 +16,12 @@
             android:icon="@drawable/ic_challenge"
             android:title="@string/testActivityChall">
         </item>
+        <item
+            android:id="@+id/nav_createChall"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="@string/gotoCreateChall">
+
+        </item>
         <item android:id="@+id/nav_statistique"
             android:icon="@drawable/ic_chart"
             android:title="@string/statistiques">
