@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:id="@+id/drawerLayout"
+    tools:context=".InscriptionActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30px"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/InscriptionTitle"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="0">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/loginTitle" />
+
+        <EditText
+            android:id="@+id/inputLoginInscr"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:ems="10"
+            android:hint="@string/hintLogin"
+            android:inputType="textPersonName"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/passwordTitle" />
+
+        <EditText
+            android:id="@+id/inputmdp1Inscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:ems="10"
+            android:hint="@string/hintpassword"
+            android:inputType="textPassword"
+            android:text="" />
+        <TextView
+            android:id="@+id/titlepasswordconf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/passwordTitleConf" />
+
+        <EditText
+            android:id="@+id/inputmdp2Inscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:ems="10"
+            android:hint="@string/hintpassword"
+            android:inputType="textPassword"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/errorLabelInscr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text=""
+            android:textColor="#FF0505" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onInscrire"
+            android:text="@string/inscriptionButton"
+            ></Button>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/drawer_menu">
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

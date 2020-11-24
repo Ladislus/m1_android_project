@@ -40,6 +40,18 @@
     <string name="nomChall">"Challenge's name "</string>
     <string name="testActivityChall" translatable="false">GotoActivityChallTEST</string>
     <string name="descChall" translatable="false">desc</string>
-    <string name="placeholderTemps">placeHolder</string>
-    <string name="dateFinph">plaxceHoleccccsfv</string>
+    <string name="placeholderTemps" translatable="false">placeHolder</string>
+    <string name="dateFinph" translatable="false">plaxceHoleccccsfv</string>
+    <string name="InscriptionTitle">Sign up</string>
+    <string name="passwordTitleConf">Confirm password</string>
+    <string name="inscriptionButton">Sign up !</string>
+    <string name="signup">Sign up</string>
+    <string name="ErrorInscriptionMDP">Oops ! Make sure both password are the same !</string>
+    <string name="ErrorInscriptionUsername">Sorry, this username is already taken.</string>
+    <string name="ErrorInscriptionInput">Make sure all fields are completed.</string>
+    <string name="error">Error : This challenge does not exist.</string>
+    <string name="ErrorConnexion">Cannot find user, try again.</string>
+    <string name="navDeco">Disconnect</string>
+    <string name="decoLabel">"You've successfuly disconnect ! "</string>
+    <string name="buttonDeco">Go back home</string>
 </resources>

@@ -3,6 +3,7 @@ package univ.orleans.ttl.isokachallenge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.annotation.SuppressLint;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -46,16 +48,28 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
+    public ActionBarDrawerToggle getActionBarDrawerToggle() {
+        return actionBarDrawerToggle;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        navigationView = findViewById(R.id.navigation_menu);
 
-
+        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))){
+            //If user connecté
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
+        }else{
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
+        }
 
         setUpToolbar();
         DB db = new DB(this);
-        navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
@@ -63,10 +77,18 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
                     break;
+                case  R.id.nav_inscription:
+                    Intent inscription = new Intent(this, InscriptionActivity.class);
+                    startActivity(inscription);
+                    break;
 
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
+                    break;
+                case R.id.nav_deconnexion:
+                    Intent deco = new Intent(this, DeconnexionView.class);
+                    startActivity(deco);
                     break;
             }
             return false;
@@ -146,6 +168,21 @@ public class MainActivity extends AppCompatActivity {
                     "RecyclerView : Challenge Title : "+user.getTitre(),
                     Toast.LENGTH_SHORT).show();
         });
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))){
+            //If user connecté
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
+        }else{
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
+        }
+
+
     }
 
     public void setUpToolbar() {
