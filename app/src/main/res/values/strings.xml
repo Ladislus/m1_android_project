@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Isoka_challenge</string>
+    <string name="app_name">Hisoka challenge</string>
     <string name="connexionNom">Connection</string>
     <string name="loginTitle">Login</string>
     <string name="hintLogin">Username</string>
