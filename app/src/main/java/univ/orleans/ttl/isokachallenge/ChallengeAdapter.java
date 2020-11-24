@@ -24,7 +24,7 @@ import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 
 public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyViewHolder> {
 
-    private final List<Challenge> challenges;
+    private List<Challenge> challenges;
     private OnItemClickListener mListener;
 
     public  interface  OnItemClickListener{
@@ -36,6 +36,10 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
     }
 
     public ChallengeAdapter(List<Challenge> challenges) {
+        this.challenges = challenges;
+    }
+
+    public void setListChallengeAdapter(List<Challenge> challenges) {
         this.challenges = challenges;
     }
 

@@ -202,6 +202,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
+                case R.id.nav_challenge:
+                    Intent challenge = new Intent(this, MainActivity.class);
+                    startActivity(challenge);
+                    break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
@@ -307,8 +311,15 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
+        challenges = db.getAllChallenges();
+        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        challenges = db.getAllChallenges();
+        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
     }
 
     public void setUpToolbar() {
