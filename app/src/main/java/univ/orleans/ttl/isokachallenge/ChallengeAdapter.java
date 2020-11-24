@@ -77,7 +77,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                 }
             });
         }
-
         void display (Challenge challenge){
             this.titreChallenge.setText(challenge.getName());
             ArrayList<Drawing> listDessinChallenge = new ArrayList<>(MainActivity.db.getDrawingsFromChallenge(challenge.getId()));
@@ -99,8 +98,12 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                     return 0;
                 }
             });
+            ArrayList<Drawing> listDessinChallengeTrier = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                listDessinChallengeTrier.add(listDessinChallenge.get(i));
+            }
 
-            ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(listDessinChallenge);
+            ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(listDessinChallengeTrier);
             Log.d("bonjour", "display: "+listDessinChallenge);
             //ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
             dessinAdapter.setOnItemClickListener(
