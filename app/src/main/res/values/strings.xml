@@ -42,6 +42,13 @@
     <string name="descChall" translatable="false">desc</string>
     <string name="placeholderTemps" translatable="false">placeHolder</string>
     <string name="dateFinph" translatable="false">plaxceHoleccccsfv</string>
+
+    <string name="pseudoTitre">Your username is :</string>
+    <string name="btn_modifier">Modify</string>
+    <string name="hintUsername">"new Username "</string>
+    <string name="profil">Account</string>
+    <string name="btn_valider">Confirm</string>
+
     <string name="InscriptionTitle">Sign up</string>
     <string name="passwordTitleConf">Confirm password</string>
     <string name="inscriptionButton">Sign up !</string>
@@ -68,4 +75,5 @@
     <string name="btnCreate">Create challenge !</string>
     <string name="gotoCreateChall">Create a challenge</string>
     <string name="errorCreateChallEmpty">Please fill all field.</string>
+
 </resources>

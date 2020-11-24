@@ -35,6 +35,13 @@
     <string name="connexionButton">Se connecter</string>
     <string name="labelCheckLogin">Se souvenir de moi</string>
     <string name="nomChall">Nom du challenge</string>
+
+    <string name="pseudoTitre">Votre pseudo est :</string>
+    <string name="btn_modifier">Modifier</string>
+    <string name="hintUsername">nouveau pseudo</string>
+    <string name="profil">Profil</string>
+    <string name="btn_valider">Valider</string>
+
     <string name="InscriptionTitle">Inscription</string>
     <string name="passwordTitleConf">Confirmer le mot de passe</string>
     <string name="inscriptionButton">M\'inscrire !</string>
@@ -58,4 +65,5 @@
     <string name="btnCreate">Créer le challenge !</string>
     <string name="gotoCreateChall">Créer un challenge</string>
     <string name="errorCreateChallEmpty">Veuillez compléter tous les champs.</string>
+
 </resources>

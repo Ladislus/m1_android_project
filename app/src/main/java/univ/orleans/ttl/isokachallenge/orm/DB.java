@@ -554,6 +554,7 @@ public class DB extends SQLiteOpenHelper {
         StringBuilder sb = new StringBuilder("PARTICIPATIONS FOUND :\n\t[\n");
         for (Participation p : participations) sb.append("\t\t").append(p).append("\n");
         Log.d(Tables.DB_LOG, sb.append("\t]").toString());
+        Log.d(Tables.DB_LOG, sb.append("\t]").toString());
 
         return participations;
     }
