@@ -92,7 +92,7 @@ public class InscriptionActivity extends AppCompatActivity {
                     //Faire l'insription
                     errorMsg.setText("");
                     User user = new User(username.getText().toString(), LocalDateTime.now());
-                    this.db.save(user);
+                    this.db.save(user, mdp1.getText().toString());
 
                 }
 
