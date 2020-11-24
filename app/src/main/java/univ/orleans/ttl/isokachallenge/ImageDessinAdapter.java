@@ -1,6 +1,7 @@
 package univ.orleans.ttl.isokachallenge;
 
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,14 @@ import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.Tables;
+import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
@@ -84,18 +89,35 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         }
 
         void setLocationData(Drawing dessin){
-            Log.d("Load","Image");
             User user = MainActivity.db.getUserFromDrawing(dessin.getId());
-            Picasso.get().load(dessin.getLink()).into(imageView);
-            textTitle.setText(user.getUsername());
+            if (user!= null) {
 
-            String dateString = dessin.getDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
-            String dessinDate = dateTime.format(formatter2);
-            textLocation.setText(dessinDate);
-            //textStarRating.setText(String.valueOf(dessin.startRating));
+                Picasso.get().load(dessin.getLink()).into(imageView);
+                textTitle.setText(user.getUsername());
+
+                String dateString = dessin.getDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
+                String dessinDate = dateTime.format(formatter2);
+                textLocation.setText(dessinDate);
+                //textStarRating.setText(String.valueOf(dessin.startRating));
+            }else{
+                HashMap<String, Pair<String, String>> map = new HashMap<>();
+                map.put(Tables.CHALLENGE_THEME, new Pair(Tables.OPERATOR_EQ, dessin.getLink()));
+                ArrayList<Challenge> challenges = new ArrayList<>(MainActivity.db.getChallenges(map));
+
+                Picasso.get().load(dessin.getLink()).into(imageView);
+                textTitle.setText(R.string.theme);
+
+                String dateString = challenges.get(0).getDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
+                String dessinDate = dateTime.format(formatter2);
+                textLocation.setText(dessinDate);
+                //textStarRating.setText(String.valueOf(dessin.startRating));
+            }
 
         }
 

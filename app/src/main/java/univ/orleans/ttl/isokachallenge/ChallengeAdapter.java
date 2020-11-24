@@ -80,6 +80,13 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         void display (Challenge challenge){
             this.titreChallenge.setText(challenge.getName());
             ArrayList<Drawing> listDessinChallenge = new ArrayList<>(MainActivity.db.getDrawingsFromChallenge(challenge.getId()));
+            if (listDessinChallenge.size()==0){
+                String dateChallenge = challenge.getDate();
+
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
+//                LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
+                listDessinChallenge.add(new Drawing(challenge.getTheme(),LocalDateTime.now()));
+            }
 
             listDessinChallenge.sort((o1, o2) -> {
                 String dateString1 = o1.getDate();
@@ -98,12 +105,20 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                     return 0;
                 }
             });
+
             ArrayList<Drawing> listDessinChallengeTrier = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                listDessinChallengeTrier.add(listDessinChallenge.get(i));
+            if (listDessinChallenge.size()>=5) {
+                for (int i = 0; i < 5; i++) {
+                    listDessinChallengeTrier.add(listDessinChallenge.get(i));
+                }
+            }
+            ImageDessinAdapter dessinAdapter = null;
+            if (listDessinChallenge.size()>=5){
+                dessinAdapter = new ImageDessinAdapter(listDessinChallengeTrier);
+            }else {
+                dessinAdapter = new ImageDessinAdapter(listDessinChallenge);
             }
 
-            ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(listDessinChallengeTrier);
             Log.d("bonjour", "display: "+listDessinChallenge);
             //ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
             dessinAdapter.setOnItemClickListener(
