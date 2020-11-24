@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
+    public ActionBarDrawerToggle getActionBarDrawerToggle() {
+        return actionBarDrawerToggle;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
