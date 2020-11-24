@@ -122,6 +122,24 @@ public class MainActivity extends AppCompatActivity {
                 "test de challenge"
         );
 
+        Challenge challenge2 = new Challenge(
+                "Ishigami Senku",
+                true,
+                "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
+                LocalDateTime.now(),
+                30,
+                "Dessiner Ishigamis Senku en 30 min"
+        );
+
+        Challenge challenge3 = new Challenge(
+                "Ishigami Senku 2",
+                true,
+                "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
+                LocalDateTime.now(),
+                30,
+                "Dessiner Ishigamis Senku en 30 min"
+        );
+
         Drawing dessin1 = new Drawing(
                 "https://www.infinityandroid.com/images/france_eiffel_tower.jpg",
                 LocalDateTime.now().minusDays(100)
@@ -187,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
 
         db.save(user1, "tom");
         db.save(challenge1);
+        db.save(challenge2);
+        db.save(challenge3);
         db.save(dessin1);
         db.save(dessin2);
         db.save(dessin3);
