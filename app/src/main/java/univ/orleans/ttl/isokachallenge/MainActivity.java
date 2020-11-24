@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_profil:
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);
+                    break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);

@@ -3,6 +3,7 @@ package univ.orleans.ttl.isokachallenge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,11 +21,11 @@ public class Profil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
 
-        username = findViewById(R.id.pseudoUser);
+        username = findViewById(R.id.username);
         edit_username= findViewById(R.id.inputNewUsername);
         modifier = findViewById(R.id.btn_modifier);
         valider = findViewById(R.id.btn_valider);
-        username.setText("Tom99");
+        username.setText(username.getText()+" Tom99");
     }
 
     public void modifier_username(View view) {
