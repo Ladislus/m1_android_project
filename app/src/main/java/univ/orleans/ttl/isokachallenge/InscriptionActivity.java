@@ -8,49 +8,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
-public class ConnexionView extends AppCompatActivity {
+public class InscriptionActivity extends AppCompatActivity {
 
-    private EditText mdp, login;
-    private CheckBox checkLogin;
-    private boolean remember;
-    private DB db;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
-
+    private DB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connexion_view);
-        this.login = findViewById(R.id.inputLogin);
-        this.mdp = findViewById(R.id.inputMDP);
-        this.checkLogin = findViewById(R.id.checkLogin);
-        this.remember = false;
-
+        setContentView(R.layout.activity_inscription);
         navigationView = findViewById(R.id.navigation_menu);
 
-        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
             //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
@@ -65,12 +52,12 @@ public class ConnexionView extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
-                case  R.id.nav_challenge:
-                    Intent intent = new Intent(this, MainActivity.class);
+                case  R.id.nav_connexion:
+                    Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
                     break;
-                case  R.id.nav_inscription:
-                    Intent inscription = new Intent(this, InscriptionActivity.class);
+                case  R.id.nav_challenge:
+                    Intent inscription = new Intent(this, MainActivity.class);
                     startActivity(inscription);
                     break;
 
@@ -85,22 +72,6 @@ public class ConnexionView extends AppCompatActivity {
             }
             return false;
         });
-    }
-
-    public void onConnexion(View view) {
-        if(this.db.login(this.login.getText().toString(), this.mdp.getText().toString())){
-            SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("username", this.login.getText().toString());
-            editor.apply();
-            finish();
-            Intent home = new Intent(this, MainActivity.class);
-            startActivity(home);
-        }else{
-            TextView error = findViewById(R.id.labelErrorConnexion);
-            error.setText(R.string.ErrorConnexion);
-        }
-
 
     }
 
@@ -115,6 +86,7 @@ public class ConnexionView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze_24);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
@@ -123,35 +95,35 @@ public class ConnexionView extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+    public void onInscrire(View view) {
+        EditText username = findViewById(R.id.inputLoginInscr);
+        EditText mdp1 = findViewById(R.id.inputmdp1Inscription);
+        EditText mdp2 = findViewById(R.id.inputmdp2Inscription);
+        TextView errorMsg = findViewById(R.id.errorLabelInscr);
 
-        if(this.checkLogin.isChecked()){
-            editor.putString("login", String.valueOf(this.login.getText()));
-            editor.putString("mdp", String.valueOf(this.mdp.getText()));
+        if(username.getText().toString().equals("") || mdp1.getText().toString().equals("") || mdp2.getText().toString().equals("")){
+            errorMsg.setText(R.string.ErrorInscriptionInput);
         }else{
-            editor.putString("login", "");
-            editor.putString("mdp", "");
+            if(mdp1.getText().toString().equals(mdp2.getText().toString())){
+                if(this.db.getUser(username.getText().toString()) != null ){
+                    errorMsg.setText(R.string.ErrorInscriptionUsername);
+                }else{
+                    //Faire l'insription
+                    errorMsg.setText("");
+                    User user = new User(username.getText().toString(), LocalDateTime.now());
+                    this.db.save(user, mdp1.getText().toString());
+                    finish();
+                    Intent connect = new Intent(this, ConnexionView.class);
+                    startActivity(connect);
+
+                }
+
+            }else{
+                errorMsg.setText(R.string.ErrorInscriptionMDP);
+            }
         }
-        editor.putBoolean("isChecked", this.checkLogin.isChecked());
-        editor.apply();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        this.login.setText(sharedPref.getString("login",""));
-        this.mdp.setText(sharedPref.getString("mdp",""));
-        this.remember = sharedPref.getBoolean("isChecked",false);
-        this.checkLogin.setChecked(this.remember);
 
-    }
 
-    public void onChecked(View view) {
-        this.remember = this.checkLogin.isChecked();
     }
 }

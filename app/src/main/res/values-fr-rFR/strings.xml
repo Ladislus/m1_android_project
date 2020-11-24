@@ -35,9 +35,24 @@
     <string name="connexionButton">Se connecter</string>
     <string name="labelCheckLogin">Se souvenir de moi</string>
     <string name="nomChall">Nom du challenge</string>
+
     <string name="pseudoTitre">Votre pseudo est :</string>
     <string name="btn_modifier">Modifier</string>
     <string name="hintUsername">nouveau pseudo</string>
     <string name="profil">Profil</string>
     <string name="btn_valider">Valider</string>
+
+    <string name="InscriptionTitle">Inscription</string>
+    <string name="passwordTitleConf">Confirmer le mot de passe</string>
+    <string name="inscriptionButton">M\'inscrire !</string>
+    <string name="signup">Inscription</string>
+    <string name="ErrorInscriptionMDP">Oups ! Les deux mots de passe ne correspondes pas !</string>
+    <string name="ErrorInscriptionUsername">Désolé, mais ce pseudo est déjà prit !</string>
+    <string name="ErrorInscriptionInput">Veuillez remplir tous les champs.</string>
+    <string name="error">Erreur : Challenge introuvable</string>
+    <string name="ErrorConnexion">Utilisateur introuvable, réessayé.</string>
+    <string name="navDeco">Deconnexion</string>
+    <string name="decoLabel">Félicitation ! Déconnecté avec succès !</string>
+    <string name="buttonDeco">Retour à l\'accueil</string>
+
 </resources>

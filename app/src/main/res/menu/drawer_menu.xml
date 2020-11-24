@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single"
-        android:id="@+id/group1">
+        android:id="@+id/groupeConnecter">
         <item android:id="@+id/nav_profil"
             android:icon="@drawable/ic_account"
             android:title="@string/profil">
         </item>
-        <item android:id="@+id/nav_connexion"
-            android:icon="@drawable/ic_account"
-            android:title="@string/connexion">
-        </item>
         <item android:id="@+id/nav_challenge"
             android:icon="@drawable/ic_challenge"
-            android:title="@string/challenge_en_cours">
+            android:title="@string/challenge_en_cours"
+            tools:ignore="DuplicateIds">
         </item>
         <item android:id="@+id/nav_challengeTest"
             android:icon="@drawable/ic_challenge"
@@ -26,22 +24,27 @@
             android:id="@+id/nav_parametre"
             android:icon="@drawable/ic_settings"
             android:title="@string/parametres" />
+        <item
+            android:id="@+id/nav_deconnexion"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/navDeco" />
     </group>
 
 
     <group android:checkableBehavior="single"
-        android:id="@+id/group2">
-        <item android:id="@+id/nav_Policy"
-
-            android:title="Privacy Policy">
+        android:id="@+id/groupeDeco">
+        <item android:id="@+id/nav_challenge"
+            android:icon="@drawable/ic_challenge"
+            android:title="@string/challenge_en_cours"
+            tools:ignore="DuplicateIds">
         </item>
-        <item android:id="@+id/nav_share"
-
-            android:title="Share">
+        <item android:id="@+id/nav_connexion"
+            android:icon="@drawable/ic_account"
+            android:title="@string/connexion">
         </item>
-        <item android:id="@+id/nav_aboutus"
-
-            android:title="About Us">
+        <item android:id="@+id/nav_inscription"
+            android:icon="@drawable/ic_login"
+            android:title="@string/signup">
         </item>
     </group>
 
