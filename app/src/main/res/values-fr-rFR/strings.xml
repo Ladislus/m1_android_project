@@ -37,10 +37,10 @@
     <string name="nomChall">Nom du challenge</string>
 
     <string name="pseudoTitre">Votre pseudo est :</string>
-    <string name="btn_modifier">Modifier</string>
+    <string name="btn_modifier">Modifier mot de passe</string>
     <string name="hintUsername">nouveau pseudo</string>
     <string name="profil">Profil</string>
-    <string name="btn_valider">Valider</string>
+    <string name="btn_valider">Valider mot de passe</string>
 
     <string name="InscriptionTitle">Inscription</string>
     <string name="passwordTitleConf">Confirmer le mot de passe</string>
@@ -54,6 +54,10 @@
     <string name="navDeco">Deconnexion</string>
     <string name="decoLabel">Félicitation ! Déconnecté avec succès !</string>
     <string name="buttonDeco">Retour à l\'accueil</string>
+
+    <string name="txtNewPassword">Enter un nouveau mot de passe :</string>
+    <string name="theme">Theme</string>
+
     <string name="titleCreationChall">Creation d\'un challenge !</string>
     <string name="NomChallLabel">Nom</string>
     <string name="descChalllabel">Description</string>
@@ -65,5 +69,6 @@
     <string name="btnCreate">Créer le challenge !</string>
     <string name="gotoCreateChall">Créer un challenge</string>
     <string name="errorCreateChallEmpty">Veuillez compléter tous les champs.</string>
+
 
 </resources>
