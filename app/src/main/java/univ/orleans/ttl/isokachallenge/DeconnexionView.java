@@ -3,6 +3,7 @@ package univ.orleans.ttl.isokachallenge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,5 +24,7 @@ public class DeconnexionView extends AppCompatActivity {
 
     public void onGoBack(View view) {
         finish();
+        Intent home = new Intent(this, MainActivity.class);
+        startActivity(home);
     }
 }
