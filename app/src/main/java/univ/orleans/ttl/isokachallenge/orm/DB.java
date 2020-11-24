@@ -8,9 +8,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
+
+import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -618,6 +622,14 @@ public class DB extends SQLiteOpenHelper {
     public void incrementParticipation(Participation participation) {
         participation.addVote();
         update(participation);
+    }
+
+    public String imgurUpload(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        String b64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+
+        return this._wrapper.imgurUpload(b64Image);
     }
 
     //////////////////////////////
