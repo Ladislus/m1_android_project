@@ -43,10 +43,11 @@ import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 
 public class onChallenge extends AppCompatActivity {
-    static final int ID_CHALL = 1; //Test avec l'id 1
+//    static final int ID_CHALL = 1; //Test avec l'id 1
     static final String BASE_URL = "https://thlato.pythonanywhere.com/api/";
     static final String API_KEY = "1321321321321";
     DrawerLayout drawerLayout;
+    private int idchall;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
@@ -58,6 +59,7 @@ public class onChallenge extends AppCompatActivity {
         AndroidNetworking.initialize(getApplicationContext());
 
         navigationView = findViewById(R.id.navigation_menu);
+        this.idchall = getIntent().getIntExtra("idchall", 1);
 
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
@@ -91,12 +93,16 @@ public class onChallenge extends AppCompatActivity {
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
                     break;
+                case R.id.nav_createChall:
+                    Intent create = new Intent(this, CreationChallActivity.class);
+                    startActivity(create);
+                    break;
             }
             return false;
         });
 //        Picasso.get().load("https://histoire-image.org/sites/default/dor7_delacroix_001f.jpg").into(iv);
 
-        Challenge chall = db.getChallenge(ID_CHALL);
+        Challenge chall = db.getChallenge(this.idchall);
         if(chall != null){
             TextView title = findViewById(R.id.nomChall);
             title.setText(chall.getName());
@@ -138,7 +144,7 @@ public class onChallenge extends AppCompatActivity {
 
     public void onParticiper(View view) {
         Intent intent = new Intent(this, onParticiperChrono.class);
-        intent.putExtra("id_chall", ID_CHALL);
+        intent.putExtra("id_chall", this.idchall);
         startActivity(intent);
     }
 

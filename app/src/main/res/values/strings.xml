@@ -61,5 +61,19 @@
     <string name="navDeco">Disconnect</string>
     <string name="decoLabel">"You've successfuly disconnect ! "</string>
     <string name="buttonDeco">Go back home</string>
+    <string name="titleCreationChall">Create a challenge !</string>
+    <string name="NomChallLabel">Name</string>
+    <string name="hintTitleChall" translatable="false">Hisoka</string>
+    <string name="descChalllabel">Description</string>
+    <string name="hintDescChall">Enter your description text...</string>
+    <string name="themeLabel">Challenge\'s theme</string>
+    <string name="infoTheme">Enter the url of the image you want people to draw.</string>
+    <string name="hintTheme" translatable="false">https://linkToTheimageFile.jpg</string>
+    <string name="labelTimer">How long to draw ? (minutes)</string>
+    <string name="hintTimer" translatable="false">30</string>
+    <string name="dateFinLabel">End date</string>
+    <string name="btnCreate">Create challenge !</string>
+    <string name="gotoCreateChall">Create a challenge</string>
+    <string name="errorCreateChallEmpty">Please fill all field.</string>
 
 </resources>
