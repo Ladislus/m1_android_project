@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,25 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         void display (Challenge challenge){
             this.titreChallenge.setText(challenge.getName());
             ArrayList<Drawing> listDessinChallenge = new ArrayList<>(MainActivity.db.getDrawingsFromChallenge(challenge.getId()));
+
+            listDessinChallenge.sort((o1, o2) -> {
+                String dateString1 = o1.getDate();
+                String dateString2 = o2.getDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+                LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+                if(dateTime1.isAfter(dateTime2)) {
+                    Log.d("Sort","1");
+                    return -1;
+                } else if(dateTime1.isBefore(dateTime2)) {
+                    Log.d("Sort","-1");
+                    return 1;
+                } else {
+                    Log.d("Sort","0");
+                    return 0;
+                }
+            });
+
             ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(listDessinChallenge);
             Log.d("bonjour", "display: "+listDessinChallenge);
             //ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());

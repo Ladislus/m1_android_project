@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 LocalDateTime.now()
         );
 
-        Challenge challenge1 = new Challenge(1,
+        Challenge challenge1 = new Challenge(
                 "Test",
                 true,
                 "test",
@@ -121,27 +121,27 @@ public class MainActivity extends AppCompatActivity {
                 "test de challenge"
         );
 
-        Drawing dessin1 = new Drawing(1,
+        Drawing dessin1 = new Drawing(
                 "https://www.infinityandroid.com/images/france_eiffel_tower.jpg",
                 LocalDateTime.now().minusDays(100)
         );
-        Drawing dessin2 = new Drawing(2,
+        Drawing dessin2 = new Drawing(
                 "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg",
                 LocalDateTime.now().minusDays(10)
         );
-        Drawing dessin3 = new Drawing(3,
+        Drawing dessin3 = new Drawing(
                 "https://www.infinityandroid.com/images/india_taj_mahal.jpg",
                 LocalDateTime.now().minusDays(5)
         );
-        Drawing dessin4 = new Drawing(4,
+        Drawing dessin4 = new Drawing(
                 "https://www.infinityandroid.com/images/canada_lake_view.jpg",
                 LocalDateTime.now().minusDays(2)
         );
-        Drawing dessin5 = new Drawing(5,
+        Drawing dessin5 = new Drawing(
                 "https://images-na.ssl-images-amazon.com/images/I/71wvedvViFL._AC_SY679_.jpg",
                 LocalDateTime.now()
         );
-        Drawing dessin6 = new Drawing(6,
+        Drawing dessin6 = new Drawing(
                 "https://wallpapercave.com/wp/wp4443741.jpg",
                 LocalDateTime.now().minusDays(1)
         );
