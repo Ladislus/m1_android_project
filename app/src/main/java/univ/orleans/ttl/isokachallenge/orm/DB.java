@@ -563,7 +563,7 @@ public class DB extends SQLiteOpenHelper {
     //         SPECIALS         //
     //////////////////////////////
 
-    Boolean login(String username, String password) {
+    public Boolean login(String username, String password) {
         //TODO
         return true;
     }
@@ -608,5 +608,14 @@ public class DB extends SQLiteOpenHelper {
         List<Drawing> drawings = new ArrayList<>();
         for (Participation p : participations) { drawings.add(p.getDrawing()); }
         return drawings;
+    }
+
+    //////////////////////////////
+    //           DEBUG          //
+    //////////////////////////////
+
+    public void drop() {
+        this.getWritableDatabase().execSQL(Tables.DROP);
+        this.onCreate(this.getWritableDatabase());
     }
 }

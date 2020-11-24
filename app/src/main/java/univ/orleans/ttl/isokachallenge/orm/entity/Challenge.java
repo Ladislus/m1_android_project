@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 
 public class Challenge {
 
+    //DEBUG
+    //TODO Remove
+    private static int _count = 0;
+
     private Integer _id;
     private final String _name;
     private final Boolean _type;
@@ -23,7 +27,9 @@ public class Challenge {
     }
 
     public Challenge(String name, Boolean type, String theme, LocalDateTime date, Integer timer, String desc) {
-        this(null, name, type, theme, date, timer, desc);
+        //DEBUG
+        //TODO set id to null before server request
+        this(_count++, name, type, theme, date, timer, desc);
     }
 
     public Integer getId() {
