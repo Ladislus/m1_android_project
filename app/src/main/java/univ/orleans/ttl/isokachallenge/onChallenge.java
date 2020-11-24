@@ -5,7 +5,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,15 +56,40 @@ public class onChallenge extends AppCompatActivity {
         setContentView(R.layout.activity_on_challenge);
         ImageView iv = findViewById(R.id.imageView);
         AndroidNetworking.initialize(getApplicationContext());
+
+        navigationView = findViewById(R.id.navigation_menu);
+
+        SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))){
+            //If user connecté
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
+        }else{
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
+        }
+
         setUpToolbar();
         DB db = new DB(this);
-        navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
                 case  R.id.nav_connexion:
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
+                    break;
+                case  R.id.nav_inscription:
+                    Intent inscription = new Intent(this, InscriptionActivity.class);
+                    startActivity(inscription);
+                    break;
+
+                case R.id.nav_challenge:
+                    Intent act = new Intent(this, MainActivity.class);
+                    startActivity(act);
+                    break;
+                case R.id.nav_deconnexion:
+                    Intent deco = new Intent(this, DeconnexionView.class);
+                    startActivity(deco);
                     break;
             }
             return false;

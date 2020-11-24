@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Isoka_challenge">
-        <activity android:name=".InscriptionActivity"></activity>
+        <activity android:name=".DeconnexionView"></activity>
+        <activity android:name=".InscriptionActivity" />
         <activity android:name=".onConfirmationParticipation" />
         <activity android:name=".onParticiperChrono" />
         <activity android:name=".onChallenge" />

@@ -4,7 +4,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +35,20 @@ public class InscriptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inscription);
+        navigationView = findViewById(R.id.navigation_menu);
+
+        SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))){
+            //If user connecté
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
+        }else{
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
+        }
 
         setUpToolbar();
         this.db = new DB(this);
-        navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
@@ -44,11 +56,18 @@ public class InscriptionActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
                     break;
-
+                case  R.id.nav_challenge:
+                    Intent inscription = new Intent(this, MainActivity.class);
+                    startActivity(inscription);
+                    break;
 
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
+                    break;
+                case R.id.nav_deconnexion:
+                    Intent deco = new Intent(this, DeconnexionView.class);
+                    startActivity(deco);
                     break;
             }
             return false;
@@ -93,6 +112,9 @@ public class InscriptionActivity extends AppCompatActivity {
                     errorMsg.setText("");
                     User user = new User(username.getText().toString(), LocalDateTime.now());
                     this.db.save(user, mdp1.getText().toString());
+                    finish();
+                    Intent connect = new Intent(this, ConnexionView.class);
+                    startActivity(connect);
 
                 }
 

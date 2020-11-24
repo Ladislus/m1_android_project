@@ -43,4 +43,8 @@
     <string name="ErrorInscriptionUsername">Désolé, mais ce pseudo est déjà prit !</string>
     <string name="ErrorInscriptionInput">Veuillez remplir tous les champs.</string>
     <string name="error">Erreur : Challenge introuvable</string>
+    <string name="ErrorConnexion">Utilisateur introuvable, réessayé.</string>
+    <string name="navDeco">Deconnexion</string>
+    <string name="decoLabel">Félicitation ! Déconnecté avec succès !</string>
+    <string name="buttonDeco">Retour à l\'accueil</string>
 </resources>

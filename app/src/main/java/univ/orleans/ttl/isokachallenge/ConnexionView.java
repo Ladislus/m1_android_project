@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -47,15 +48,39 @@ public class ConnexionView extends AppCompatActivity {
         this.checkLogin = findViewById(R.id.checkLogin);
         this.remember = false;
 
+        navigationView = findViewById(R.id.navigation_menu);
+
+        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))){
+            //If user connecté
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
+        }else{
+            navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
+            navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
+        }
+
         setUpToolbar();
         this.db = new DB(this);
-        navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
+                case  R.id.nav_challenge:
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case  R.id.nav_inscription:
+                    Intent inscription = new Intent(this, InscriptionActivity.class);
+                    startActivity(inscription);
+                    break;
+
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
+                    break;
+                case R.id.nav_deconnexion:
+                    Intent deco = new Intent(this, DeconnexionView.class);
+                    startActivity(deco);
                     break;
             }
             return false;
@@ -63,7 +88,19 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onConnexion(View view) {
-//        this.db.login;
+        if(this.db.login(this.login.getText().toString(), this.mdp.getText().toString())){
+            SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("username", this.login.getText().toString());
+            editor.apply();
+            finish();
+            Intent home = new Intent(this, MainActivity.class);
+            startActivity(home);
+        }else{
+            TextView error = findViewById(R.id.labelErrorConnexion);
+            error.setText(R.string.ErrorConnexion);
+        }
+
 
     }
 

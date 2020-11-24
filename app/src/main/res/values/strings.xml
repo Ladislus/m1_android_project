@@ -50,4 +50,8 @@
     <string name="ErrorInscriptionUsername">Sorry, this username is already taken.</string>
     <string name="ErrorInscriptionInput">Make sure all fields are completed.</string>
     <string name="error">Error : This challenge does not exist.</string>
+    <string name="ErrorConnexion">Cannot find user, try again.</string>
+    <string name="navDeco">Disconnect</string>
+    <string name="decoLabel">"You've successfuly disconnect ! "</string>
+    <string name="buttonDeco">Go back home</string>
 </resources>
