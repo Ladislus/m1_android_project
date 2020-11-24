@@ -42,6 +42,13 @@
     <string name="descChall" translatable="false">desc</string>
     <string name="placeholderTemps" translatable="false">placeHolder</string>
     <string name="dateFinph" translatable="false">plaxceHoleccccsfv</string>
+
+    <string name="pseudoTitre">Your username is :</string>
+    <string name="btn_modifier">Modify</string>
+    <string name="hintUsername">"new Username "</string>
+    <string name="profil">Account</string>
+    <string name="btn_valider">Confirm</string>
+
     <string name="InscriptionTitle">Sign up</string>
     <string name="passwordTitleConf">Confirm password</string>
     <string name="inscriptionButton">Sign up !</string>
@@ -54,4 +61,5 @@
     <string name="navDeco">Disconnect</string>
     <string name="decoLabel">"You've successfuly disconnect ! "</string>
     <string name="buttonDeco">Go back home</string>
+
 </resources>
