@@ -193,6 +193,7 @@ public class onParticiperChrono extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             Intent intent = new Intent(this, onConfirmationParticipation.class);
             intent.putExtra("bitmap", imageBitmap);
+            intent.putExtra("idchall",this.id_chall);
             startActivity(intent);
             finish();
         }
