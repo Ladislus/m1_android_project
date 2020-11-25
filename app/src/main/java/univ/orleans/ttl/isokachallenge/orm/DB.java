@@ -633,6 +633,10 @@ public class DB extends SQLiteOpenHelper {
         return this._wrapper.imgurUpload(b64Image);
     }
 
+    public String imgurUpload(String image) {
+        return this._wrapper.imgurUpload(image);
+    }
+
     //////////////////////////////
     //           DEBUG          //
     //////////////////////////////
