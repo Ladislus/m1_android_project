@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     "Test",
                     true,
                     "test",
-                    LocalDateTime.now(),
+                    LocalDateTime.now().minusDays(10),
                     30,
                     "test de challenge"
             );
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     "Ishigami Senku",
                     true,
                     "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
-                    LocalDateTime.now(),
+                    LocalDateTime.now().minusDays(15),
                     30,
                     "Dessiner Ishigamis Senku en 30 min"
             );
@@ -240,6 +241,24 @@ public class MainActivity extends AppCompatActivity {
 
 
         challenges = db.getAllChallenges();
+
+        challenges.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
 //
 //        ImageDessin imageDessinTourEiffel = new ImageDessin();
 //        imageDessinTourEiffel.imageUrl = "https://www.infinityandroid.com/images/france_eiffel_tower.jpg";
@@ -321,7 +340,27 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        challenges =MainActivity.db.getAllChallenges();
+
+        challenges.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+
+        monAdapteur.setListChallengeAdapter(challenges);
         recyclerView.setAdapter(monAdapteur);
     }
 
@@ -329,7 +368,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Main", "onResume: ");
-        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        challenges =MainActivity.db.getAllChallenges();
+
+        challenges.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+
+        monAdapteur.setListChallengeAdapter(challenges);
         recyclerView.setAdapter(monAdapteur);
     }
 
