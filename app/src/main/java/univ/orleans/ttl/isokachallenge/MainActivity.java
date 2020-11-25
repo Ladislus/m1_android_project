@@ -174,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
                     true
             );
 
+            Participation p7 = new Participation(
+                    user1,
+                    dessin6,
+                    challenge2,
+                    true
+            );
+
             db.save(user1, "tom");
             db.save(challenge1);
             db.save(challenge2);
@@ -190,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             db.save(p4);
             db.save(p5);
             db.save(p6);
+            db.save(p7);
         }
         navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
