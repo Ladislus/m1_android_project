@@ -155,20 +155,8 @@ public class onChallenge extends AppCompatActivity {
     }
 
     public void parcoursParticipation(View view) {
-
-        HashMap<String, Pair<String, String>> map = new HashMap<>();
-        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(this.idchall)));
-        ArrayList<Participation> participations = new ArrayList<>(MainActivity.db.getParticipations(map));
-
-        if (participations.size()>0){
             Intent intent = new Intent(this, ParcoursParticipation.class);
             intent.putExtra("id_chall", this.idchall);
-            intent.putExtra("participation", participations);
             startActivity(intent);
-        }else{
-            String txt = getResources().getString(R.string.toast_no_participation_challenge);
-            Toast.makeText(this,txt ,Toast.LENGTH_SHORT).show();
-        }
-
     }
 }

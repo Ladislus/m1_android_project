@@ -11,7 +11,11 @@ import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
 import android.widget.GridLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,10 +33,25 @@ public class ParcoursParticipation extends AppCompatActivity {
 
         this.id_chall = getIntent().getIntExtra("id_chall", 0);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
-        ParticipationAdapteur monAdapteur = new ParticipationAdapteur(this, participations);
+        HashMap<String, Pair<String, String>> map = new HashMap<>();
+        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(this.id_chall)));
+        ArrayList<Participation> participations = new ArrayList<>(MainActivity.db.getParticipations(map));
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(monAdapteur);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
+        TextView pasParticipation = findViewById(R.id.participation0);
+        if (participations.size()>0){
+            recyclerView.setVisibility(View.VISIBLE);
+            pasParticipation.setVisibility(View.GONE);
+            ParticipationAdapteur monAdapteur = new ParticipationAdapteur(this, participations);
+
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            recyclerView.setAdapter(monAdapteur);
+        }else{
+            recyclerView.setVisibility(View.GONE);
+            pasParticipation.setVisibility(View.VISIBLE);
+
+            String txt = getResources().getString(R.string.no_participation_challenge);
+            pasParticipation.setText(txt);
+        }
     }
 }
