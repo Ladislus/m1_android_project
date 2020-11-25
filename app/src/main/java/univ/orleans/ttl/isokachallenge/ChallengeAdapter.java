@@ -131,9 +131,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             dessinAdapter.setOnItemClickListener(
                     position -> {
                         Drawing dessin = listDessinChallenge.get(position);
-                        Intent intent = new Intent(context, ParcoursParticipation.class);
-                        context.startActivity(intent);
-
 //                        Toast.makeText(context,
 //                                "Image : Auteur = "+user.getAuteur()+" avec "+user.getStartRating()+" votes.",
 //                                Toast.LENGTH_SHORT).show();

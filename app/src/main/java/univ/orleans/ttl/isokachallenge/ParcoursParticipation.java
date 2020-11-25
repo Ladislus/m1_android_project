@@ -20,17 +20,14 @@ import java.util.List;
 public class ParcoursParticipation extends AppCompatActivity {
 
     private List<Participation> participations;
+    private int id_chall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parcours_participation);
 
-        int test = 0;
-
-        HashMap<String, Pair<String, String>> map = new HashMap<>();
-        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(test)));
-        participations = new ArrayList<>(MainActivity.db.getParticipations(map));
+        this.id_chall = getIntent().getIntExtra("id_chall", 0);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
         ParticipationAdapteur monAdapteur = new ParticipationAdapteur(this, participations);

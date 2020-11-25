@@ -41,9 +41,7 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
     }
 
     @Override
-    public int getItemCount() {
-        return this.mParticipation.size();
-    }
+    public int getItemCount() { return this.mParticipation.size(); }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
