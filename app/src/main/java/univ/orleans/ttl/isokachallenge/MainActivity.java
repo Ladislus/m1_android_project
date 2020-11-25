@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Main", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigationView = findViewById(R.id.navigation_menu);
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
 
         monAdapteur = new ChallengeAdapter(challenges);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(monAdapteur);
 
         monAdapteur.setOnItemClickListener(position -> {
@@ -302,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("Main", "onStart: ");
         SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
             //If user connecté
@@ -311,15 +313,16 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-        challenges = db.getAllChallenges();
         monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        recyclerView.setAdapter(monAdapteur);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        challenges = db.getAllChallenges();
+        Log.d("Main", "onResume: ");
         monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        recyclerView.setAdapter(monAdapteur);
     }
 
     public void setUpToolbar() {
