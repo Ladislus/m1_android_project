@@ -89,10 +89,9 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             ArrayList<Drawing> listDessinChallenge = new ArrayList<>(MainActivity.db.getDrawingsFromChallenge(challenge.getId()));
             if (listDessinChallenge.size()==0){
                 String dateChallenge = challenge.getDate();
-
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
-//                LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
-                listDessinChallenge.add(new Drawing(challenge.getTheme(),LocalDateTime.now()));
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
+                listDessinChallenge.add(new Drawing(challenge.getTheme(),dateTimeChallenge));
             }
 
             listDessinChallenge.sort((o1, o2) -> {
