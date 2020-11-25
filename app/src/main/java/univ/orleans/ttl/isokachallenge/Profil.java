@@ -2,6 +2,7 @@ package univ.orleans.ttl.isokachallenge;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
@@ -20,7 +21,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class Profil extends AppCompatActivity {
 
-    private TextView username, password;
+    private TextView username, password, msgRetourValidation;
     private EditText edit_password;
     private Button modifier, valider;
     private SharedPreferences pref;
@@ -85,6 +86,7 @@ public class Profil extends AppCompatActivity {
         edit_password = findViewById(R.id.inputNewPassword);
         modifier = findViewById(R.id.btn_modifier);
         valider = findViewById(R.id.btn_valider);
+        msgRetourValidation = findViewById(R.id.msgRetourValidation);
         username.setText(username.getText()+" "+pref.getString("username",null));
     }
 
@@ -106,15 +108,25 @@ public class Profil extends AppCompatActivity {
     }
 
     public void valider_username(View view) {
-        User user = MainActivity.db.getUser(pref.getString("username",null));
-        //user.
-        //MainActivity.db.update();
+        Boolean bool =  MainActivity.db.updatePassword(pref.getString("username",null),edit_password.getText().toString());
 
         username.setVisibility(View.VISIBLE);
         modifier.setVisibility(View.VISIBLE);
+        msgRetourValidation.setVisibility(view.VISIBLE);
 
         edit_password.setVisibility(View.GONE);
+        password.setVisibility(View.GONE);
         valider.setVisibility(View.GONE);
+
+        if (bool){
+            msgRetourValidation.setText(R.string.text_validation_password_updated);
+            msgRetourValidation.setTextColor(ResourcesCompat.getColor(getResources(), R.color.green, null));
+        }else{
+            msgRetourValidation.setText(R.string.txt_validate_password_not_updated);
+            msgRetourValidation.setTextColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
+        }
+
+
     }
 
     public void setUpToolbar() {
