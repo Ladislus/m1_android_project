@@ -8,6 +8,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
+
+import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
@@ -568,6 +573,11 @@ public class DB extends SQLiteOpenHelper {
         return true;
     }
 
+    public Boolean updatePassword(String username, String password) {
+        //TODO
+        return !Objects.isNull(getUser(username));
+    }
+
     public User getUserFromDrawing(int id) {
         Drawing d = getDrawing(id);
         if (Objects.isNull(d)) return null;
@@ -608,6 +618,19 @@ public class DB extends SQLiteOpenHelper {
         List<Drawing> drawings = new ArrayList<>();
         for (Participation p : participations) { drawings.add(p.getDrawing()); }
         return drawings;
+    }
+
+    public void incrementParticipation(Participation participation) {
+        participation.addVote();
+        update(participation);
+    }
+
+    public String imgurUpload(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        String b64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+
+        return this._wrapper.imgurUpload(b64Image);
     }
 
     //////////////////////////////

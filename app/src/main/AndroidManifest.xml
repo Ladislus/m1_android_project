@@ -15,10 +15,10 @@
         android:roundIcon="@mipmap/bgapphisoka"
         android:supportsRtl="true"
         android:theme="@style/Theme.Isoka_challenge">
-        <activity android:name=".ParcoursParticipation"></activity>
-        <activity android:name=".CreationChallActivity"></activity>
+        <activity android:name=".ParcoursParticipation" />
+        <activity android:name=".CreationChallActivity" />
         <activity android:name=".DeconnexionView" />
-        <activity android:name=".Profil"></activity>
+        <activity android:name=".Profil" />
         <activity android:name=".InscriptionActivity" />
         <activity android:name=".onConfirmationParticipation" />
         <activity android:name=".onParticiperChrono" />
@@ -32,11 +32,4 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
 </manifest>
