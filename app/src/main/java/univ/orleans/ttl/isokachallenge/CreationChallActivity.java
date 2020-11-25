@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -95,17 +96,19 @@ public class CreationChallActivity extends AppCompatActivity {
         EditText name = findViewById(R.id.inputNameChall);
         EditText desc = findViewById(R.id.inputDesc);
         EditText theme = findViewById(R.id.inputTheme);
-        EditText dateFin = findViewById(R.id.inputEndDate);
+//        EditText dateFin = findViewById(R.id.inputEndDate);
+        DatePicker dateFin = findViewById(R.id.inputFinDate);
         EditText timer = findViewById(R.id.inputTimer);
         TextView errorLabel = findViewById(R.id.errorCreateChall);
 
+        int month = dateFin.getMonth()+1;
 
-        if(name.getText().toString().equals("") || desc.getText().toString().equals("") || theme.getText().toString().equals("") || dateFin.getText().toString().equals("") || timer.getText().toString().equals("")){
+        if(name.getText().toString().equals("") || desc.getText().toString().equals("") || theme.getText().toString().equals("") || timer.getText().toString().equals("")){
             errorLabel.setText(R.string.errorCreateChallEmpty);
         }else{
             errorLabel.setText("");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            LocalDateTime dateTime = LocalDateTime.parse(dateFin.getText().toString()+" 00:00", formatter);
+            LocalDateTime dateTime = LocalDateTime.parse(dateFin.getDayOfMonth()+"/"+month+"/"+dateFin.getYear()+" 00:00", formatter);
             Challenge chall = new Challenge(name.getText().toString(), true, theme.getText().toString(), dateTime, Integer.valueOf(timer.getText().toString()) ,desc.getText().toString());
             this.db.save(chall);
             Intent gotoChall = new Intent(this, onChallenge.class);

@@ -106,35 +106,52 @@
                 </EditText>
 
             </LinearLayout>
-            <LinearLayout
+
+            <TextView
+                android:paddingTop="15px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="horizontal">
-                <TextView
-                    android:paddingTop="15px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/dateFinLabel">
+                android:layout_weight="1"
+                android:text="@string/dateFinLabel">
 
-                </TextView>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="date"
-                    android:hint="day/month/year"
-                    android:id="@+id/inputEndDate"
-                    >
-                </EditText>
+            </TextView>
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:id="@+id/inputFinDate"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-            </LinearLayout>
+            </DatePicker>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0"-->
+<!--                android:orientation="horizontal">-->
+<!--                <TextView-->
+<!--                    android:paddingTop="15px"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="@string/dateFinLabel">-->
+
+<!--                </TextView>-->
+<!--                <EditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:inputType="date"-->
+<!--                    android:hint="day/month/year"-->
+<!--                    android:id="@+id/inputEndDate"-->
+<!--                    >-->
+<!--                </EditText>-->
+
+<!--            </LinearLayout>-->
 
             <TextView
                 android:id="@+id/errorCreateChall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:textColor="#FF0000">
 
             </TextView>
