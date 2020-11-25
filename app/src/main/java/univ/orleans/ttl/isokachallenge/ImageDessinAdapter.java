@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
+import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter.ImageDessinViewHolder>{
@@ -90,13 +92,17 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
 
         void setLocationData(Drawing dessin){
             User user = MainActivity.db.getUserFromDrawing(dessin.getId());
-            if (user!= null) {
 
+            HashMap<String, Pair<String, String>> mapParticipation = new HashMap<>();
+            mapParticipation.put(Tables.PARTICIPATION_DRAWING_ID, new Pair(Tables.OPERATOR_EQ, dessin.getId().toString()));
+            ArrayList<Participation> participations = new ArrayList<Participation>(MainActivity.db.getParticipations(mapParticipation));
+
+            if (user!= null) {
                 Picasso.get().load(dessin.getLink()).into(imageView);
                 textTitle.setText(user.getUsername());
 
                 textLocation.setText(dessin.getFormattedDate());
-                //textStarRating.setText(String.valueOf(dessin.startRating));
+                textStarRating.setText(String.valueOf(participations.get(0).getVotes()));
             }else{
                 HashMap<String, Pair<String, String>> map = new HashMap<>();
                 map.put(Tables.CHALLENGE_THEME, new Pair(Tables.OPERATOR_EQ, dessin.getLink()));
@@ -105,7 +111,9 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
                 Picasso.get().load(dessin.getLink()).into(imageView);
                 textTitle.setText(R.string.theme);
                 textLocation.setText(challenges.get(0).getFormattedDate());
-                //textStarRating.setText(String.valueOf(dessin.startRating));
+                //textStarRating.setVisibility(View.GONE);
+                itemView.findViewById(R.id.votes).setVisibility(View.GONE);
+
             }
 
         }
