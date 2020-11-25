@@ -1,71 +1,47 @@
 package univ.orleans.ttl.isokachallenge;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.Tables;
+import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
+import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
+import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Text;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.List;
 
-import univ.orleans.ttl.isokachallenge.orm.DB;
-import univ.orleans.ttl.isokachallenge.orm.Tables;
-import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
-import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
+public class ParcoursParticipation extends AppCompatActivity {
 
-public class onChallenge extends AppCompatActivity {
-//    static final int ID_CHALL = 1; //Test avec l'id 1
-    static final String BASE_URL = "https://thlato.pythonanywhere.com/api/";
-    static final String API_KEY = "1321321321321";
+    private int id_chall;
     DrawerLayout drawerLayout;
-    private int idchall;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_on_challenge);
-        ImageView iv = findViewById(R.id.imageView);
-        AndroidNetworking.initialize(getApplicationContext());
+        setContentView(R.layout.activity_parcours_participation);
 
         navigationView = findViewById(R.id.navigation_menu);
-        this.idchall = getIntent().getIntExtra("idchall", 1);
 
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
@@ -78,12 +54,11 @@ public class onChallenge extends AppCompatActivity {
         }
 
         setUpToolbar();
-        DB db = new DB(this);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
-                case  R.id.nav_connexion:
-                    Intent intent = new Intent(this, ConnexionView.class);
+                case  R.id.nav_challenge:
+                    Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     break;
                 case  R.id.nav_inscription:
@@ -91,8 +66,8 @@ public class onChallenge extends AppCompatActivity {
                     startActivity(inscription);
                     break;
 
-                case R.id.nav_challenge:
-                    Intent act = new Intent(this, MainActivity.class);
+                case R.id.nav_challengeTest:
+                    Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
                     break;
                 case R.id.nav_deconnexion:
@@ -104,32 +79,37 @@ public class onChallenge extends AppCompatActivity {
                     startActivity(create);
                     break;
                 case R.id.nav_profil:
+                    Intent profil = new Intent(this, Profil.class);
+                    startActivity(profil);
+                    break;
             }
             return false;
         });
-//        Picasso.get().load("https://histoire-image.org/sites/default/dor7_delacroix_001f.jpg").into(iv);
 
-        Challenge chall = db.getChallenge(this.idchall);
-        if(chall != null){
-            TextView title = findViewById(R.id.nomChall);
-            title.setText(chall.getName());
-            Picasso.get().load(chall.getTheme()).into(iv);
+        this.id_chall = getIntent().getIntExtra("id_chall", 0);
 
-            TextView timer = findViewById(R.id.timer);
-            timer.setText(chall.getTimer()+" minutes");
+        HashMap<String, Pair<String, String>> map = new HashMap<>();
+        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(this.id_chall)));
+        ArrayList<Participation> participations = new ArrayList<>(MainActivity.db.getParticipations(map));
 
-            TextView dateFin = findViewById(R.id.dateFin);
-            dateFin.setText("Termine le : "+chall.getDate());
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
+        TextView pasParticipation = findViewById(R.id.participation0);
+        if (participations.size()>0){
+            recyclerView.setVisibility(View.VISIBLE);
+            pasParticipation.setVisibility(View.GONE);
+            ParticipationAdapteur monAdapteur = new ParticipationAdapteur(this, participations);
 
-            TextView desc = findViewById(R.id.textView2);
-            desc.setText(chall.getDesc());
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            recyclerView.setAdapter(monAdapteur);
         }else{
-            TextView title = findViewById(R.id.nomChall);
-            title.setText(R.string.error);
+            recyclerView.setVisibility(View.GONE);
+            pasParticipation.setVisibility(View.VISIBLE);
+
+            String txt = getResources().getString(R.string.no_participation_challenge);
+            pasParticipation.setText(txt);
         }
-
-
     }
+
     public void setUpToolbar() {
         drawerLayout = findViewById(R.id.drawerLayout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
@@ -141,23 +121,12 @@ public class onChallenge extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze_24);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onParticiper(View view) {
-        Intent intent = new Intent(this, onParticiperChrono.class);
-        intent.putExtra("id_chall", this.idchall);
-        startActivity(intent);
-    }
-
-    public void parcoursParticipation(View view) {
-            Intent intent = new Intent(this, ParcoursParticipation.class);
-            intent.putExtra("id_chall", this.idchall);
-            startActivity(intent);
     }
 }

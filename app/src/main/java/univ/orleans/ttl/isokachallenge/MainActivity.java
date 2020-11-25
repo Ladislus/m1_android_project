@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Main", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigationView = findViewById(R.id.navigation_menu);
@@ -173,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
                     true
             );
 
+            Participation p7 = new Participation(
+                    user1,
+                    dessin6,
+                    challenge2,
+                    true
+            );
+
             db.save(user1, "tom");
             db.save(challenge1);
             db.save(challenge2);
@@ -189,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             db.save(p4);
             db.save(p5);
             db.save(p6);
+            db.save(p7);
         }
         navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
@@ -201,6 +210,10 @@ public class MainActivity extends AppCompatActivity {
                 case  R.id.nav_inscription:
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
+                    break;
+                case R.id.nav_challenge:
+                    Intent challenge = new Intent(this, MainActivity.class);
+                    startActivity(challenge);
                     break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
@@ -285,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
         monAdapteur = new ChallengeAdapter(challenges);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(monAdapteur);
 
         monAdapteur.setOnItemClickListener(position -> {
@@ -298,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("Main", "onStart: ");
         SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
             //If user connecté
@@ -307,8 +321,16 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
+        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        recyclerView.setAdapter(monAdapteur);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Main", "onResume: ");
+        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        recyclerView.setAdapter(monAdapteur);
     }
 
     public void setUpToolbar() {

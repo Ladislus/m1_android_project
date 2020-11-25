@@ -24,8 +24,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
@@ -154,13 +156,17 @@ public class onConfirmationParticipation extends AppCompatActivity {
     }
 
     public void onConfirmer(View view) {
-        //Upload dans imgur
-//        User user = this.db.getUser("username");
-//
-//        Participation participation = new Participation(User, drawing, chall, bool);
-//        this.db.save(participation)
-        // TODO: 23/11/2020
+        SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        User userCourant = this.db.getUser(sharedPref.getString("username",""));
+        BitmapDrawable btmd = (BitmapDrawable) this.imageViewConfirmation.getDrawable();
+        Bitmap img = btmd.getBitmap();
+        Drawing dessin = new Drawing(BitMapToString(img), LocalDateTime.now());
+        Challenge chall = this.db.getChallenge(getIntent().getIntExtra("idchall",0));
+        this.db.save(dessin);
+        Participation participation = new Participation(userCourant, dessin, chall, false);
+        this.db.save(participation);
         finish();
+
     }
 
 }

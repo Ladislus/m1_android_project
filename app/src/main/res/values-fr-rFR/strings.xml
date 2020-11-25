@@ -69,6 +69,7 @@
     <string name="btnCreate">Créer le challenge !</string>
     <string name="gotoCreateChall">Créer un challenge</string>
     <string name="errorCreateChallEmpty">Veuillez compléter tous les champs.</string>
+    <string name="no_participation_challenge">Il n\'y a pas de participation pour ce challenge</string>
 
 
 </resources>

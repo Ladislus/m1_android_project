@@ -1,6 +1,7 @@
 package univ.orleans.ttl.isokachallenge;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.TintInfo;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
+import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyViewHolder> {
 
-    private final List<Challenge> challenges;
+    private List<Challenge> challenges;
     private OnItemClickListener mListener;
 
     public  interface  OnItemClickListener{
@@ -36,6 +39,10 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
     }
 
     public ChallengeAdapter(List<Challenge> challenges) {
+        this.challenges = challenges;
+    }
+
+    public void setListChallengeAdapter(List<Challenge> challenges) {
         this.challenges = challenges;
     }
 
