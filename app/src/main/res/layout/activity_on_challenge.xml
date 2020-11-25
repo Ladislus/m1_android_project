@@ -100,7 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="15px"
-                android:text="@string/btnBrowse" />
+                android:text="@string/btnBrowse"
+                android:onClick="parcoursParticipation"/>
 
             <Button
                 android:id="@+id/btnParticipe"
@@ -108,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:layout_weight="1"
-
                 android:onClick="onParticiper"
                 android:text="@string/btnParticipe" />
         </LinearLayout>

@@ -12,10 +12,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -37,10 +39,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
+import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 public class onChallenge extends AppCompatActivity {
 //    static final int ID_CHALL = 1; //Test avec l'id 1
@@ -148,4 +154,21 @@ public class onChallenge extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void parcoursParticipation(View view) {
+
+        HashMap<String, Pair<String, String>> map = new HashMap<>();
+        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(this.idchall)));
+        ArrayList<Participation> participations = new ArrayList<>(MainActivity.db.getParticipations(map));
+
+        if (participations.size()>0){
+            Intent intent = new Intent(this, ParcoursParticipation.class);
+            intent.putExtra("id_chall", this.idchall);
+            intent.putExtra("participation", participations);
+            startActivity(intent);
+        }else{
+            String txt = getResources().getString(R.string.toast_no_participation_challenge);
+            Toast.makeText(this,txt ,Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
