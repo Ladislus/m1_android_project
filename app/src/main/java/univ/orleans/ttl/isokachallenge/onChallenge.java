@@ -103,6 +103,7 @@ public class onChallenge extends AppCompatActivity {
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
                     break;
+                case R.id.nav_profil:
             }
             return false;
         });

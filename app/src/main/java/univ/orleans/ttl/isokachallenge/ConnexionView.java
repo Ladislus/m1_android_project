@@ -86,6 +86,10 @@ public class ConnexionView extends AppCompatActivity {
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
                     break;
+                case R.id.nav_profil:
+                    Intent profil = new Intent(this, Profil.class);
+                    startActivity(profil);
+                    break;
             }
             return false;
         });
@@ -119,6 +123,7 @@ public class ConnexionView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze_24);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
