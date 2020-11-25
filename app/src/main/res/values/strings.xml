@@ -81,6 +81,8 @@
     <string name="no_participation_challenge">There is no participation for this challenge</string>
     <string name="text_validation_password_updated">Your password has been updated</string>
     <string name="txt_validate_password_not_updated">Your password has NOT been updated</string>
+    <string name="dateFin">End the :</string>
+    <string name="minutes" translatable="false">minutes</string>
 
 
 </resources>

@@ -95,12 +95,7 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
                 Picasso.get().load(dessin.getLink()).into(imageView);
                 textTitle.setText(user.getUsername());
 
-                String dateString = dessin.getDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
-                String dessinDate = dateTime.format(formatter2);
-                textLocation.setText(dessinDate);
+                textLocation.setText(dessin.getFormattedDate());
                 //textStarRating.setText(String.valueOf(dessin.startRating));
             }else{
                 HashMap<String, Pair<String, String>> map = new HashMap<>();
@@ -109,13 +104,7 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
 
                 Picasso.get().load(dessin.getLink()).into(imageView);
                 textTitle.setText(R.string.theme);
-
-                String dateString = challenges.get(0).getDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH'h'mm");
-                String dessinDate = dateTime.format(formatter2);
-                textLocation.setText(dessinDate);
+                textLocation.setText(challenges.get(0).getFormattedDate());
                 //textStarRating.setText(String.valueOf(dessin.startRating));
             }
 
