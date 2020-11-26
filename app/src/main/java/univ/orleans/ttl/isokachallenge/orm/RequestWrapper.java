@@ -18,6 +18,8 @@ public class RequestWrapper {
     private static final String _serverAPI = "https://thlato.pythonanywhere.com/api/";
     private static final String _apiKey = "h1ZTSY38h4hAjWn5yFeBJ1MVw4VXjienv6ksBXV0Ek7hh3qo2A";
 
+    public static final String REQUEST_LOG = "isoka_request_log";
+
     public void imgurUpload(Bitmap image, JSONObjectRequestListener callback) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
