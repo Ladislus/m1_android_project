@@ -575,16 +575,6 @@ public class DB extends SQLiteOpenHelper {
     //         SPECIALS         //
     //////////////////////////////
 
-    public Boolean login(String username, String password) {
-        //TODO
-        return true;
-    }
-
-    public Boolean updatePassword(String username, String password) {
-        //TODO
-        return !Objects.isNull(getUser(username));
-    }
-
     public User getUserFromDrawing(int id) {
         Drawing d = getDrawing(id);
         if (Objects.isNull(d)) return null;

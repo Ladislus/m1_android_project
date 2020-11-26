@@ -56,5 +56,26 @@ public class RequestWrapper {
                 .build()
                 .getAsJSONObject(callback);
     }
+
+    public void login(String username, String oldPassword, String newPassword, JSONObjectRequestListener callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", username);
+            json.put("oldPassword", User.hash(oldPassword));
+            json.put("newPassword", User.hash(newPassword));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        //TODO Faire la route
+//        AndroidNetworking.post(_serverAPI + "updatePassword")
+//                .addHeaders("apiKey", _apiKey)
+//                .addHeaders("Content-Type", "application/json")
+//                .addJSONObjectBody(json)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(callback);
+    }
 }
 
