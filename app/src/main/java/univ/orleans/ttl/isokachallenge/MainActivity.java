@@ -204,10 +204,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-                case R.id.nav_challenge:
-                    Intent challenge = new Intent(this, MainActivity.class);
-                    startActivity(challenge);
-                    break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
@@ -225,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(create);
                     break;
             }
+            drawerLayout.closeDrawers();
             return false;
         });
 
