@@ -57,7 +57,7 @@ public class RequestWrapper {
                 .getAsJSONObject(callback);
     }
 
-    public void login(String username, String oldPassword, String newPassword, JSONObjectRequestListener callback) {
+    public void updatePassword(String username, String oldPassword, String newPassword, JSONObjectRequestListener callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
