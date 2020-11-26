@@ -44,6 +44,7 @@ public class CreationChallActivity extends AppCompatActivity {
         }else{
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
+
         }
 
         setUpToolbar();
@@ -93,29 +94,36 @@ public class CreationChallActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void onCreateChall(View view) {
-        EditText name = findViewById(R.id.inputNameChall);
-        EditText desc = findViewById(R.id.inputDesc);
-        EditText theme = findViewById(R.id.inputTheme);
+        SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))){
+            EditText name = findViewById(R.id.inputNameChall);
+            EditText desc = findViewById(R.id.inputDesc);
+            EditText theme = findViewById(R.id.inputTheme);
 //        EditText dateFin = findViewById(R.id.inputEndDate);
-        DatePicker dateFin = findViewById(R.id.inputFinDate);
-        EditText timer = findViewById(R.id.inputTimer);
-        TextView errorLabel = findViewById(R.id.errorCreateChall);
+            DatePicker dateFin = findViewById(R.id.inputFinDate);
+            EditText timer = findViewById(R.id.inputTimer);
+            TextView errorLabel = findViewById(R.id.errorCreateChall);
 
-        int month = dateFin.getMonth()+1;
+            int month = dateFin.getMonth()+1;
 
-        if(name.getText().toString().equals("") || desc.getText().toString().equals("") || theme.getText().toString().equals("") || timer.getText().toString().equals("")){
-            errorLabel.setText(R.string.errorCreateChallEmpty);
+            if(name.getText().toString().equals("") || desc.getText().toString().equals("") || theme.getText().toString().equals("") || timer.getText().toString().equals("")){
+                errorLabel.setText(R.string.errorCreateChallEmpty);
+            }else{
+                errorLabel.setText("");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse(dateFin.getDayOfMonth()+"/"+month+"/"+dateFin.getYear()+" 00:00", formatter);
+                Challenge chall = new Challenge(name.getText().toString(), true, theme.getText().toString(), dateTime, Integer.valueOf(timer.getText().toString()) ,desc.getText().toString());
+                this.db.save(chall);
+                Intent gotoChall = new Intent(this, onChallenge.class);
+                gotoChall.putExtra("idchall", chall.getId());
+                finish();
+                startActivity(gotoChall);
+
+            }
+
         }else{
-            errorLabel.setText("");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            LocalDateTime dateTime = LocalDateTime.parse(dateFin.getDayOfMonth()+"/"+month+"/"+dateFin.getYear()+" 00:00", formatter);
-            Challenge chall = new Challenge(name.getText().toString(), true, theme.getText().toString(), dateTime, Integer.valueOf(timer.getText().toString()) ,desc.getText().toString());
-            this.db.save(chall);
-            Intent gotoChall = new Intent(this, onChallenge.class);
-            gotoChall.putExtra("idchall", chall.getId());
-            finish();
-            startActivity(gotoChall);
-
+            Intent intent = new Intent(this, ConnexionView.class);
+            startActivity(intent);
         }
 
 
