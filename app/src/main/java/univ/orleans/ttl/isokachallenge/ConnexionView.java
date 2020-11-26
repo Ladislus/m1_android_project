@@ -65,18 +65,21 @@ public class ConnexionView extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
-                case  R.id.nav_challenge:
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    break;
                 case  R.id.nav_inscription:
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-
+                case R.id.nav_challenge:
+                    Intent challenge = new Intent(this, MainActivity.class);
+                    startActivity(challenge);
+                    break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
+                    break;
+                case R.id.nav_profil:
+                    Intent profil = new Intent(this, Profil.class);
+                    startActivity(profil);
                     break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
@@ -85,10 +88,6 @@ public class ConnexionView extends AppCompatActivity {
                 case R.id.nav_createChall:
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
-                    break;
-                case R.id.nav_profil:
-                    Intent profil = new Intent(this, Profil.class);
-                    startActivity(profil);
                     break;
             }
             return false;
@@ -102,8 +101,8 @@ public class ConnexionView extends AppCompatActivity {
             editor.putString("username", this.login.getText().toString());
             editor.apply();
             finish();
-            Intent home = new Intent(this, MainActivity.class);
-            startActivity(home);
+//            Intent home = new Intent(this, MainActivity.class);
+//            startActivity(home);
         }else{
             TextView error = findViewById(R.id.labelErrorConnexion);
             error.setText(R.string.ErrorConnexion);

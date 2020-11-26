@@ -50,15 +50,18 @@ public class Profil extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
-                case  R.id.nav_challenge:
-                    Intent intent = new Intent(this, MainActivity.class);
+                case  R.id.nav_connexion:
+                    Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
                     break;
                 case  R.id.nav_inscription:
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-
+                case R.id.nav_challenge:
+                    Intent challenge = new Intent(this, MainActivity.class);
+                    startActivity(challenge);
+                    break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
@@ -70,10 +73,6 @@ public class Profil extends AppCompatActivity {
                 case R.id.nav_createChall:
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
-                    break;
-                case R.id.nav_profil:
-                    Intent profil = new Intent(this, Profil.class);
-                    startActivity(profil);
                     break;
             }
             return false;
