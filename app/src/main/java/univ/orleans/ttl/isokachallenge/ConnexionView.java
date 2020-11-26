@@ -102,8 +102,8 @@ public class ConnexionView extends AppCompatActivity {
             editor.putString("username", this.login.getText().toString());
             editor.apply();
             finish();
-            Intent home = new Intent(this, MainActivity.class);
-            startActivity(home);
+//            Intent home = new Intent(this, MainActivity.class);
+//            startActivity(home);
         }else{
             TextView error = findViewById(R.id.labelErrorConnexion);
             error.setText(R.string.ErrorConnexion);

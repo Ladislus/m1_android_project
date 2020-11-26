@@ -147,14 +147,20 @@ public class onChallenge extends AppCompatActivity {
     }
 
     public void onParticiper(View view) {
-        Intent intent = new Intent(this, onParticiperChrono.class);
-        intent.putExtra("id_chall", this.idchall);
-        startActivity(intent);
+        SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        if( !(sharedPref.getString("username","").equals(""))) {
+            Intent intent = new Intent(this, onParticiperChrono.class);
+            intent.putExtra("id_chall", this.idchall);
+            startActivity(intent);
+        } else{
+            Intent intent = new Intent(this, ConnexionView.class);
+            startActivity(intent);
+         }
     }
 
     public void parcoursParticipation(View view) {
-            Intent intent = new Intent(this, ParcoursParticipation.class);
-            intent.putExtra("id_chall", this.idchall);
-            startActivity(intent);
+        Intent intent = new Intent(this, ParcoursParticipation.class);
+        intent.putExtra("id_chall", this.idchall);
+        startActivity(intent);
     }
 }

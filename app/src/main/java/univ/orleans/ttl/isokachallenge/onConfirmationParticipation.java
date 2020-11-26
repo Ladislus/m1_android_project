@@ -157,15 +157,21 @@ public class onConfirmationParticipation extends AppCompatActivity {
 
     public void onConfirmer(View view) {
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
-        User userCourant = this.db.getUser(sharedPref.getString("username",""));
-        BitmapDrawable btmd = (BitmapDrawable) this.imageViewConfirmation.getDrawable();
-        Bitmap img = btmd.getBitmap();
-        Drawing dessin = new Drawing(BitMapToString(img), LocalDateTime.now());
-        Challenge chall = this.db.getChallenge(getIntent().getIntExtra("idchall",0));
-        this.db.save(dessin);
-        Participation participation = new Participation(userCourant, dessin, chall, false);
-        this.db.save(participation);
-        finish();
+        if( !(sharedPref.getString("username","").equals(""))){
+            sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+            User userCourant = this.db.getUser(sharedPref.getString("username",""));
+            BitmapDrawable btmd = (BitmapDrawable) this.imageViewConfirmation.getDrawable();
+            Bitmap img = btmd.getBitmap();
+            Drawing dessin = new Drawing(BitMapToString(img), LocalDateTime.now());
+            Challenge chall = this.db.getChallenge(getIntent().getIntExtra("idchall",0));
+            this.db.save(dessin);
+            Participation participation = new Participation(userCourant, dessin, chall, false);
+            this.db.save(participation);
+            finish();
+        }else{
+            Intent intent = new Intent(this, ConnexionView.class);
+            startActivity(intent);
+        }
 
     }
 
