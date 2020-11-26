@@ -28,8 +28,6 @@ import univ.orleans.ttl.isokachallenge.orm.entity.*;
 
 public class DB extends SQLiteOpenHelper {
 
-    private final RequestWrapper _wrapper = new RequestWrapper(this.getWritableDatabase());
-
     public DB(Context context) {
         super(context, Tables.DB_NAME, null, Tables.DB_VERSION);
     }
@@ -623,14 +621,6 @@ public class DB extends SQLiteOpenHelper {
     public void incrementParticipation(Participation participation) {
         participation.addVote();
         update(participation);
-    }
-
-    public String imgurUpload(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        String b64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-
-        return this._wrapper.imgurUpload(b64Image);
     }
 
     //////////////////////////////
