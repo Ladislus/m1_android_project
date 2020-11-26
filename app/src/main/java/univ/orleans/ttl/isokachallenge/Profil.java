@@ -107,7 +107,9 @@ public class Profil extends AppCompatActivity {
     }
 
     public void valider_username(View view) {
-        Boolean bool =  MainActivity.db.updatePassword(pref.getString("username",null),edit_password.getText().toString());
+        //TODO
+//        Boolean bool =  MainActivity.db.updatePassword(pref.getString("username",null),edit_password.getText().toString());
+        Boolean bool = true;
 
         username.setVisibility(View.VISIBLE);
         modifier.setVisibility(View.VISIBLE);

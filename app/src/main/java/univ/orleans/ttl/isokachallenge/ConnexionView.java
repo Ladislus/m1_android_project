@@ -95,7 +95,9 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onConnexion(View view) {
-        if(this.db.login(this.login.getText().toString(), this.mdp.getText().toString())){
+        //TODO
+//        if(this.db.login(this.login.getText().toString(), this.mdp.getText().toString())){
+        if(true){
             SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("username", this.login.getText().toString());
