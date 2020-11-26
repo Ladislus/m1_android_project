@@ -251,61 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 return 0;
             }
         });
-//
-//        ImageDessin imageDessinTourEiffel = new ImageDessin();
-//        imageDessinTourEiffel.imageUrl = "https://www.infinityandroid.com/images/france_eiffel_tower.jpg";
-//        imageDessinTourEiffel.auteur = "France";
-//        imageDessinTourEiffel.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinTourEiffel.startRating = 48;
-//        challenge1.ajout(imageDessinTourEiffel);
-//
-//        ImageDessin imageDessinMoutainView = new ImageDessin();
-//        imageDessinMoutainView.imageUrl = "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg";
-//        imageDessinMoutainView.auteur = "Indonesia";
-//        imageDessinMoutainView.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinMoutainView.startRating = 45;
-//        challenge1.ajout(imageDessinMoutainView);
-//
-//        ImageDessin imageDessinTajMahal = new ImageDessin();
-//        imageDessinTajMahal.imageUrl = "https://www.infinityandroid.com/images/india_taj_mahal.jpg";
-//        imageDessinTajMahal.auteur = "India";
-//        imageDessinTajMahal.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinTajMahal.startRating = 43;
-//        challenge1.ajout(imageDessinTajMahal);
-//
-//        ImageDessin imageDessinLakeView = new ImageDessin();
-//        imageDessinLakeView.imageUrl = "https://www.infinityandroid.com/images/canada_lake_view.jpg";
-//        imageDessinLakeView.auteur = "Canada";
-//        imageDessinLakeView.dateSoumission = "21/11/2020 à 1h12";
-//        imageDessinLakeView.startRating = 10 ;
-//        challenge1.ajout(imageDessinLakeView);
-//
-//        ImageDessin imageDessinTest = new ImageDessin();
-//        imageDessinTest.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/71wvedvViFL._AC_SY679_.jpg";
-//        imageDessinTest.auteur = "Tom99";
-//        imageDessinTest.dateSoumission = "21/11/2020 à 16h12";
-//        imageDessinTest.startRating = 42;
-//        challenge1.ajout(imageDessinTest);
-//
-//        ImageDessin imageDessinTestAnime = new ImageDessin();
-//        imageDessinTestAnime.imageUrl = "https://wallpapercave.com/wp/wp4443741.jpg";
-//        imageDessinTestAnime.auteur = "Paysage";
-//        imageDessinTestAnime.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinTestAnime.startRating = 45;
-//        challenge1.ajout(imageDessinTestAnime);
-//
-//        List<ImageDessin> test = new ArrayList<>();
-//
-//        ImageDessin imageDessinAnime = new ImageDessin();
-//        imageDessinAnime.imageUrl = "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915";
-//        imageDessinAnime.auteur = "Tom99";
-//        imageDessinAnime.dateSoumission = "8/11/2020 à 18h10";
-//        imageDessinAnime.startRating = 450;
-//        test.add(imageDessinAnime);
-//
-//        Challenge challenge2 = new Challenge("Ishigami Senku",test);
-//        challenges.add(challenge1);
-//        challenges.add(challenge2);
+
 
         monAdapteur = new ChallengeAdapter(challenges);
 

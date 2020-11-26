@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
+    android:id="@+id/participationLayout"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="150dp"
     android:layout_height="237dp"
@@ -8,7 +11,7 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="5dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,19 +23,52 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:background="#2d2d2d"
+            app:layout_constraintTop_toTopOf="parent"
             />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_start_rating"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="2dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_star"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/textVotesParticipation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtPseudo"
             android:textColor="#2d2d2d"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="12sp"
             android:gravity="center"
             android:text="pseudo"
+            app:layout_constraintTop_toBottomOf="@id/imgParticipation"
+            app:layout_constraintBottom_toBottomOf="parent"
+
             />
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
