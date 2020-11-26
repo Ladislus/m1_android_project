@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     "Test",
                     true,
                     "test",
-                    LocalDateTime.now(),
+                    LocalDateTime.now().minusDays(10),
                     30,
                     "test de challenge"
             );
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     "Ishigami Senku",
                     true,
                     "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915",
-                    LocalDateTime.now(),
+                    LocalDateTime.now().minusDays(15),
                     30,
                     "Dessiner Ishigamis Senku en 30 min"
             );
@@ -115,19 +116,19 @@ public class MainActivity extends AppCompatActivity {
             );
 
             Drawing dessin1 = new Drawing(
-                    "https://www.infinityandroid.com/images/france_eiffel_tower.jpg",
+                    "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Haikyu_season_1_DVD_cover.jpg/220px-Haikyu_season_1_DVD_cover.jpg",
                     LocalDateTime.now().minusDays(100)
             );
             Drawing dessin2 = new Drawing(
-                    "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg",
+                    "https://recenthighlights.com/wp-content/uploads/2020/09/Solo-Leveling-Chapter-120.png",
                     LocalDateTime.now().minusDays(10)
             );
             Drawing dessin3 = new Drawing(
-                    "https://www.infinityandroid.com/images/india_taj_mahal.jpg",
+                    "https://pm1.narvii.com/6763/0529da37b02fd921fde5e90c01b5508dce487591v2_hq.jpg",
                     LocalDateTime.now().minusDays(5)
             );
             Drawing dessin4 = new Drawing(
-                    "https://www.infinityandroid.com/images/canada_lake_view.jpg",
+                    "https://www.manga-news.com/public/images/series/The-Beginning-After-The-End-webtoon-visual.jpg",
                     LocalDateTime.now().minusDays(2)
             );
             Drawing dessin5 = new Drawing(
@@ -177,13 +178,6 @@ public class MainActivity extends AppCompatActivity {
                     true
             );
 
-            Participation p7 = new Participation(
-                    user1,
-                    dessin6,
-                    challenge2,
-                    true
-            );
-
             db.save(user1, "tom");
             db.save(challenge1);
             db.save(challenge2);
@@ -200,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
             db.save(p4);
             db.save(p5);
             db.save(p6);
-            db.save(p7);
         }
         navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
@@ -215,8 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(inscription);
                     break;
                 case R.id.nav_challenge:
-                    Intent challenge = new Intent(this, MainActivity.class);
-                    startActivity(challenge);
+                    this.onResume();
                     break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
@@ -235,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(create);
                     break;
             }
+            drawerLayout.closeDrawers();
             return false;
         });
 
@@ -243,61 +236,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         challenges = db.getAllChallenges();
-//
-//        ImageDessin imageDessinTourEiffel = new ImageDessin();
-//        imageDessinTourEiffel.imageUrl = "https://www.infinityandroid.com/images/france_eiffel_tower.jpg";
-//        imageDessinTourEiffel.auteur = "France";
-//        imageDessinTourEiffel.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinTourEiffel.startRating = 48;
-//        challenge1.ajout(imageDessinTourEiffel);
-//
-//        ImageDessin imageDessinMoutainView = new ImageDessin();
-//        imageDessinMoutainView.imageUrl = "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg";
-//        imageDessinMoutainView.auteur = "Indonesia";
-//        imageDessinMoutainView.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinMoutainView.startRating = 45;
-//        challenge1.ajout(imageDessinMoutainView);
-//
-//        ImageDessin imageDessinTajMahal = new ImageDessin();
-//        imageDessinTajMahal.imageUrl = "https://www.infinityandroid.com/images/india_taj_mahal.jpg";
-//        imageDessinTajMahal.auteur = "India";
-//        imageDessinTajMahal.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinTajMahal.startRating = 43;
-//        challenge1.ajout(imageDessinTajMahal);
-//
-//        ImageDessin imageDessinLakeView = new ImageDessin();
-//        imageDessinLakeView.imageUrl = "https://www.infinityandroid.com/images/canada_lake_view.jpg";
-//        imageDessinLakeView.auteur = "Canada";
-//        imageDessinLakeView.dateSoumission = "21/11/2020 à 1h12";
-//        imageDessinLakeView.startRating = 10 ;
-//        challenge1.ajout(imageDessinLakeView);
-//
-//        ImageDessin imageDessinTest = new ImageDessin();
-//        imageDessinTest.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/71wvedvViFL._AC_SY679_.jpg";
-//        imageDessinTest.auteur = "Tom99";
-//        imageDessinTest.dateSoumission = "21/11/2020 à 16h12";
-//        imageDessinTest.startRating = 42;
-//        challenge1.ajout(imageDessinTest);
-//
-//        ImageDessin imageDessinTestAnime = new ImageDessin();
-//        imageDessinTestAnime.imageUrl = "https://wallpapercave.com/wp/wp4443741.jpg";
-//        imageDessinTestAnime.auteur = "Paysage";
-//        imageDessinTestAnime.dateSoumission = "08/11/2020 à 18h12";
-//        imageDessinTestAnime.startRating = 45;
-//        challenge1.ajout(imageDessinTestAnime);
-//
-//        List<ImageDessin> test = new ArrayList<>();
-//
-//        ImageDessin imageDessinAnime = new ImageDessin();
-//        imageDessinAnime.imageUrl = "https://static.wikia.nocookie.net/dr-stone/images/3/34/Senku_Ishigami_Anime_Infobox.png/revision/latest?cb=20190710063915";
-//        imageDessinAnime.auteur = "Tom99";
-//        imageDessinAnime.dateSoumission = "8/11/2020 à 18h10";
-//        imageDessinAnime.startRating = 450;
-//        test.add(imageDessinAnime);
-//
-//        Challenge challenge2 = new Challenge("Ishigami Senku",test);
-//        challenges.add(challenge1);
-//        challenges.add(challenge2);
+
+        challenges.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+
 
         monAdapteur = new ChallengeAdapter(challenges);
 
@@ -305,10 +262,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(monAdapteur);
 
         monAdapteur.setOnItemClickListener(position -> {
-            Challenge user = challenges.get(position);
-            Toast.makeText(getBaseContext(),
-                    "RecyclerView : Challenge Title : "+user.getName(),
-                    Toast.LENGTH_SHORT).show();
+            Challenge chall = challenges.get(position);
+            Intent gotoChall = new Intent(this, onChallenge.class);
+            gotoChall.putExtra("idchall", chall.getId());
+            startActivity(gotoChall);
         });
     }
     @Override
@@ -324,7 +281,27 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        challenges =MainActivity.db.getAllChallenges();
+
+        challenges.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+
+        monAdapteur.setListChallengeAdapter(challenges);
         recyclerView.setAdapter(monAdapteur);
     }
 
@@ -332,7 +309,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Main", "onResume: ");
-        monAdapteur.setListChallengeAdapter(MainActivity.db.getAllChallenges());
+        challenges =MainActivity.db.getAllChallenges();
+
+        challenges.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+
+        monAdapteur.setListChallengeAdapter(challenges);
         recyclerView.setAdapter(monAdapteur);
     }
 

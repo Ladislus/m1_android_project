@@ -67,6 +67,15 @@
             android:visibility="gone"
             android:onClick="valider_username"
             />
+        <TextView
+            android:id="@+id/msgRetourValidation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/green"
+            android:visibility="gone"
+            />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

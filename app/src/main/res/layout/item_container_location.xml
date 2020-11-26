@@ -22,6 +22,7 @@
             android:contentDescription="@string/image_dessin" />
 
         <LinearLayout
+            android:id="@+id/votes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

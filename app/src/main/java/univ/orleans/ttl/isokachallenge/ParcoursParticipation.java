@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +68,6 @@ public class ParcoursParticipation extends AppCompatActivity {
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
@@ -82,6 +84,10 @@ public class ParcoursParticipation extends AppCompatActivity {
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);
                     break;
+                case  R.id.nav_connexion:
+                    Intent connexion = new Intent(this, ConnexionView.class);
+                    startActivity(connexion);
+                    break;
             }
             return false;
         });
@@ -92,8 +98,26 @@ public class ParcoursParticipation extends AppCompatActivity {
         map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(this.id_chall)));
         ArrayList<Participation> participations = new ArrayList<>(MainActivity.db.getParticipations(map));
 
+        participations.sort((o1, o2) -> {
+            String dateString1 = o1.getDrawing().getDate();
+            String dateString2 = o2.getDrawing().getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
-        TextView pasParticipation = findViewById(R.id.participation0);
+        TextView pasParticipation = (TextView) findViewById(R.id.participation0);
         if (participations.size()>0){
             recyclerView.setVisibility(View.VISIBLE);
             pasParticipation.setVisibility(View.GONE);
