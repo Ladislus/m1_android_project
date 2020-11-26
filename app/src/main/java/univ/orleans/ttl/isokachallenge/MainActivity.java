@@ -113,19 +113,19 @@ public class MainActivity extends AppCompatActivity {
             );
 
             Drawing dessin1 = new Drawing(
-                    "https://www.infinityandroid.com/images/france_eiffel_tower.jpg",
+                    "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Haikyu_season_1_DVD_cover.jpg/220px-Haikyu_season_1_DVD_cover.jpg",
                     LocalDateTime.now().minusDays(100)
             );
             Drawing dessin2 = new Drawing(
-                    "https://www.infinityandroid.com/images/indonesia_mountain_view.jpg",
+                    "https://recenthighlights.com/wp-content/uploads/2020/09/Solo-Leveling-Chapter-120.png",
                     LocalDateTime.now().minusDays(10)
             );
             Drawing dessin3 = new Drawing(
-                    "https://www.infinityandroid.com/images/india_taj_mahal.jpg",
+                    "https://pm1.narvii.com/6763/0529da37b02fd921fde5e90c01b5508dce487591v2_hq.jpg",
                     LocalDateTime.now().minusDays(5)
             );
             Drawing dessin4 = new Drawing(
-                    "https://www.infinityandroid.com/images/canada_lake_view.jpg",
+                    "https://www.manga-news.com/public/images/series/The-Beginning-After-The-End-webtoon-visual.jpg",
                     LocalDateTime.now().minusDays(2)
             );
             Drawing dessin5 = new Drawing(
@@ -203,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
                 case  R.id.nav_inscription:
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
+                    break;
+                case R.id.nav_challenge:
+                    this.onResume();
                     break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);

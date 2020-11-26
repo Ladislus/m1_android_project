@@ -1,6 +1,7 @@
 package univ.orleans.ttl.isokachallenge;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,8 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
 
             pseudo = (TextView) itemView.findViewById(R.id.txtPseudo);
             dessin = (ImageView) itemView.findViewById(R.id.imgParticipation);
+
+
         }
     }
 }
