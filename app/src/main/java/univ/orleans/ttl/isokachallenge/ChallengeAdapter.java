@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
+
+import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
@@ -130,9 +134,9 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             dessinAdapter.setOnItemClickListener(
                     position -> {
                         Drawing dessin = listDessinChallenge.get(position);
-//                        Toast.makeText(context,
-//                                "Image : Auteur = "+user.getAuteur()+" avec "+user.getStartRating()+" votes.",
-//                                Toast.LENGTH_SHORT).show();
+                        Intent gotoChall = new Intent(this.context, onChallenge.class);
+                        gotoChall.putExtra("idchall", challenge.getId());
+                        context.startActivity(gotoChall);
                     }
             );
             this.imagesCaroussel.setAdapter(dessinAdapter);

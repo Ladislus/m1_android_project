@@ -313,10 +313,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(monAdapteur);
 
         monAdapteur.setOnItemClickListener(position -> {
-            Challenge user = challenges.get(position);
-            Toast.makeText(getBaseContext(),
-                    "RecyclerView : Challenge Title : "+user.getName(),
-                    Toast.LENGTH_SHORT).show();
+            Challenge chall = challenges.get(position);
+            Intent gotoChall = new Intent(this, onChallenge.class);
+            gotoChall.putExtra("idchall", chall.getId());
+            startActivity(gotoChall);
         });
     }
     @Override
