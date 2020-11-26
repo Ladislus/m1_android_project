@@ -68,7 +68,6 @@ public class ParcoursParticipation extends AppCompatActivity {
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
@@ -84,6 +83,10 @@ public class ParcoursParticipation extends AppCompatActivity {
                 case R.id.nav_profil:
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);
+                    break;
+                case  R.id.nav_connexion:
+                    Intent connexion = new Intent(this, ConnexionView.class);
+                    startActivity(connexion);
                     break;
             }
             return false;
@@ -114,7 +117,7 @@ public class ParcoursParticipation extends AppCompatActivity {
         });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
-        TextView pasParticipation = findViewById(R.id.participation0);
+        TextView pasParticipation = (TextView) findViewById(R.id.participation0);
         if (participations.size()>0){
             recyclerView.setVisibility(View.VISIBLE);
             pasParticipation.setVisibility(View.GONE);
