@@ -8,7 +8,12 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class RequestWrapper {
 
@@ -34,10 +39,19 @@ public class RequestWrapper {
     }
 
     public void login(String username, String password, JSONObjectRequestListener callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", username);
+            json.put("password", User.hash(password));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
         AndroidNetworking.post(_serverAPI + "login")
                 .addHeaders("apiKey", _apiKey)
-                .addBodyParameter("username", username)
-                .addBodyParameter("password", password)
+                .addHeaders("Content-Type", "application/json")
+                .addJSONObjectBody(json)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(callback);
