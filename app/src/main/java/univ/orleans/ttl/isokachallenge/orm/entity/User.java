@@ -1,6 +1,8 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class User {
@@ -19,6 +21,10 @@ public class User {
 
     public String getDate() {
         return this._date.toString();
+    }
+
+    public String getFormattedDate() {
+        return this._date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH'h'mm"));
     }
 
     public static String hash(String password) {

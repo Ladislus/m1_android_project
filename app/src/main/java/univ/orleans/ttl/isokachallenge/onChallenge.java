@@ -100,6 +100,7 @@ public class onChallenge extends AppCompatActivity {
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
                     break;
+                case R.id.nav_profil:
             }
             return false;
         });
@@ -112,10 +113,10 @@ public class onChallenge extends AppCompatActivity {
             Picasso.get().load(chall.getTheme()).into(iv);
 
             TextView timer = findViewById(R.id.timer);
-            timer.setText(chall.getTimer()+" minutes");
+            timer.setText(chall.getTimer()+getString(R.string.minutes));
 
             TextView dateFin = findViewById(R.id.dateFin);
-            dateFin.setText("Termine le : "+chall.getDate());
+            dateFin.setText(getString(R.string.dateFin)+chall.getFormattedDate());
 
             TextView desc = findViewById(R.id.textView2);
             desc.setText(chall.getDesc());

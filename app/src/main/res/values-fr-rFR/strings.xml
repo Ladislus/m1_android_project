@@ -19,7 +19,6 @@
     <string name="connexion">Connexion</string>
     <string name="challenge_en_cours">Challenge en cours</string>
     <string name="statistiques">Statistiques</string>
-    <string name="parametres">Paramètres</string>
     <string name="desctitle">Description</string>
     <string name="imgtitleplaceholder">Thème du challenge</string>
     <string name="temps">Temps de dessin :</string>
@@ -70,6 +69,9 @@
     <string name="gotoCreateChall">Créer un challenge</string>
     <string name="errorCreateChallEmpty">Veuillez compléter tous les champs.</string>
     <string name="no_participation_challenge">Il n\'y a pas de participation pour ce challenge</string>
+    <string name="text_validation_password_updated">Votre mot de passe à été modifié</string>
+    <string name="txt_validate_password_not_updated">Votre mot de passe n\'a pas été modifié</string>
+    <string name="dateFin">Termine le :</string>
 
 
 </resources>

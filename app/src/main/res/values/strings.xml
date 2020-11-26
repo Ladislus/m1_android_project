@@ -28,7 +28,6 @@
     <string name="connexion">Connexion</string>
     <string name="challenge_en_cours">Ongoing challenge</string>
     <string name="statistiques">Statistics</string>
-    <string name="parametres">Settings</string>
     <string name="desctitle">Description</string>
     <string name="imgtitleplaceholder">Challenge\'s Theme</string>
     <string name="temps">Time to draw :</string>
@@ -80,6 +79,10 @@
     <string name="gotoCreateChall">Create a challenge</string>
     <string name="errorCreateChallEmpty">Please fill all field.</string>
     <string name="no_participation_challenge">There is no participation for this challenge</string>
+    <string name="text_validation_password_updated">Your password has been updated</string>
+    <string name="txt_validate_password_not_updated">Your password has NOT been updated</string>
+    <string name="dateFin">End the :</string>
+    <string name="minutes" translatable="false">minutes</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Drawing {
 
@@ -38,6 +39,10 @@ public class Drawing {
 
     public String getDate() {
         return this._date.toString();
+    }
+
+    public String getFormattedDate() {
+        return this._date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH'h'mm"));
     }
 
     @Override
