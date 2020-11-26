@@ -87,10 +87,13 @@ public class onChallenge extends AppCompatActivity {
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-
                 case R.id.nav_challenge:
-                    Intent act = new Intent(this, MainActivity.class);
-                    startActivity(act);
+                    Intent challenge = new Intent(this, MainActivity.class);
+                    startActivity(challenge);
+                    break;
+                case R.id.nav_profil:
+                    Intent profil = new Intent(this, Profil.class);
+                    startActivity(profil);
                     break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
@@ -100,7 +103,6 @@ public class onChallenge extends AppCompatActivity {
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
                     break;
-                case R.id.nav_profil:
             }
             return false;
         });
