@@ -160,6 +160,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
         User userCourant = this.db.getUser(sharedPref.getString("username",""));
         BitmapDrawable btmd = (BitmapDrawable) this.imageViewConfirmation.getDrawable();
         Bitmap img = btmd.getBitmap();
+
         Drawing dessin = new Drawing(BitMapToString(img), LocalDateTime.now());
         Challenge chall = this.db.getChallenge(getIntent().getIntExtra("idchall",0));
         this.db.save(dessin);

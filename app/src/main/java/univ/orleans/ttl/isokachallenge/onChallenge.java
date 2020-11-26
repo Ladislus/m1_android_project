@@ -49,9 +49,6 @@ import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 public class onChallenge extends AppCompatActivity {
-//    static final int ID_CHALL = 1; //Test avec l'id 1
-    static final String BASE_URL = "https://thlato.pythonanywhere.com/api/";
-    static final String API_KEY = "1321321321321";
     DrawerLayout drawerLayout;
     private int idchall;
     ActionBarDrawerToggle actionBarDrawerToggle;
