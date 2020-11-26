@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigationView = findViewById(R.id.navigation_menu);
+
+        AndroidNetworking.initialize(getApplicationContext());
 
         SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
