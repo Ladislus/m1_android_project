@@ -59,7 +59,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
         }
 
         setUpToolbar();
-        this.db = new DB(this);
+        this.db = DB.getInstance();
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {

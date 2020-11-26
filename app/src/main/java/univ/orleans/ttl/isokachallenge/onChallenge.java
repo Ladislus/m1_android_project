@@ -75,7 +75,7 @@ public class onChallenge extends AppCompatActivity {
         }
 
         setUpToolbar();
-        DB db = new DB(this);
+        DB db = DB.getInstance();
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {

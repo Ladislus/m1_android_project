@@ -23,9 +23,23 @@ import univ.orleans.ttl.isokachallenge.orm.entity.*;
 
 public class DB extends SQLiteOpenHelper {
 
-    public DB(Context context) {
+    private static DB _instance;
+
+    private DB(Context context) {
         super(context, Tables.DB_NAME, null, Tables.DB_VERSION);
     }
+
+    public static void init(Context context) {
+        if (!Objects.isNull(_instance)) throw new AssertionError("Database is already initialized !");
+        _instance = new DB(context);
+    }
+
+    public static DB getInstance() {
+        if (Objects.isNull(_instance)) throw new AssertionError("Database is not initialized !");
+        return _instance;
+    }
+
+    public static Boolean isInitialized() { return !Objects.isNull(_instance); }
 
     @Override
     public void onConfigure(SQLiteDatabase db) {

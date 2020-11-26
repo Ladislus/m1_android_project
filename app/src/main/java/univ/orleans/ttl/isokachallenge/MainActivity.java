@@ -80,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setUpToolbar();
-        if (Objects.isNull(db)){
-            db = new DB(this);
+        if (!DB.isInitialized()){
+            DB.init(this);
+            db = DB.getInstance();
 
             User user1 = new User(
                     "Tom99",

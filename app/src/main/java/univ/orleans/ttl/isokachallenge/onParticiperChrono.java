@@ -54,7 +54,7 @@ public class onParticiperChrono extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_participer_chrono);
         this.id_chall = getIntent().getIntExtra("id_chall", 0);
-        DB db = new DB(this);
+        DB db = DB.getInstance();
         Challenge chall = db.getChallenge(id_chall);
         navigationView = findViewById(R.id.navigation_menu);
 
