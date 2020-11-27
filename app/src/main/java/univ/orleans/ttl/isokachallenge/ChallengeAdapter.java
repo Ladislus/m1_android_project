@@ -123,7 +123,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             }
 
             Log.d("bonjour", "display: "+ listDessinChallenge[0]);
-            //ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
+
             dessinAdapter[0].setOnItemClickListener(
                     position -> {
                         Drawing dessin = listDessinChallenge[0].get(position);
@@ -152,22 +152,29 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                 @Override
                 public void onResponse() {
                     progressBar.setVisibility(View.GONE);
+
                     listDessinChallenge[0] = new ArrayList<>(DB.getInstance().getDrawingsFromChallenge(challenge.getId()));
+                    if (listDessinChallenge[0].size()==0){
+                        String dateChallenge = challenge.getDate();
+                        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                        LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
+                        listDessinChallenge[0].add(new Drawing(challenge.getTheme(),dateTimeChallenge));
+                    }
                     sortList(listDessinChallenge[0]);
+
+                    if (listDessinChallenge[0].size()>=5) {
+                        for (int i = 0; i < 5; i++) {
+                            listDessinChallengeTrier.add(listDessinChallenge[0].get(i));
+                        }
+                    }
+
                     if (listDessinChallenge[0].size()>=5){
                         dessinAdapter[0] = new ImageDessinAdapter(listDessinChallengeTrier);
                     }else {
                         dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0]);
                     }
 
-                    dessinAdapter[0].setOnItemClickListener(
-                            position -> {
-                                Drawing dessin = listDessinChallenge[0].get(position);
-                                Intent gotoChall = new Intent(context, onChallenge.class);
-                                gotoChall.putExtra("idchall", challenge.getId());
-                                context.startActivity(gotoChall);
-                            }
-                    );
+                    Log.d("bonjour", "onResponse: "+listDessinChallenge[0].toString());
 
                     imagesCaroussel.setAdapter(dessinAdapter[0]);
                     Log.d("bonjour", "onResponse: bonjour ");

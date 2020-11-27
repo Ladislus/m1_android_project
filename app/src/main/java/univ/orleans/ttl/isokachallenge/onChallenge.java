@@ -41,12 +41,16 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
+import univ.orleans.ttl.isokachallenge.orm.Callback;
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class onChallenge extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -126,6 +130,32 @@ public class onChallenge extends AppCompatActivity {
             TextView title = findViewById(R.id.nomChall);
             title.setText(R.string.error);
         }
+
+        ArrayList<Participation>[] participation = new ArrayList[]{null};
+        final User[] user = {null};
+        final ArrayList<Participation>[] participations = new ArrayList[]{null};
+        new RequestWrapper().get(new Callback() {
+            @Override
+            public void onResponse() {
+                user[0] = DB.getInstance().getUser(sharedPref.getString("username",""));
+
+                HashMap<String, Pair<String, String>> map = new HashMap<>();
+                map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(idchall)));
+                map.put(Tables.PARTICIPATION_USER_ID, new Pair(Tables.OPERATOR_EQ, user[0].getUsername()));
+                Log.d("bonjour", "onResponse: "+DB.getInstance().getParticipations(map).toString());
+                participation[0] = new ArrayList<>(DB.getInstance().getParticipations(map));
+                Log.d("bonjour", "onResponse: "+participation[0].toString());
+
+                if (participation[0].isEmpty()){
+                    findViewById(R.id.btnParticipe).setEnabled(true);;
+                }
+            }
+
+            @Override
+            public void onError(ANError error) {
+
+            }
+        });
 
 
     }
