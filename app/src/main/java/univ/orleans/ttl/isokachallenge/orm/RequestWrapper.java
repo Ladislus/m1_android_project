@@ -71,6 +71,7 @@ public class RequestWrapper {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
+            //TODO assurer bd
             json.put("password", User.hash(password, DB.getInstance().getUser(username).getSalt()));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -176,7 +177,7 @@ public class RequestWrapper {
 
     @RequiresPermission(Manifest.permission.INTERNET)
     public void vote(@NonNull JSONObject participation, @Nullable JSONObjectRequestListener callback) throws JSONException {
-        Log.d(RequestWrapper.REQUEST_LOG, "ADD VOTE (" + participation.getString("u_id") + ", " + participation.getString("d_id") + ", " + participation.getString("c_id"));
+        Log.d(RequestWrapper.REQUEST_LOG, "ADD VOTE (" + participation.getString("u_id") + ", " + participation.getString("d_id") + ", " + participation.getString("c_id") + ")");
 
         AndroidNetworking.put(_serverAPI + ROUTES.PARTICIPATIONN + "vote")
                 .addHeaders("apiKey", _apiKey)
