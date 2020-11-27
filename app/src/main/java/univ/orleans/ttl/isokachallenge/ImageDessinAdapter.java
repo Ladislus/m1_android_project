@@ -1,15 +1,11 @@
 package univ.orleans.ttl.isokachallenge;
 
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -23,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
-import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;

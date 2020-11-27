@@ -119,8 +119,6 @@ public class Profil extends AppCompatActivity {
     }
 
     public void valider_new_mdp(View view) {
-        //TODO
-
         username.setText(getResources().getString(R.string.pseudoTitre)+pref.getString("username",null));
         modifier.setVisibility(View.VISIBLE);
         msgRetourValidation.setVisibility(View.VISIBLE);

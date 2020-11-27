@@ -10,7 +10,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -51,9 +56,34 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
             holder.participationItem.setOnClickListener(v -> {
 
                 //TODO Use request
-                DB.getInstance().incrementParticipation(mParticipation.get(position));
+                try {
+                    new RequestWrapper().vote(mParticipation.get(position).toJson(), new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                DB.getInstance().incrementParticipation(Participation.fromJson(response));
+                                mParticipation.remove(position);
+                                mParticipation.add(position,Participation.fromJson(response));
+                                holder.votes.setText(mParticipation.get(position).getVotes().toString());
+                            } catch (JSONException e) {
+                                Log.d("bonjour", "onResponse: salut");
+                                e.printStackTrace();
+                            }
+                        }
 
-                holder.votes.setText(mParticipation.get(position).getVotes().toString());
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(RequestWrapper.REQUEST_LOG, "onError: "+anError.toString());
+                            Log.d(RequestWrapper.REQUEST_LOG, "onError: "+anError.getErrorDetail());
+                            Log.d(RequestWrapper.REQUEST_LOG, "onError: "+anError.getErrorBody());
+                            Log.d(RequestWrapper.REQUEST_LOG, "onError: "+anError.getErrorCode());
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //holder.votes.setText(mParticipation.get(position).getVotes().toString());
             });
         }
     }

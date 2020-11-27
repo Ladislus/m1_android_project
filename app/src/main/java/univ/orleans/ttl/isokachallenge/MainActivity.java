@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = DB.getInstance();
 
-        new RequestWrapper().get(null);
+        //new RequestWrapper().get(null);
 
         navigationView = findViewById(R.id.navigation_menu);
         pg = findViewById(R.id.progressBar);
@@ -122,9 +122,6 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView = findViewById(R.id.myRecyclerView);
 
-        loadChallenge();
-
-
     }
 
     @Override
@@ -160,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        monAdapteur.setListChallengeAdapter(challenges);
-        recyclerView.setAdapter(monAdapteur);
+//        monAdapteur.setListChallengeAdapter(challenges);
+//        recyclerView.setAdapter(monAdapteur);
     }
 
     @Override
@@ -170,23 +167,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Main", "onResume: ");
         challenges =DB.getInstance().getAllChallenges();
 
-        challenges.sort((o1, o2) -> {
-            String dateString1 = o1.getDate();
-            String dateString2 = o2.getDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
-            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
-            if(dateTime1.isAfter(dateTime2)) {
-                Log.d("Sort","1");
-                return -1;
-            } else if(dateTime1.isBefore(dateTime2)) {
-                Log.d("Sort","-1");
-                return 1;
-            } else {
-                Log.d("Sort","0");
-                return 0;
-            }
-        });
+        loadChallenge();
 
         monAdapteur.setListChallengeAdapter(challenges);
         recyclerView.setAdapter(monAdapteur);
@@ -238,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(ANError error) {
+                Log.d("bonjour", "onError: ");
                 pg.setVisibility(View.GONE);
             }
         });
