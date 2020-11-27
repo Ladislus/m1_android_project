@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -116,13 +117,12 @@ public class Profil extends AppCompatActivity {
 
         username.setText(getResources().getString(R.string.pseudoTitre)+pref.getString("username",null));
         modifier.setVisibility(View.VISIBLE);
-        msgRetourValidation.setVisibility(view.VISIBLE);
+        msgRetourValidation.setVisibility(View.VISIBLE);
 
         edit_password.setVisibility(View.GONE);
         valider.setVisibility(View.GONE);
 
-        RequestWrapper requestWrapper = new RequestWrapper();
-        JSONObjectRequestListener callback = new JSONObjectRequestListener() {
+        new RequestWrapper().updatePassword(pref.getString("username",null),old_pass,edit_password.getText().toString(),new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 msgRetourValidation.setText(R.string.text_validation_password_updated);
@@ -133,10 +133,12 @@ public class Profil extends AppCompatActivity {
             public void onError(ANError anError) {
                 msgRetourValidation.setText(R.string.txt_validate_password_not_updated);
                 msgRetourValidation.setTextColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
+                Log.d(RequestWrapper.REQUEST_LOG, anError.toString());
+                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorDetail());
+                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorBody());
+                Log.d(RequestWrapper.REQUEST_LOG, String.valueOf(anError.getErrorCode()));
             }
-        };
-        requestWrapper.updatePassword(pref.getString("userame",null),old_pass,edit_password.getText().toString(),callback);
-
+        });
     }
 
     public void setUpToolbar() {
