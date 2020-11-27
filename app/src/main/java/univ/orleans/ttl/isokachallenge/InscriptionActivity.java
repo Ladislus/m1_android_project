@@ -60,26 +60,32 @@ public class InscriptionActivity extends AppCompatActivity {
                 case  R.id.nav_connexion:
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
+                    finish();
                     break;
                 case R.id.nav_challenge:
                     Intent challenge = new Intent(this, MainActivity.class);
                     startActivity(challenge);
+                    finish();
                     break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
+                    finish();
                     break;
                 case R.id.nav_profil:
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);
+                    finish();
                     break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
+                    finish();
                     break;
                 case R.id.nav_createChall:
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
+                    finish();
                     break;
             }
             return false;
