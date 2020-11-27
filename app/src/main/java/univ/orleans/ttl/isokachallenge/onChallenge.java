@@ -41,6 +41,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -129,23 +130,27 @@ public class onChallenge extends AppCompatActivity {
             title.setText(R.string.error);
         }
 
-        ArrayList<Participation>[] participation = new ArrayList[]{null};
-        final User[] user = {null};
-        final ArrayList<Participation>[] participations = new ArrayList[]{null};
+
+
         new RequestWrapper().get(new Callback() {
             @Override
             public void onResponse() {
-                user[0] = DB.getInstance().getUser(sharedPref.getString("username",""));
 
-                HashMap<String, Pair<String, String>> map = new HashMap<>();
-                map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(idchall)));
-                map.put(Tables.PARTICIPATION_USER_ID, new Pair(Tables.OPERATOR_EQ, user[0].getUsername()));
-                Log.d("bonjour", "onResponse: "+DB.getInstance().getParticipations(map).toString());
-                participation[0] = new ArrayList<>(DB.getInstance().getParticipations(map));
-                Log.d("bonjour", "onResponse: "+participation[0].toString());
+                if( !(sharedPref.getString("username","").equals(""))) {
+                    User user = DB.getInstance().getUser(sharedPref.getString("username", ""));
 
-                if (participation[0].isEmpty()){
-                    findViewById(R.id.btnParticipe).setEnabled(true);;
+                    HashMap<String, Pair<String, String>> map = new HashMap<>();
+                    map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(idchall)));
+                    map.put(Tables.PARTICIPATION_USER_ID, new Pair(Tables.OPERATOR_EQ, user.getUsername()));
+
+                    List<Participation> participations = DB.getInstance().getParticipations(map);
+
+
+                    if (participations.isEmpty()) {
+                        findViewById(R.id.btnParticipe).setEnabled(true);
+                    }
+                }else{
+                    findViewById(R.id.btnParticipe).setEnabled(true);
                 }
             }
 

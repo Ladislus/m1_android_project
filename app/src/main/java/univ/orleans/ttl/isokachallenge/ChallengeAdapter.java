@@ -101,11 +101,14 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             this.titreChallenge.setText(challenge.getName());
 
             final ArrayList<Drawing>[] listDessinChallenge = new ArrayList[]{new ArrayList<>(DB.getInstance().getDrawingsFromChallenge(challenge.getId()))};
+            Pair<String, LocalDateTime> theme = new Pair(null,null);
             Log.d("bonjour", "display: listDessinChallenge");
             if (listDessinChallenge[0].size()==0){
                 String dateChallenge = challenge.getDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
                 LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
+                theme = new Pair<>(challenge.getTheme(),dateTimeChallenge);
+                Log.d("bonjour", "display: après pair "+theme.first);
                 listDessinChallenge[0].add(new Drawing(challenge.getTheme(),dateTimeChallenge));
             }
 
@@ -119,16 +122,21 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             }
             final ImageDessinAdapter[] dessinAdapter = {null};
             if (listDessinChallenge[0].size()>=5){
-                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallengeTrier);
-            }else {
-                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0]);
+                Log.d("bonjour", "display: premier if"+theme.first);
+                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallengeTrier, theme);
+            }else if (listDessinChallenge[0].size()>0){
+                Log.d("bonjour", "display: second if"+theme.first);
+                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0], theme);
+            }else{
+                Log.d("bonjour", "display: dernier if"+theme.first);
+                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0], theme);
             }
 
             Log.d("bonjour", "display: "+ listDessinChallenge[0]);
 
             dessinAdapter[0].setOnItemClickListener(
                     position -> {
-                        Drawing dessin = listDessinChallenge[0].get(position);
+
                         Intent gotoChall = new Intent(this.context, onChallenge.class);
                         gotoChall.putExtra("idchall", challenge.getId());
                         context.startActivity(gotoChall);
