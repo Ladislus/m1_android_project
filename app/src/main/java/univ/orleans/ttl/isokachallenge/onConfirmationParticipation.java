@@ -157,8 +157,6 @@ public class onConfirmationParticipation extends AppCompatActivity {
             sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
             User userCourant = this.db.getUser(sharedPref.getString("username",""));
             ProgressBar pg = findViewById(R.id.progressBar);
-
-            RequestWrapper rq = new RequestWrapper();
             JSONObjectRequestListener callback = new JSONObjectRequestListener() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -166,12 +164,39 @@ public class onConfirmationParticipation extends AppCompatActivity {
                     try {
                         dessin = new Drawing(response.getJSONObject("data").getString("link"), LocalDateTime.now());
                         Challenge chall = db.getChallenge(getIntent().getIntExtra("idchall",0));
-                        db.save(dessin);
-                        Participation participation = new Participation(userCourant, dessin, chall, false);
-                        db.save(participation);
-                        finish();
-                        pg.setVisibility(View.INVISIBLE);
+                        new RequestWrapper().save(RequestWrapper.ROUTES.DRAWING, dessin.toJson(), new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    Drawing dessin2 = Drawing.fromJson(response);
+                                    db.save(dessin2);
+                                    Participation participation = new Participation(userCourant, dessin2, chall, false);
+                                    new RequestWrapper().save(RequestWrapper.ROUTES.PARTICIPATIONN, participation.toJson(), new JSONObjectRequestListener() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try {
+                                                db.save(Participation.fromJson(response));
+                                                finish();
+                                                pg.setVisibility(View.INVISIBLE);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        @Override
+                                        public void onError(ANError anError) {
 
+                                        }
+                                    });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -184,7 +209,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
                 }
             };
             pg.setVisibility(View.VISIBLE);
-            rq.imgurUpload(this.image, callback);
+            new RequestWrapper().imgurUpload(this.image, callback);
         }else{
             Intent intent = new Intent(this, ConnexionView.class);
             startActivity(intent);

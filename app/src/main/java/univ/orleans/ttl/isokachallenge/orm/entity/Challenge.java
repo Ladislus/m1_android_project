@@ -90,7 +90,7 @@ public class Challenge {
                     .put("type", this._type)
                     .put("theme", this._theme)
                     .put("desc", this._desc)
-                    .put("date", this._date.toString())
+                    .put("date", this._date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .put("timer", this._timer);
         } catch (JSONException e) {
             e.printStackTrace();

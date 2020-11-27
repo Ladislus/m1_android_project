@@ -117,14 +117,15 @@ public class CreationChallActivity extends AppCompatActivity {
                 errorLabel.setText(R.string.errorCreateChallEmpty);
             }else{
                 errorLabel.setText("");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                LocalDateTime dateTime = LocalDateTime.parse(dateFin.getDayOfMonth()+"/"+month+"/"+dateFin.getYear()+" 00:00", formatter);
-                Challenge chall = new Challenge(name.getText().toString(), true, theme.getText().toString(), dateTime, Integer.valueOf(timer.getText().toString()) ,desc.getText().toString());
-                this.db.save(chall);
-                Intent gotoChall = new Intent(this, onChallenge.class);
-                gotoChall.putExtra("idchall", chall.getId());
-                finish();
-                startActivity(gotoChall);
+
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+//                LocalDateTime dateTime = LocalDateTime.parse(dateFin.getDayOfMonth()+"/"+month+"/"+dateFin.getYear()+" 00:00", formatter);
+//                Challenge chall = new Challenge(name.getText().toString(), true, theme.getText().toString(), dateTime, Integer.valueOf(timer.getText().toString()) ,desc.getText().toString());
+//                this.db.save(chall);
+//                Intent gotoChall = new Intent(this, onChallenge.class);
+//                gotoChall.putExtra("idchall", chall.getId());
+//                finish();
+//                startActivity(gotoChall);
 
             }
 
