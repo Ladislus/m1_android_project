@@ -71,9 +71,7 @@ public class RequestWrapper {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
-            //TODO
-//            json.put("password", User.hash(password));
-            json.put("password", password);
+            json.put("password", User.hash(password, DB.getInstance().getUser(username).getSalt()));
         } catch (JSONException e) {
             e.printStackTrace();
             return;
@@ -95,11 +93,8 @@ public class RequestWrapper {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
-            //TODO
-//            json.put("old", User.hash(oldPassword));
-//            json.put("new", User.hash(newPassword));
-            json.put("old", oldPassword);
-            json.put("new", newPassword);
+            json.put("old", User.hash(oldPassword, DB.getInstance().getUser(username).getSalt()));
+            json.put("new", User.hash(newPassword, DB.getInstance().getUser(username).getSalt()));
         } catch (JSONException e) {
             e.printStackTrace();
             return;
