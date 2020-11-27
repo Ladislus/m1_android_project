@@ -115,7 +115,6 @@ public class RequestWrapper {
 
         AndroidNetworking.get(_serverAPI + "update")
                 .addHeaders("apiKey", _apiKey)
-                .addHeaders("Content-Type", "application/json")
                 .addQueryParameter("max_drawing", DB.getInstance().maxDrawing())
                 .addQueryParameter("max_challenge", DB.getInstance().maxChallenge())
                 .setPriority(Priority.HIGH)
@@ -127,7 +126,9 @@ public class RequestWrapper {
                             JSONArray users = response.getJSONArray("users");
                             for (int i = 0; i < users.length(); i++) {
                                 User u = User.fromJson(users.getJSONObject(i));
-                                DB.getInstance().save(u);
+                                if (!DB.getInstance().save(u)) {
+                                    DB.getInstance().update(u);
+                                }
                             }
                             JSONArray drawings = response.getJSONArray("drawings");
                             for (int i = 0; i < drawings.length(); i++) {
@@ -142,7 +143,9 @@ public class RequestWrapper {
                             JSONArray participations = response.getJSONArray("participations");
                             for (int i = 0; i < participations.length(); i++) {
                                 Participation p = Participation.fromJson(participations.getJSONObject(i));
-                                DB.getInstance().save(p);
+                                if (!DB.getInstance().save(p)) {
+                                    DB.getInstance().update(p);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -166,6 +169,21 @@ public class RequestWrapper {
                 .addHeaders("apiKey", _apiKey)
                 .addHeaders("Content-Type", "application/json")
                 .addJSONObjectBody(object)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
+
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void vote(@NonNull JSONObject participation, @Nullable JSONObjectRequestListener callback) throws JSONException {
+        Log.d(RequestWrapper.REQUEST_LOG, "ADD VOTE (" + participation.getString("u_id") + ", " + participation.getString("d_id") + ", " + participation.getString("c_id"));
+
+        AndroidNetworking.put(_serverAPI + ROUTES.PARTICIPATIONN + "vote")
+                .addHeaders("apiKey", _apiKey)
+                .addHeaders("Content-Type", "application/json")
+                .addQueryParameter("u_id", participation.getString("u_id"))
+                .addQueryParameter("d_id", participation.getString("d_id"))
+                .addQueryParameter("c_id", participation.getString("c_id"))
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(callback);
