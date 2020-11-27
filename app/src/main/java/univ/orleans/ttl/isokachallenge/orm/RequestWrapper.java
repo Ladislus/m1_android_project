@@ -4,6 +4,7 @@ import android.Manifest;
 import android.graphics.Bitmap;
 
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +15,16 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
+import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
+import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class RequestWrapper {
@@ -34,6 +39,8 @@ public class RequestWrapper {
 
     @RequiresPermission(Manifest.permission.INTERNET)
     public void imgurUpload(@NonNull Bitmap image, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST IMGUR");
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         String b64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
@@ -48,6 +55,8 @@ public class RequestWrapper {
 
     @RequiresPermission(Manifest.permission.INTERNET)
     public void login(@NonNull String username, @NonNull String password, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST LOGIN");
+
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
@@ -70,6 +79,8 @@ public class RequestWrapper {
 
     @RequiresPermission(Manifest.permission.INTERNET)
     public void updatePassword(@NonNull String username, @NonNull String oldPassword, @NonNull String newPassword, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST UPDATE PASSWORD");
+
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
@@ -94,15 +105,45 @@ public class RequestWrapper {
 
     @RequiresPermission(Manifest.permission.INTERNET)
     public void get(@Nullable Callback callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST GET");
+
         AndroidNetworking.get(_serverAPI + "update")
                 .addHeaders("apiKey", _apiKey)
                 .addHeaders("Content-Type", "application/json")
+                .addQueryParameter("max_drawing", "-1")
+                .addQueryParameter("max_challenge", "-1")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //TODO
+                        try {
+                            JSONArray users = response.getJSONArray("users");
+                            for (int i = 0; i < users.length(); i++) {
+                                    User u = User.fromJson(users.getJSONObject(i));
+                                    DB.getInstance().save(u);
+                            }
+                            JSONArray drawings = response.getJSONArray("drawings");
+                            for (int i = 0; i < drawings.length(); i++) {
+                                Drawing d = Drawing.fromJson(drawings.getJSONObject(i));
+                                DB.getInstance().save(d);
+                            }
+                            JSONArray challenges = response.getJSONArray("challenges");
+                            for (int i = 0; i < challenges.length(); i++) {
+                                Challenge c = Challenge.fromJson(challenges.getJSONObject(i));
+                                Log.d(RequestWrapper.REQUEST_LOG, c.toString());
+                                DB.getInstance().save(c);
+                            }
+                            JSONArray participations = response.getJSONArray("participations");
+                            for (int i = 0; i < participations.length(); i++) {
+                                Participation p = Participation.fromJson(participations.getJSONObject(i));
+                                Log.d(RequestWrapper.REQUEST_LOG, p.toString());
+                                DB.getInstance().save(p);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
                         if (!Objects.isNull(callback)) callback.onResponse();
                     }
 
