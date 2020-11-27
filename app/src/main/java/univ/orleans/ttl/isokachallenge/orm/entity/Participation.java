@@ -1,5 +1,8 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Participation {
 
     private final User _user;
@@ -43,6 +46,20 @@ public class Participation {
     @Override
     public String toString() {
         return "PARTICIPATION: [ " + this._user.getUsername() + ", " + this._drawing.getId() + ", " + this._challenge.getId() + " ](" + this._isCreator + ", " + this._votes + ")";
+    }
+
+    public JSONObject toJson() {
+        try {
+            return new JSONObject()
+                    .put("u_id", this._user.getUsername())
+                    .put("d_id", this._drawing.getId())
+                    .put("c_id", this._challenge.getId())
+                    .put("is_creator", this._isCreator)
+                    .put("votes", this._votes);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public int addVote() {

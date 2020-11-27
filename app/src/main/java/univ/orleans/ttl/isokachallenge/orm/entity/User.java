@@ -1,8 +1,12 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
+import androidx.annotation.Nullable;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class User {
@@ -29,6 +33,17 @@ public class User {
 
     public static String hash(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+
+    public JSONObject toJson() {
+        try {
+            return new JSONObject()
+                    .put("username", this._username)
+                    .put("date", this._date.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

@@ -1,5 +1,8 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -66,6 +69,22 @@ public class Challenge {
     }
 
     public String getDesc() { return this._desc; }
+
+    public JSONObject toJson() {
+        try {
+            return new JSONObject()
+                    .put("id", this._id)
+                    .put("name", this._name)
+                    .put("type", this._type)
+                    .put("theme", this._theme)
+                    .put("desc", this._desc)
+                    .put("date", this._date.toString())
+                    .put("timer", this._timer);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public String toString() {
