@@ -45,7 +45,6 @@ public class InscriptionActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
-            //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
         }else{
@@ -109,6 +108,12 @@ public class InscriptionActivity extends AppCompatActivity {
     }
 
     public void onInscrire(View view) {
+        /**
+         * Fonction qui valide l'inscription et ajoute l'utilisateur à la fois dans la
+         * BD locale et Distante.
+         * Nécessite d'avoir remplis tout les champs
+         * Que les deux mots de passe correspondent et que le username soit inutilisé.
+         */
         EditText username = findViewById(R.id.inputLoginInscr);
         EditText mdp1 = findViewById(R.id.inputmdp1Inscription);
         EditText mdp2 = findViewById(R.id.inputmdp2Inscription);
@@ -123,7 +128,6 @@ public class InscriptionActivity extends AppCompatActivity {
                 if(this.db.getUser(username.getText().toString()) != null ){
                     errorMsg.setText(R.string.ErrorInscriptionUsername);
                 }else{
-                    //Faire l'insription
                     errorMsg.setText("");
                     User user = new User(username.getText().toString(), LocalDateTime.now());
                     RequestWrapper rq = new RequestWrapper();
@@ -147,16 +151,12 @@ public class InscriptionActivity extends AppCompatActivity {
                             errorMsg.setText(R.string.connexionImpossibleServ);
                             if (anError.getErrorCode() == 409){
                                 errorMsg.setText(R.string.errorInscrDeja);
-
                             }
                         }
                     };
                     pg.setVisibility(View.VISIBLE);
                     rq.save(RequestWrapper.ROUTES.USER, user.toJson(mdp1.getText().toString()), callback );
-
-
                 }
-
             }else{
                 errorMsg.setText(R.string.ErrorInscriptionMDP);
             }
