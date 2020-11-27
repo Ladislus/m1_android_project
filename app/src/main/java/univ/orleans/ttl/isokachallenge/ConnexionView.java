@@ -70,26 +70,32 @@ public class ConnexionView extends AppCompatActivity {
                 case  R.id.nav_inscription:
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
+                    finish();
                     break;
                 case R.id.nav_challenge:
                     Intent challenge = new Intent(this, MainActivity.class);
                     startActivity(challenge);
+                    finish();
                     break;
                 case R.id.nav_challengeTest:
                     Intent act = new Intent(this, onChallenge.class);
                     startActivity(act);
+                    finish();
                     break;
                 case R.id.nav_profil:
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);
+                    finish();
                     break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
+                    finish();
                     break;
                 case R.id.nav_createChall:
                     Intent create = new Intent(this, CreationChallActivity.class);
                     startActivity(create);
+                    finish();
                     break;
             }
             return false;
@@ -100,12 +106,13 @@ public class ConnexionView extends AppCompatActivity {
         /**
          * Fonction qui connecte un utilisateur à l'application en stockant dans une
          * sharepref global (nommée 'session') sont id (username).
-         * L'utilisateur est ensuite redirigé vers l'activité précédente.
+         * L'utilisateur est ensuite redirigé vers l'activité MainActivity (challenge en cours a.k.a l'acceuil).
          * Fonction appelée lors du clique sur le bouton 'connexion' de l'activité
          * ConnexionView
          */
         RequestWrapper rq = new RequestWrapper();
         ProgressBar pg = findViewById(R.id.progressBar);
+        Intent home = new Intent(this, MainActivity.class);
         JSONObjectRequestListener callback = new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
@@ -116,6 +123,7 @@ public class ConnexionView extends AppCompatActivity {
                     editor.putString("username", response.getString("username"));
                     editor.apply();
                     finish();
+                    startActivity(home);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

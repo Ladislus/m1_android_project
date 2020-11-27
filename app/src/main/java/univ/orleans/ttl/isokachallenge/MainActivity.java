@@ -82,10 +82,12 @@ public class MainActivity extends AppCompatActivity {
                 case  R.id.nav_connexion:
                     Intent intent = new Intent(this, ConnexionView.class);
                     startActivity(intent);
+                    finish();
                     break;
                 case  R.id.nav_inscription:
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
+                    finish();
                     break;
                 case R.id.nav_challenge:
                     this.onResume();
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
+                    finish();
                     break;
                 case R.id.nav_createChall:
                     Intent create = new Intent(this, CreationChallActivity.class);
