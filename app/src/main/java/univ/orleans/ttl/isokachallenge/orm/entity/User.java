@@ -1,7 +1,5 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
-import androidx.annotation.Nullable;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,6 +15,13 @@ public class User {
     public User(String username, LocalDateTime date) {
         this._username = username;
         this._date = date;
+    }
+
+    public static User fromJson(JSONObject json) throws JSONException {
+        return new User(
+                json.getString("username"),
+                LocalDateTime.parse(json.getString("date"))
+        );
     }
 
     public String getUsername() {

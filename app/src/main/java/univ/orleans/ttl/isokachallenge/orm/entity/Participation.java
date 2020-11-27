@@ -3,6 +3,8 @@ package univ.orleans.ttl.isokachallenge.orm.entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import univ.orleans.ttl.isokachallenge.orm.DB;
+
 public class Participation {
 
     private final User _user;
@@ -21,6 +23,16 @@ public class Participation {
 
     public Participation(User user, Drawing drawing, Challenge challenge, Boolean isCreator) {
         this(user, drawing, challenge, isCreator, 0);
+    }
+
+    public static Participation fromJson(JSONObject json) throws JSONException {
+        return new Participation(
+                DB.getInstance().getUser(json.getString("user")),
+                DB.getInstance().getDrawing(json.getInt("drawing")),
+                DB.getInstance().getChallenge(json.getInt("challenge")),
+                json.getBoolean("is_creator"),
+                json.getInt("votes")
+        );
     }
 
     public User getUser() {

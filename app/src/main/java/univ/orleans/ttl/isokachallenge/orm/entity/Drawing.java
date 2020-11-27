@@ -28,6 +28,14 @@ public class Drawing {
         this(_count++, link, date);
     }
 
+    public static Drawing fromJson(JSONObject json) throws JSONException {
+        return new Drawing(
+                json.getInt("id"),
+                json.getString("link"),
+                LocalDateTime.parse(json.getString("date"))
+        );
+    }
+
     public Integer getId() {
         return this._id;
     }

@@ -36,6 +36,18 @@ public class Challenge {
         this(_count++, name, type, theme, date, timer, desc);
     }
 
+    public static Challenge fromJson(JSONObject json) throws JSONException {
+        return new Challenge(
+                json.getInt("id"),
+                json.getString("name"),
+                json.getBoolean("type"),
+                json.getString("theme"),
+                LocalDateTime.parse(json.getString("date")),
+                json.getInt("timer"),
+                json.getString("desc")
+        );
+    }
+
     public Integer getId() {
         return this._id;
     }
