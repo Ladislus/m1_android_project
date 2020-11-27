@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_menu);
 
         AndroidNetworking.initialize(getApplicationContext());
-        if(!(db.isInitialized())){
+        if(!DB.isInitialized()){
             DB.init(this);
         }
 

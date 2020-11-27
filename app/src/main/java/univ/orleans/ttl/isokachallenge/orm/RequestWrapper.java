@@ -1,17 +1,24 @@
 package univ.orleans.ttl.isokachallenge.orm;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
@@ -25,7 +32,8 @@ public class RequestWrapper {
 
     public static final String REQUEST_LOG = "isoka_request_log";
 
-    public void imgurUpload(Bitmap image, JSONObjectRequestListener callback) {
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void imgurUpload(@NonNull Bitmap image, @Nullable JSONObjectRequestListener callback) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         String b64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
@@ -38,12 +46,14 @@ public class RequestWrapper {
                 .getAsJSONObject(callback);
     }
 
-    public void login(String username, String password, JSONObjectRequestListener callback) {
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void login(@NonNull String username, @NonNull String password, @Nullable JSONObjectRequestListener callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
-            json.put("password", password);
+            //TODO
 //            json.put("password", User.hash(password));
+            json.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
             return;
@@ -58,25 +68,49 @@ public class RequestWrapper {
                 .getAsJSONObject(callback);
     }
 
-    public void updatePassword(String username, String oldPassword, String newPassword, JSONObjectRequestListener callback) {
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void updatePassword(@NonNull String username, @NonNull String oldPassword, @NonNull String newPassword, @Nullable JSONObjectRequestListener callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
-            json.put("oldPassword", User.hash(oldPassword));
-            json.put("newPassword", User.hash(newPassword));
+            //TODO
+//            json.put("old", User.hash(oldPassword));
+//            json.put("new", User.hash(newPassword));
+            json.put("old", oldPassword);
+            json.put("new", newPassword);
         } catch (JSONException e) {
             e.printStackTrace();
             return;
         }
 
-        //TODO Faire la route
-//        AndroidNetworking.post(_serverAPI + "updatePassword")
-//                .addHeaders("apiKey", _apiKey)
-//                .addHeaders("Content-Type", "application/json")
-//                .addJSONObjectBody(json)
-//                .setPriority(Priority.HIGH)
-//                .build()
-//                .getAsJSONObject(callback);
+        AndroidNetworking.post(_serverAPI + "password")
+                .addHeaders("apiKey", _apiKey)
+                .addHeaders("Content-Type", "application/json")
+                .addJSONObjectBody(json)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
+
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void get(@Nullable Callback callback) {
+        AndroidNetworking.get(_serverAPI + "update")
+                .addHeaders("apiKey", _apiKey)
+                .addHeaders("Content-Type", "application/json")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //TODO
+                        if (!Objects.isNull(callback)) callback.onResponse();
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        if (!Objects.isNull(callback)) callback.onError(anError);
+                    }
+                });
     }
 }
 
