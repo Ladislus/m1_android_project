@@ -1,18 +1,81 @@
 package univ.orleans.ttl.isokachallenge.orm;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+
+import android.util.Base64;
+
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class RequestWrapper {
 
-    private static final String imgurAPI = "https://api.imgur.com/3/";
-    private static final String serverAPI = "";
+    private static final String _imgurAPI = "https://api.imgur.com/3/image";
+    private static final String _clientId = "e70fe5ed4d03b66";
 
-    private SQLiteDatabase _db;
+    private static final String _serverAPI = "https://thlato.pythonanywhere.com/api/";
+    private static final String _apiKey = "h1ZTSY38h4hAjWn5yFeBJ1MVw4VXjienv6ksBXV0Ek7hh3qo2A";
 
-    public RequestWrapper(SQLiteDatabase db) { this._db = db; }
+    public static final String REQUEST_LOG = "isoka_request_log";
 
-    public String imgurUpload(String b64Image) {
+    public void imgurUpload(Bitmap image, JSONObjectRequestListener callback) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        String b64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
 
-        return "";
+        AndroidNetworking.post(_imgurAPI)
+                .addHeaders("Authorization", "Client-ID " + _clientId)
+                .addBodyParameter("image", b64Image)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
+
+    public void login(String username, String password, JSONObjectRequestListener callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", username);
+            json.put("password", User.hash(password));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        AndroidNetworking.post(_serverAPI + "login")
+                .addHeaders("apiKey", _apiKey)
+                .addHeaders("Content-Type", "application/json")
+                .addJSONObjectBody(json)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
+
+    public void updatePassword(String username, String oldPassword, String newPassword, JSONObjectRequestListener callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", username);
+            json.put("oldPassword", User.hash(oldPassword));
+            json.put("newPassword", User.hash(newPassword));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        //TODO Faire la route
+//        AndroidNetworking.post(_serverAPI + "updatePassword")
+//                .addHeaders("apiKey", _apiKey)
+//                .addHeaders("Content-Type", "application/json")
+//                .addJSONObjectBody(json)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(callback);
     }
 }
+
