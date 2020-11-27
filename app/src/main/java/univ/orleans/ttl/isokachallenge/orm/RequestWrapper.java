@@ -37,6 +37,17 @@ public class RequestWrapper {
 
     public static final String REQUEST_LOG = "isoka_request_log";
 
+    public static enum ROUTES {
+        USER("user/"),
+        DRAWING("drawing/"),
+        CHALLENGE("challenge/"),
+        PARTICIPATIONN("participation/");
+
+        private final String _path;
+
+        ROUTES(String path) { this._path = path; }
+    }
+
     @RequiresPermission(Manifest.permission.INTERNET)
     public void imgurUpload(@NonNull Bitmap image, @Nullable JSONObjectRequestListener callback) {
         Log.d(RequestWrapper.REQUEST_LOG, "REQUEST IMGUR");
@@ -153,10 +164,10 @@ public class RequestWrapper {
     }
 
     @RequiresPermission(Manifest.permission.INTERNET)
-    public void save(@NonNull String route, @NonNull JSONObject object, @Nullable JSONObjectRequestListener callback) {
-        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST SAVE WITH ROUTE: " + route);
+    public void save(@NonNull ROUTES route, @NonNull JSONObject object, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST SAVE WITH ROUTE: " + route._path + "save");
 
-        AndroidNetworking.post(_serverAPI + route)
+        AndroidNetworking.post(_serverAPI + route._path + "save")
                 .addHeaders("apiKey", _apiKey)
                 .addHeaders("Content-Type", "application/json")
                 .addJSONObjectBody(object)
