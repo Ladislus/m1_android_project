@@ -22,7 +22,15 @@
             android:textStyle="bold"
             android:layout_weight="0"
             android:text="@string/confirmePartTitle" />
-
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circle_shape"
+            android:max="100"
+            android:progress="65" />
 
     <ImageView
         android:id="@+id/imageViewConfirmation"

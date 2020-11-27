@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         db = DB.getInstance();
 
         User user1 = new User(
-                "Tom99",
+                "WeeboMaster",
                 LocalDateTime.now()
         );
 
