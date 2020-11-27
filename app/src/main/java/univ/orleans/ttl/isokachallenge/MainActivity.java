@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -135,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        monAdapteur = new ChallengeAdapter(challenges);
+        ProgressBar pg = findViewById(R.id.progressBar);
+        monAdapteur = new ChallengeAdapter(challenges,pg);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(monAdapteur);
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(gotoChall);
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-        challenges =MainActivity.db.getAllChallenges();
+        challenges =DB.getInstance().getAllChallenges();
 
         challenges.sort((o1, o2) -> {
             String dateString1 = o1.getDate();
@@ -189,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Main", "onResume: ");
-        challenges =MainActivity.db.getAllChallenges();
+        challenges =DB.getInstance().getAllChallenges();
 
         challenges.sort((o1, o2) -> {
             String dateString1 = o1.getDate();

@@ -19,6 +19,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
@@ -91,11 +92,11 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         }
 
         void setLocationData(Drawing dessin){
-            User user = MainActivity.db.getUserFromDrawing(dessin.getId());
+            User user = DB.getInstance().getUserFromDrawing(dessin.getId());
 
             HashMap<String, Pair<String, String>> mapParticipation = new HashMap<>();
             mapParticipation.put(Tables.PARTICIPATION_DRAWING_ID, new Pair(Tables.OPERATOR_EQ, dessin.getId().toString()));
-            ArrayList<Participation> participations = new ArrayList<Participation>(MainActivity.db.getParticipations(mapParticipation));
+            ArrayList<Participation> participations = new ArrayList<>(DB.getInstance().getParticipations(mapParticipation));
 
             if (user!= null) {
                 Picasso.get().load(dessin.getLink()).into(imageView);
@@ -106,18 +107,13 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
             }else{
                 HashMap<String, Pair<String, String>> map = new HashMap<>();
                 map.put(Tables.CHALLENGE_THEME, new Pair(Tables.OPERATOR_EQ, dessin.getLink()));
-                ArrayList<Challenge> challenges = new ArrayList<>(MainActivity.db.getChallenges(map));
+                ArrayList<Challenge> challenges = new ArrayList<>(DB.getInstance().getChallenges(map));
 
                 Picasso.get().load(dessin.getLink()).into(imageView);
                 textTitle.setText(R.string.theme);
                 textLocation.setText(challenges.get(0).getFormattedDate());
-                //textStarRating.setVisibility(View.GONE);
                 itemView.findViewById(R.id.votes).setVisibility(View.GONE);
-
             }
-
         }
-
     }
-
 }

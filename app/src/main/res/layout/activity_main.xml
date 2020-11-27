@@ -10,20 +10,24 @@
     tools:context=".MainActivity"
     >
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/white">
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="#F7FFFFFF"-->
-<!--            app:subtitleTextColor="#0A0A0A"-->
-<!--            app:titleTextColor="#111111"-->
-<!--            app:layout_constraintTop_toTopOf="parent"/>-->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circle_shape"
+            android:max="100"
+            android:progress="65"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textListeChallengeEnCours"/>
 
         <TextView
             android:id="@+id/textListeChallengeEnCours"
