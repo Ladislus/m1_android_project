@@ -66,9 +66,7 @@ public class DB extends SQLiteOpenHelper {
     //          SAVE            //
     //////////////////////////////
 
-    public boolean save(User user, String password) {
-        //TODO Send hashed passwor to distant DB
-        String hashed = User.hash(password);
+    public boolean save(User user) {
         try {
             ContentValues values = new ContentValues();
             values.put(Tables.USER_NAME, user.getUsername());
