@@ -118,7 +118,9 @@ public class InscriptionActivity extends AppCompatActivity {
                     //Faire l'insription
                     errorMsg.setText("");
                     User user = new User(username.getText().toString(), LocalDateTime.now());
-                    this.db.save(user, mdp1.getText().toString());
+                    //TODO
+//                    this.db.save(user, mdp1.getText().toString());
+                    this.db.save(user);
                     finish();
                     Intent connect = new Intent(this, ConnexionView.class);
                     startActivity(connect);
