@@ -41,12 +41,17 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
+import univ.orleans.ttl.isokachallenge.orm.Callback;
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class onChallenge extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -130,6 +135,36 @@ public class onChallenge extends AppCompatActivity {
             TextView title = findViewById(R.id.nomChall);
             title.setText(R.string.error);
         }
+
+
+
+        new RequestWrapper().get(new Callback() {
+            @Override
+            public void onResponse() {
+
+                if( !(sharedPref.getString("username","").equals(""))) {
+                    User user = DB.getInstance().getUser(sharedPref.getString("username", ""));
+
+                    HashMap<String, Pair<String, String>> map = new HashMap<>();
+                    map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(idchall)));
+                    map.put(Tables.PARTICIPATION_USER_ID, new Pair(Tables.OPERATOR_EQ, user.getUsername()));
+
+                    List<Participation> participations = DB.getInstance().getParticipations(map);
+
+
+                    if (participations.isEmpty()) {
+                        findViewById(R.id.btnParticipe).setEnabled(true);
+                    }
+                }else{
+                    findViewById(R.id.btnParticipe).setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onError(ANError error) {
+
+            }
+        });
 
 
     }

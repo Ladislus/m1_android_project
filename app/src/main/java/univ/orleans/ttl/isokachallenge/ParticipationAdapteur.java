@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -16,6 +17,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAdapteur.MyViewHolder> {
@@ -46,8 +49,10 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
         SharedPreferences sharedPref = mContext.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))) {
             holder.participationItem.setOnClickListener(v -> {
+
                 //TODO Use request
-                MainActivity.db.incrementParticipation(mParticipation.get(position));
+                DB.getInstance().incrementParticipation(mParticipation.get(position));
+
                 holder.votes.setText(mParticipation.get(position).getVotes().toString());
             });
         }
