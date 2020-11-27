@@ -8,10 +8,6 @@ import java.time.format.DateTimeFormatter;
 
 public class Drawing {
 
-    //DEBUG
-    //TODO Remove
-    private static int _count = 0;
-
     private Integer _id;
     private final String _link;
     private final LocalDateTime _date;
@@ -22,10 +18,8 @@ public class Drawing {
         this._date = date;
     }
 
-    //DEBUG
-    //TODO set id to null before server request
     public Drawing(String link, LocalDateTime date) {
-        this(_count++, link, date);
+        this(null, link, date);
     }
 
     public static Drawing fromJson(JSONObject json) throws JSONException {
