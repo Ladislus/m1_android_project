@@ -145,6 +145,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
+            getIntent().putExtra("bitmap",(Bitmap) extras.get("data"));
             this.image = (Bitmap) extras.get("data");
             imageViewConfirmation.setImageBitmap(this.image);
         }

@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class InscriptionActivity extends AppCompatActivity {
@@ -119,7 +120,6 @@ public class InscriptionActivity extends AppCompatActivity {
                     errorMsg.setText("");
                     User user = new User(username.getText().toString(), LocalDateTime.now());
                     //TODO
-//                    this.db.save(user, mdp1.getText().toString());
                     this.db.save(user);
                     finish();
                     Intent connect = new Intent(this, ConnexionView.class);
