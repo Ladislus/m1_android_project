@@ -24,6 +24,10 @@ public class DeconnexionView extends AppCompatActivity {
     }
 
     public void onGoBack(View view) {
+        /**
+         * Fonction appelé lors du clique sur le bouton "Retour à l'acceuil" dans
+         * l'activity DeconnexionView
+         */
         finish();
         Intent home = new Intent(this, MainActivity.class);
         startActivity(home);

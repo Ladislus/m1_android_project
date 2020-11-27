@@ -40,12 +40,9 @@ public class CreationChallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creation_chall);
-
         navigationView = findViewById(R.id.navigation_menu);
-
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
-            //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
         }else{
@@ -86,7 +83,6 @@ public class CreationChallActivity extends AppCompatActivity {
             }
             return false;
         });
-
     }
 
     public void setUpToolbar() {
@@ -108,6 +104,12 @@ public class CreationChallActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void onCreateChall(View view) {
+        /**
+         * Confirmation de la création du challenge
+         * Nécéssite d'être connecté et d'avoir completer tous les champs correctement
+         * Appel l'api afin de sauvegarder le challenge sur la BD distante
+         * Le challange est aussi sauvegardé sur la BD local.
+         */
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
             EditText name = findViewById(R.id.inputNameChall);
@@ -148,15 +150,10 @@ public class CreationChallActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
-
         }else{
             Intent intent = new Intent(this, ConnexionView.class);
             startActivity(intent);
         }
-
-
-
     }
 }

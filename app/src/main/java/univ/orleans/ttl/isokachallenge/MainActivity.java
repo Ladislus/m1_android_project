@@ -117,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();
             return false;
         });
-
         recyclerView = findViewById(R.id.myRecyclerView);
 
         loadChallenge();
+
 
     }
 

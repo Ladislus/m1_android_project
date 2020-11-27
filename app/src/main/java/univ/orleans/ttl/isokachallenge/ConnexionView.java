@@ -97,6 +97,13 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onConnexion(View view) {
+        /**
+         * Fonction qui connecte un utilisateur à l'application en stockant dans une
+         * sharepref global (nommée 'session') sont id (username).
+         * L'utilisateur est ensuite redirigé vers l'activité précédente.
+         * Fonction appelée lors du clique sur le bouton 'connexion' de l'activité
+         * ConnexionView
+         */
         RequestWrapper rq = new RequestWrapper();
         ProgressBar pg = findViewById(R.id.progressBar);
         JSONObjectRequestListener callback = new JSONObjectRequestListener() {
@@ -109,7 +116,6 @@ public class ConnexionView extends AppCompatActivity {
                     editor.putString("username", response.getString("username"));
                     editor.apply();
                     finish();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -178,6 +184,9 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onChecked(View view) {
+        /**
+         * Setteur de l'attribut remember lors du clique sur la checkbox 'Se souvenir de moi'
+         */
         this.remember = this.checkLogin.isChecked();
     }
 }

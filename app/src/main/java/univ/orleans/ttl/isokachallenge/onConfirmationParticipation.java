@@ -54,18 +54,14 @@ public class onConfirmationParticipation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_confirmation_participation);
         navigationView = findViewById(R.id.navigation_menu);
-
-
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
-            //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
         }else{
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-
         setUpToolbar();
         this.db = DB.getInstance();
         navigationView.setNavigationItemSelectedListener(menuItem -> {
@@ -104,7 +100,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        this.image = (Bitmap) intent.getParcelableExtra("bitmap");
+        this.image = intent.getParcelableExtra("bitmap");
         imageViewConfirmation = findViewById(R.id.imageViewConfirmation);
         imageViewConfirmation.setImageBitmap(image);
 
@@ -132,6 +128,9 @@ public class onConfirmationParticipation extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public void onReprendrePhoto(View view) {
+        /**
+         * Permet a l'utilisateur de changer la photo qu'il va envoyer.
+         */
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -142,6 +141,9 @@ public class onConfirmationParticipation extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * Récupère la nouvelle photo à envoyé et affiche l'aperçut dans l'imageView
+         */
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
@@ -152,6 +154,15 @@ public class onConfirmationParticipation extends AppCompatActivity {
     }
 
     public void onConfirmer(View view) {
+        /**
+         * Permet d'uploader dans la BD distante et local la participation de l'utilisateur courant.
+         * Nécessite d'être connecté.
+         * La fonction publie d'abord l'image sur IMGUR, pour stocker le lien dans les BD (moins lourd que les images).
+         * Ensuite, on publie sur les BD l'objet Drawing (créer avec le lien de l'image, renvoyé par l'API IMGUR).
+         * Enfin, on publie sur les BD l'objet Participation (créer avec Drawing, Challenge et User).
+         * Une fois ces trois requêtes terminées, l'activity se finish() et on revient logiquement la a
+         * description du challenge (activity onChallenge).
+         */
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
             sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);

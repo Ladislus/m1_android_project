@@ -110,8 +110,6 @@ public class onChallenge extends AppCompatActivity {
             }
             return false;
         });
-//        Picasso.get().load("https://histoire-image.org/sites/default/dor7_delacroix_001f.jpg").into(iv);
-
         Challenge chall = db.getChallenge(this.idchall);
         if(chall != null){
             TextView title = findViewById(R.id.nomChall);
@@ -179,6 +177,11 @@ public class onChallenge extends AppCompatActivity {
     }
 
     public void onParticiper(View view) {
+        /**
+         * Fonction du clique sur le bouton "Participer" d'un challenge
+         * Lance l'activity onParticiperChrono
+         * Nécessite d'être connecté
+         */
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))) {
             Intent intent = new Intent(this, onParticiperChrono.class);
@@ -191,6 +194,10 @@ public class onChallenge extends AppCompatActivity {
     }
 
     public void parcoursParticipation(View view) {
+        /**
+         * Fonction du clique sur le bouton "Parcourir" d'un challenge
+         * Lance l'activity ParcoursParticipation
+         */
         Intent intent = new Intent(this, ParcoursParticipation.class);
         intent.putExtra("id_chall", this.idchall);
         startActivity(intent);
