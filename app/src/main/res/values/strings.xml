@@ -83,6 +83,8 @@
     <string name="txt_validate_password_not_updated">Your password has NOT been updated</string>
     <string name="dateFin">End the :</string>
     <string name="minutes" translatable="false">minutes</string>
+    <string name="connexionImpossible">Cannot find user.</string>
+    <string name="connexionImpossibleServ">It seems we cannot connect to the server, please try again later.</string>
 
 
 </resources>

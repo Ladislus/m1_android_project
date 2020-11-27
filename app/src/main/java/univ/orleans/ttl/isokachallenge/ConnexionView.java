@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 
 public class ConnexionView extends AppCompatActivity {
 
@@ -95,22 +97,36 @@ public class ConnexionView extends AppCompatActivity {
     }
 
     public void onConnexion(View view) {
-        //TODO
-//        if(this.db.login(this.login.getText().toString(), this.mdp.getText().toString())){
-        if(true){
-            SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("username", this.login.getText().toString());
-            editor.apply();
-            finish();
-//            Intent home = new Intent(this, MainActivity.class);
-//            startActivity(home);
-        }else{
-            TextView error = findViewById(R.id.labelErrorConnexion);
-            error.setText(R.string.ErrorConnexion);
-        }
+        RequestWrapper rq = new RequestWrapper();
+        ProgressBar pg = findViewById(R.id.progressBar);
+        JSONObjectRequestListener callback = new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    pg.setVisibility(View.INVISIBLE);
+                    SharedPreferences sharedPref = getSharedPreferences("session",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("username", response.getString("username"));
+                    editor.apply();
+                    finish();
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onError(ANError anError) {
+                pg.setVisibility(View.INVISIBLE);
+                TextView labelError = findViewById(R.id.errorConnexion);
+                labelError.setText(R.string.connexionImpossibleServ);
+                if(anError.getErrorCode() == 400){
+                    labelError.setText(R.string.connexionImpossible);
+                }
+            }
+        };
+        pg.setVisibility(View.VISIBLE);
+        rq.login(this.login.getText().toString(), this.mdp.getText().toString(), callback);
     }
 
     public void setUpToolbar() {
