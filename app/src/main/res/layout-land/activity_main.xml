@@ -16,6 +16,8 @@
         android:layout_weight="1"
         android:background="@color/white">
 
+
+
 <!--        <androidx.appcompat.widget.Toolbar-->
 <!--            android:id="@+id/toolbar"-->
 <!--            android:layout_width="match_parent"-->
@@ -36,6 +38,16 @@
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circle_shape"
+            android:max="100"
+            android:progress="65"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textListeChallengeEnCours"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myRecyclerView"
