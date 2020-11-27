@@ -39,7 +39,7 @@
     <string name="btn_modifier">Modifier mot de passe</string>
     <string name="hintUsername">nouveau pseudo</string>
     <string name="profil">Profil</string>
-    <string name="btn_valider">Valider mot de passe</string>
+    <string name="btn_valider">Valider nouveau mot de passe</string>
 
     <string name="InscriptionTitle">Inscription</string>
     <string name="passwordTitleConf">Confirmer le mot de passe</string>
