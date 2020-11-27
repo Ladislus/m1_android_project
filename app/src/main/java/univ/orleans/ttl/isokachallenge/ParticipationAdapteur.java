@@ -46,6 +46,7 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
         SharedPreferences sharedPref = mContext.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))) {
             holder.participationItem.setOnClickListener(v -> {
+                //TODO Use request
                 MainActivity.db.incrementParticipation(mParticipation.get(position));
                 holder.votes.setText(mParticipation.get(position).getVotes().toString());
             });
