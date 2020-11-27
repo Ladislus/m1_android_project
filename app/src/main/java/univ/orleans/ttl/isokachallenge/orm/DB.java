@@ -620,6 +620,20 @@ public class DB extends SQLiteOpenHelper {
         update(participation);
     }
 
+    public String maxDrawing() {
+        try (Cursor c = DB.getInstance().getWritableDatabase().rawQuery("SELECT MAX(" + Tables.DRAWING_ID + ") FROM " + Tables.DRAWING_TABLE + ";", null)) {
+            if (c.moveToFirst()) return String.valueOf(c.getInt(0));
+            return "-1";
+        }
+    }
+
+    public String maxChallenge() {
+        try (Cursor c = DB.getInstance().getWritableDatabase().rawQuery("SELECT MAX(" + Tables.CHALLENGE_ID + ") FROM " + Tables.CHALLENGE_TABLE + ";", null)) {
+            if (c.moveToFirst()) return String.valueOf(c.getInt(0));
+            return "-1";
+        }
+    }
+
     //////////////////////////////
     //           DEBUG          //
     //////////////////////////////

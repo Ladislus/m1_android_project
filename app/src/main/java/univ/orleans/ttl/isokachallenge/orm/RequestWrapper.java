@@ -37,6 +37,17 @@ public class RequestWrapper {
 
     public static final String REQUEST_LOG = "isoka_request_log";
 
+    public static enum ROUTES {
+        USER("user/"),
+        DRAWING("drawing/"),
+        CHALLENGE("challenge/"),
+        PARTICIPATIONN("participation/");
+
+        private final String _path;
+
+        ROUTES(String path) { this._path = path; }
+    }
+
     @RequiresPermission(Manifest.permission.INTERNET)
     public void imgurUpload(@NonNull Bitmap image, @Nullable JSONObjectRequestListener callback) {
         Log.d(RequestWrapper.REQUEST_LOG, "REQUEST IMGUR");
@@ -110,8 +121,8 @@ public class RequestWrapper {
         AndroidNetworking.get(_serverAPI + "update")
                 .addHeaders("apiKey", _apiKey)
                 .addHeaders("Content-Type", "application/json")
-                .addQueryParameter("max_drawing", "-1")
-                .addQueryParameter("max_challenge", "-1")
+                .addQueryParameter("max_drawing", DB.getInstance().maxDrawing())
+                .addQueryParameter("max_challenge", DB.getInstance().maxChallenge())
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -120,8 +131,8 @@ public class RequestWrapper {
                         try {
                             JSONArray users = response.getJSONArray("users");
                             for (int i = 0; i < users.length(); i++) {
-                                    User u = User.fromJson(users.getJSONObject(i));
-                                    DB.getInstance().save(u);
+                                User u = User.fromJson(users.getJSONObject(i));
+                                DB.getInstance().save(u);
                             }
                             JSONArray drawings = response.getJSONArray("drawings");
                             for (int i = 0; i < drawings.length(); i++) {
@@ -131,13 +142,11 @@ public class RequestWrapper {
                             JSONArray challenges = response.getJSONArray("challenges");
                             for (int i = 0; i < challenges.length(); i++) {
                                 Challenge c = Challenge.fromJson(challenges.getJSONObject(i));
-                                Log.d(RequestWrapper.REQUEST_LOG, c.toString());
                                 DB.getInstance().save(c);
                             }
                             JSONArray participations = response.getJSONArray("participations");
                             for (int i = 0; i < participations.length(); i++) {
                                 Participation p = Participation.fromJson(participations.getJSONObject(i));
-                                Log.d(RequestWrapper.REQUEST_LOG, p.toString());
                                 DB.getInstance().save(p);
                             }
                         } catch (JSONException e) {
@@ -152,6 +161,19 @@ public class RequestWrapper {
                         if (!Objects.isNull(callback)) callback.onError(anError);
                     }
                 });
+    }
+
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void save(@NonNull ROUTES route, @NonNull JSONObject object, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST SAVE WITH ROUTE: " + route._path + "save");
+
+        AndroidNetworking.post(_serverAPI + route._path + "save")
+                .addHeaders("apiKey", _apiKey)
+                .addHeaders("Content-Type", "application/json")
+                .addJSONObjectBody(object)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
     }
 }
 
