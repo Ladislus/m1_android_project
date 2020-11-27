@@ -65,6 +65,18 @@ public class RequestWrapper {
     }
 
     @RequiresPermission(Manifest.permission.INTERNET)
+    public void getUser(@NonNull String username, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST GET USER " + username);
+
+        AndroidNetworking.get(_serverAPI + ROUTES.USER._path + "get")
+                .addHeaders("apiKey", _apiKey)
+                .addQueryParameter("username", username)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
+
+    @RequiresPermission(Manifest.permission.INTERNET)
     public void login(@NonNull String username, @NonNull String password, @Nullable JSONObjectRequestListener callback) {
         Log.d(RequestWrapper.REQUEST_LOG, "REQUEST LOGIN");
 
