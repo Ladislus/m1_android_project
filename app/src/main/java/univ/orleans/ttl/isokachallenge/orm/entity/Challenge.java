@@ -1,5 +1,8 @@
 package univ.orleans.ttl.isokachallenge.orm.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,6 +34,18 @@ public class Challenge {
         //DEBUG
         //TODO set id to null before server request
         this(_count++, name, type, theme, date, timer, desc);
+    }
+
+    public static Challenge fromJson(JSONObject json) throws JSONException {
+        return new Challenge(
+                json.getInt("id"),
+                json.getString("name"),
+                json.getBoolean("type"),
+                json.getString("theme"),
+                LocalDateTime.parse(json.getString("date")),
+                json.getInt("timer"),
+                json.getString("desc")
+        );
     }
 
     public Integer getId() {
@@ -66,6 +81,22 @@ public class Challenge {
     }
 
     public String getDesc() { return this._desc; }
+
+    public JSONObject toJson() {
+        try {
+            return new JSONObject()
+                    .put("id", this._id)
+                    .put("name", this._name)
+                    .put("type", this._type)
+                    .put("theme", this._theme)
+                    .put("desc", this._desc)
+                    .put("date", this._date.toString())
+                    .put("timer", this._timer);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public String toString() {
