@@ -11,14 +11,18 @@ import android.view.MenuItem;
 
 import com.androidnetworking.AndroidNetworking;
 
+import com.androidnetworking.error.ANError;
 import com.google.android.material.navigation.NavigationView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +32,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import univ.orleans.ttl.isokachallenge.orm.Callback;
 import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Challenge> challenges;
     private ChallengeAdapter monAdapteur;
     public static DB db;
+    private ProgressBar pg;
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -76,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         new RequestWrapper().get(null);
 
         navigationView = findViewById(R.id.navigation_menu);
+        pg = findViewById(R.id.progressBar);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
@@ -111,34 +118,12 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
         recyclerView = findViewById(R.id.myRecyclerView);
-        challenges = db.getAllChallenges();
-        challenges.sort((o1, o2) -> {
-            String dateString1 = o1.getDate();
-            String dateString2 = o2.getDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
-            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
-            if(dateTime1.isAfter(dateTime2)) {
-                Log.d("Sort","1");
-                return -1;
-            } else if(dateTime1.isBefore(dateTime2)) {
-                Log.d("Sort","-1");
-                return 1;
-            } else {
-                Log.d("Sort","0");
-                return 0;
-            }
-        });
-        monAdapteur = new ChallengeAdapter(challenges);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(monAdapteur);
-        monAdapteur.setOnItemClickListener(position -> {
-            Challenge chall = challenges.get(position);
-            Intent gotoChall = new Intent(this, onChallenge.class);
-            gotoChall.putExtra("idchall", chall.getId());
-            startActivity(gotoChall);
-        });
+
+        loadChallenge();
+
+
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -152,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-        challenges =MainActivity.db.getAllChallenges();
+        challenges =DB.getInstance().getAllChallenges();
 
         challenges.sort((o1, o2) -> {
             String dateString1 = o1.getDate();
@@ -180,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Main", "onResume: ");
-        challenges =MainActivity.db.getAllChallenges();
+        challenges =DB.getInstance().getAllChallenges();
 
         challenges.sort((o1, o2) -> {
             String dateString1 = o1.getDate();
@@ -223,4 +208,71 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void loadChallenge(){
+        challenges = db.getAllChallenges();
+        new RequestWrapper().get(new Callback() {
+            @Override
+            public void onResponse() {
+                challenges = db.getAllChallenges();
+
+                sortList(challenges);
+
+                pg = findViewById(R.id.progressBar);
+                monAdapteur = new ChallengeAdapter(challenges,pg);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(monAdapteur);
+
+                monAdapteur.setOnItemClickListener(position -> {
+                    Challenge chall = challenges.get(position);
+                    Intent gotoChall = new Intent(getApplicationContext(), onChallenge.class);
+                    gotoChall.putExtra("idchall", chall.getId());
+                    startActivity(gotoChall);
+                });
+                pg.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ANError error) {
+                pg.setVisibility(View.GONE);
+            }
+        });
+        pg.setVisibility(View.VISIBLE);
+
+        sortList(challenges);
+
+        monAdapteur = new ChallengeAdapter(challenges,pg);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(monAdapteur);
+
+        monAdapteur.setOnItemClickListener(position -> {
+            Challenge chall = challenges.get(position);
+            Intent gotoChall = new Intent(this, onChallenge.class);
+            gotoChall.putExtra("idchall", chall.getId());
+            startActivity(gotoChall);
+        });
+    }
+
+    public void sortList(List<Challenge> list){
+        list.sort((o1, o2) -> {
+            String dateString1 = o1.getDate();
+            String dateString2 = o2.getDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+            if(dateTime1.isAfter(dateTime2)) {
+                Log.d("Sort","1");
+                return -1;
+            } else if(dateTime1.isBefore(dateTime2)) {
+                Log.d("Sort","-1");
+                return 1;
+            } else {
+                Log.d("Sort","0");
+                return 0;
+            }
+        });
+    }
+
 }

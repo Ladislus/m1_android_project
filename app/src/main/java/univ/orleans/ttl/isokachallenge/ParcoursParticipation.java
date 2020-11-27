@@ -6,6 +6,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.Callback;
+import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
@@ -20,8 +23,10 @@ import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
 import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
@@ -31,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ParcoursParticipation extends AppCompatActivity {
 
@@ -94,43 +100,84 @@ public class ParcoursParticipation extends AppCompatActivity {
 
         this.id_chall = getIntent().getIntExtra("id_chall", 0);
 
-        HashMap<String, Pair<String, String>> map = new HashMap<>();
-        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(this.id_chall)));
-        ArrayList<Participation> participations = new ArrayList<>(MainActivity.db.getParticipations(map));
-
-        participations.sort((o1, o2) -> {
-            String dateString1 = o1.getDrawing().getDate();
-            String dateString2 = o2.getDrawing().getDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
-            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
-            if(dateTime1.isAfter(dateTime2)) {
-                Log.d("Sort","1");
-                return -1;
-            } else if(dateTime1.isBefore(dateTime2)) {
-                Log.d("Sort","-1");
-                return 1;
-            } else {
-                Log.d("Sort","0");
-                return 0;
-            }
-        });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
         TextView pasParticipation = (TextView) findViewById(R.id.participation0);
-        if (participations.size()>0){
-            recyclerView.setVisibility(View.VISIBLE);
-            pasParticipation.setVisibility(View.GONE);
-            ParticipationAdapteur monAdapteur = new ParticipationAdapteur(this, participations);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
 
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-            recyclerView.setAdapter(monAdapteur);
-        }else{
-            recyclerView.setVisibility(View.GONE);
-            pasParticipation.setVisibility(View.VISIBLE);
+        final ParticipationAdapteur[] monAdapteur = {null};
+        Context context =this;
+        final String[] txt = {""};
 
-            String txt = getResources().getString(R.string.no_participation_challenge);
-            pasParticipation.setText(txt);
+        final ArrayList<Participation>[] participations = new ArrayList[]{null};
+        new RequestWrapper().get(new Callback() {
+            @Override
+            public void onResponse() {
+                HashMap<String, Pair<String, String>> map = new HashMap<>();
+                map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(id_chall)));
+                participations[0] = new ArrayList<>(DB.getInstance().getParticipations(map));
+
+                participations[0].sort((o1, o2) -> {
+                    String dateString1 = o1.getDrawing().getDate();
+                    String dateString2 = o2.getDrawing().getDate();
+                    DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                    LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
+                    LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
+                    if(dateTime1.isAfter(dateTime2)) {
+                        Log.d("Sort","1");
+                        return -1;
+                    } else if(dateTime1.isBefore(dateTime2)) {
+                        Log.d("Sort","-1");
+                        return 1;
+                    } else {
+                        Log.d("Sort","0");
+                        return 0;
+                    }
+
+                });
+
+                if (!Objects.isNull(participations[0])) {
+                    if (participations[0].size() > 0) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        pasParticipation.setVisibility(View.GONE);
+                        monAdapteur[0] = new ParticipationAdapteur(context, participations[0]);
+
+                        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+                        recyclerView.setAdapter(monAdapteur[0]);
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                        pasParticipation.setVisibility(View.VISIBLE);
+
+                        txt[0] = getResources().getString(R.string.no_participation_challenge);
+                        pasParticipation.setText(txt[0]);
+                    }
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ANError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+        progressBar.setVisibility(View.VISIBLE);
+
+
+        if (!Objects.isNull(participations[0])) {
+            if (participations[0].size() > 0) {
+                recyclerView.setVisibility(View.VISIBLE);
+                pasParticipation.setVisibility(View.GONE);
+                monAdapteur[0] = new ParticipationAdapteur(this, participations[0]);
+
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+                recyclerView.setAdapter(monAdapteur[0]);
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                pasParticipation.setVisibility(View.VISIBLE);
+
+                txt[0] = getResources().getString(R.string.no_participation_challenge);
+                pasParticipation.setText(txt[0]);
+            }
         }
     }
 

@@ -8,8 +8,11 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.androidnetworking.error.ANError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +27,9 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import univ.orleans.ttl.isokachallenge.orm.Callback;
+import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
@@ -33,6 +39,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
 
     private List<Challenge> challenges;
     private OnItemClickListener mListener;
+    private ProgressBar progressBar;
 
     public  interface  OnItemClickListener{
         void OnItemClick(int position);
@@ -42,12 +49,13 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         mListener = listener;
     }
 
-    public ChallengeAdapter(List<Challenge> challenges) {
+    public void setListChallengeAdapter(List<Challenge> challenges) {
         this.challenges = challenges;
     }
 
-    public void setListChallengeAdapter(List<Challenge> challenges) {
+    public ChallengeAdapter(List<Challenge> challenges, ProgressBar progressBar) {
         this.challenges = challenges;
+        this.progressBar = progressBar;
     }
 
     @NonNull
@@ -60,7 +68,8 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull ChallengeAdapter.MyViewHolder holder, int position) {
-        holder.display(this.challenges.get(position));
+        holder.display(this.challenges.get(position), this.progressBar);
+        Log.d("bonjour", "onBindViewHolder: display");
     }
 
     @Override
@@ -88,17 +97,70 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                 }
             });
         }
-        void display (Challenge challenge){
+        void display (Challenge challenge, ProgressBar progressBar){
             this.titreChallenge.setText(challenge.getName());
-            ArrayList<Drawing> listDessinChallenge = new ArrayList<>(MainActivity.db.getDrawingsFromChallenge(challenge.getId()));
-            if (listDessinChallenge.size()==0){
+
+            final ArrayList<Drawing>[] listDessinChallenge = new ArrayList[]{new ArrayList<>(DB.getInstance().getDrawingsFromChallenge(challenge.getId()))};
+            Pair<String, LocalDateTime> theme = new Pair(null,null);
+            Log.d("bonjour", "display: listDessinChallenge");
+            if (listDessinChallenge[0].size()==0){
                 String dateChallenge = challenge.getDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
                 LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
-                listDessinChallenge.add(new Drawing(challenge.getTheme(),dateTimeChallenge));
+                theme = new Pair<>(challenge.getTheme(),dateTimeChallenge);
+                Log.d("bonjour", "display: après pair "+theme.first);
+                listDessinChallenge[0].add(new Drawing(challenge.getTheme(),dateTimeChallenge));
             }
 
-            listDessinChallenge.sort((o1, o2) -> {
+            sortList(listDessinChallenge[0]);
+
+            ArrayList<Drawing> listDessinChallengeTrier = new ArrayList<>();
+            if (listDessinChallenge[0].size()>=5) {
+                for (int i = 0; i < 5; i++) {
+                    listDessinChallengeTrier.add(listDessinChallenge[0].get(i));
+                }
+            }
+            final ImageDessinAdapter[] dessinAdapter = {null};
+            if (listDessinChallenge[0].size()>=5){
+                Log.d("bonjour", "display: premier if"+theme.first);
+                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallengeTrier, theme);
+            }else if (listDessinChallenge[0].size()>0){
+                Log.d("bonjour", "display: second if"+theme.first);
+                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0], theme);
+            }else{
+                Log.d("bonjour", "display: dernier if"+theme.first);
+                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0], theme);
+            }
+
+            Log.d("bonjour", "display: "+ listDessinChallenge[0]);
+
+            dessinAdapter[0].setOnItemClickListener(
+                    position -> {
+
+                        Intent gotoChall = new Intent(this.context, onChallenge.class);
+                        gotoChall.putExtra("idchall", challenge.getId());
+                        context.startActivity(gotoChall);
+                    }
+            );
+            this.imagesCaroussel.setAdapter(dessinAdapter[0]);
+
+            this.imagesCaroussel.setClipToPadding(false);
+            this.imagesCaroussel.setClipChildren(false);
+            this.imagesCaroussel.setOffscreenPageLimit(3);
+            this.imagesCaroussel.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+
+            CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+            compositePageTransformer.addTransformer(new MarginPageTransformer(40));
+            compositePageTransformer.addTransformer((page, position) -> {
+                float r= 1 - Math.abs(position);
+                page.setScaleY(0.95f+r*0.05f);
+            });
+
+            this.imagesCaroussel.setPageTransformer(compositePageTransformer);
+        }
+
+        void sortList(ArrayList<Drawing> list){
+            list.sort((o1, o2) -> {
                 String dateString1 = o1.getDate();
                 String dateString2 = o2.getDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -115,45 +177,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                     return 0;
                 }
             });
-
-            ArrayList<Drawing> listDessinChallengeTrier = new ArrayList<>();
-            if (listDessinChallenge.size()>=5) {
-                for (int i = 0; i < 5; i++) {
-                    listDessinChallengeTrier.add(listDessinChallenge.get(i));
-                }
-            }
-            ImageDessinAdapter dessinAdapter = null;
-            if (listDessinChallenge.size()>=5){
-                dessinAdapter = new ImageDessinAdapter(listDessinChallengeTrier);
-            }else {
-                dessinAdapter = new ImageDessinAdapter(listDessinChallenge);
-            }
-
-            Log.d("bonjour", "display: "+listDessinChallenge);
-            //ImageDessinAdapter dessinAdapter = new ImageDessinAdapter(challenge.getImageDessinList());
-            dessinAdapter.setOnItemClickListener(
-                    position -> {
-                        Drawing dessin = listDessinChallenge.get(position);
-                        Intent gotoChall = new Intent(this.context, onChallenge.class);
-                        gotoChall.putExtra("idchall", challenge.getId());
-                        context.startActivity(gotoChall);
-                    }
-            );
-            this.imagesCaroussel.setAdapter(dessinAdapter);
-
-            this.imagesCaroussel.setClipToPadding(false);
-            this.imagesCaroussel.setClipChildren(false);
-            this.imagesCaroussel.setOffscreenPageLimit(3);
-            this.imagesCaroussel.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-
-            CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-            compositePageTransformer.addTransformer(new MarginPageTransformer(40));
-            compositePageTransformer.addTransformer((page, position) -> {
-                float r= 1 - Math.abs(position);
-                page.setScaleY(0.95f+r*0.05f);
-            });
-
-            this.imagesCaroussel.setPageTransformer(compositePageTransformer);
         }
     }
 }

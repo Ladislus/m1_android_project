@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
@@ -29,6 +32,7 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
 
     private final List<Drawing> dessin;
     private OnItemClickListener mListenerDessin;
+    private Pair<String, LocalDateTime> theme;
 
     public  interface  OnItemClickListener{
         void OnItemClick(int position);
@@ -38,8 +42,9 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         mListenerDessin = listener;
     }
 
-    public ImageDessinAdapter(List<Drawing> dessin){
+    public ImageDessinAdapter(List<Drawing> dessin, Pair<String, LocalDateTime> theme){
         this.dessin = dessin;
+        this.theme = theme;
     }
 
     @NonNull
@@ -50,7 +55,7 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
                         R.layout.item_container_location,
                         parent,
                         false
-                ),mListenerDessin
+                ),mListenerDessin, theme
         );
     }
 
@@ -70,14 +75,16 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         private final TextView textTitle;
         private final TextView textLocation;
         private final TextView textStarRating;
+        private Pair<String, LocalDateTime> theme;
 
-        public ImageDessinViewHolder(@NonNull View itemView, OnItemClickListener listener) {
+        public ImageDessinViewHolder(@NonNull View itemView, OnItemClickListener listener, Pair<String, LocalDateTime> theme) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textLocation= itemView.findViewById(R.id.textLocation);
             textStarRating= itemView.findViewById(R.id.textStarRating);
+            this.theme=theme;
 
             itemView.setOnClickListener(v -> {
                 if (listener != null){
@@ -91,33 +98,26 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         }
 
         void setLocationData(Drawing dessin){
-            User user = MainActivity.db.getUserFromDrawing(dessin.getId());
+            if ( !(Objects.isNull(theme.first) && Objects.isNull(theme.second))){
+                Picasso.get().load(this.theme.first).into(imageView);
+                textTitle.setText(R.string.theme);
+                LocalDateTime themeTime = this.theme.second;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy', 'HH'h'mm");
+                String dateTheme = themeTime.format(formatter);
+                textLocation.setText(dateTheme);
+                itemView.findViewById(R.id.votes).setVisibility(View.GONE);
+            }else{
+                HashMap<String, Pair<String, String>> mapParticipation = new HashMap<>();
+                mapParticipation.put(Tables.PARTICIPATION_DRAWING_ID, new Pair(Tables.OPERATOR_EQ, dessin.getId().toString()));
+                ArrayList<Participation> participations = new ArrayList<>(DB.getInstance().getParticipations(mapParticipation));
 
-            HashMap<String, Pair<String, String>> mapParticipation = new HashMap<>();
-            mapParticipation.put(Tables.PARTICIPATION_DRAWING_ID, new Pair(Tables.OPERATOR_EQ, dessin.getId().toString()));
-            ArrayList<Participation> participations = new ArrayList<Participation>(MainActivity.db.getParticipations(mapParticipation));
-
-            if (user!= null) {
+                User user = DB.getInstance().getUserFromDrawing(dessin.getId());
                 Picasso.get().load(dessin.getLink()).into(imageView);
                 textTitle.setText(user.getUsername());
-
                 textLocation.setText(dessin.getFormattedDate());
                 textStarRating.setText(String.valueOf(participations.get(0).getVotes()));
-            }else{
-                HashMap<String, Pair<String, String>> map = new HashMap<>();
-                map.put(Tables.CHALLENGE_THEME, new Pair(Tables.OPERATOR_EQ, dessin.getLink()));
-                ArrayList<Challenge> challenges = new ArrayList<>(MainActivity.db.getChallenges(map));
-
-                Picasso.get().load(dessin.getLink()).into(imageView);
-                textTitle.setText(R.string.theme);
-                textLocation.setText(challenges.get(0).getFormattedDate());
-                //textStarRating.setVisibility(View.GONE);
-                itemView.findViewById(R.id.votes).setVisibility(View.GONE);
-
             }
 
         }
-
     }
-
 }
