@@ -69,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_menu);
 
         AndroidNetworking.initialize(getApplicationContext());
-        DB.init(this);
+        if(!(db.isInitialized())){
+            DB.init(this);
+        }
 
         SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         db = DB.getInstance();
 
         User user1 = new User(
-                "Tom99",
+                "WeeboMaster",
                 LocalDateTime.now()
         );
 
