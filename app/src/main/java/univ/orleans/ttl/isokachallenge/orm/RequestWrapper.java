@@ -41,7 +41,7 @@ public class RequestWrapper {
         USER("user/"),
         DRAWING("drawing/"),
         CHALLENGE("challenge/"),
-        PARTICIPATIONN("participation/");
+        PARTICIPATION("participation/");
 
         private final String _path;
 
@@ -179,9 +179,8 @@ public class RequestWrapper {
     public void vote(@NonNull JSONObject participation, @Nullable JSONObjectRequestListener callback) throws JSONException {
         Log.d(RequestWrapper.REQUEST_LOG, "ADD VOTE (" + participation.getString("u_id") + ", " + participation.getString("d_id") + ", " + participation.getString("c_id") + ")");
 
-        AndroidNetworking.put(_serverAPI + ROUTES.PARTICIPATIONN + "vote")
+        AndroidNetworking.put(_serverAPI + ROUTES.PARTICIPATION._path + "vote")
                 .addHeaders("apiKey", _apiKey)
-                .addHeaders("Content-Type", "application/json")
                 .addQueryParameter("u_id", participation.getString("u_id"))
                 .addQueryParameter("d_id", participation.getString("d_id"))
                 .addQueryParameter("c_id", participation.getString("c_id"))

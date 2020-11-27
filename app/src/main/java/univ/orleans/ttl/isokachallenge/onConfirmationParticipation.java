@@ -189,7 +189,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
                                     Drawing dessin2 = Drawing.fromJson(response);
                                     db.save(dessin2);
                                     Participation participation = new Participation(userCourant, dessin2, chall, false);
-                                    new RequestWrapper().save(RequestWrapper.ROUTES.PARTICIPATIONN, participation.toJson(), new JSONObjectRequestListener() {
+                                    new RequestWrapper().save(RequestWrapper.ROUTES.PARTICIPATION, participation.toJson(), new JSONObjectRequestListener() {
                                         @Override
                                         public void onResponse(JSONObject response) {
                                             try {
