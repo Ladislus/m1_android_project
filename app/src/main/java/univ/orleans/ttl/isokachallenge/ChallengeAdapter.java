@@ -69,6 +69,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull ChallengeAdapter.MyViewHolder holder, int position) {
         holder.display(this.challenges.get(position), this.progressBar);
+        Log.d("bonjour", "onBindViewHolder: display");
     }
 
     @Override
@@ -100,6 +101,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             this.titreChallenge.setText(challenge.getName());
 
             final ArrayList<Drawing>[] listDessinChallenge = new ArrayList[]{new ArrayList<>(DB.getInstance().getDrawingsFromChallenge(challenge.getId()))};
+            Log.d("bonjour", "display: listDessinChallenge");
             if (listDessinChallenge[0].size()==0){
                 String dateChallenge = challenge.getDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -147,44 +149,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             });
 
             this.imagesCaroussel.setPageTransformer(compositePageTransformer);
-
-            new RequestWrapper().get(new Callback() {
-                @Override
-                public void onResponse() {
-                    progressBar.setVisibility(View.GONE);
-
-                    listDessinChallenge[0] = new ArrayList<>(DB.getInstance().getDrawingsFromChallenge(challenge.getId()));
-                    if (listDessinChallenge[0].size()==0){
-                        String dateChallenge = challenge.getDate();
-                        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-                        LocalDateTime dateTimeChallenge = LocalDateTime.parse(dateChallenge, formatter);
-                        listDessinChallenge[0].add(new Drawing(challenge.getTheme(),dateTimeChallenge));
-                    }
-                    sortList(listDessinChallenge[0]);
-
-                    if (listDessinChallenge[0].size()>=5) {
-                        for (int i = 0; i < 5; i++) {
-                            listDessinChallengeTrier.add(listDessinChallenge[0].get(i));
-                        }
-                    }
-
-                    if (listDessinChallenge[0].size()>=5){
-                        dessinAdapter[0] = new ImageDessinAdapter(listDessinChallengeTrier);
-                    }else {
-                        dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0]);
-                    }
-
-                    Log.d("bonjour", "onResponse: "+listDessinChallenge[0].toString());
-
-                    imagesCaroussel.setAdapter(dessinAdapter[0]);
-                    Log.d("bonjour", "onResponse: bonjour ");
-                }
-
-                @Override
-                public void onError(ANError error) {
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
         }
 
         void sortList(ArrayList<Drawing> list){
