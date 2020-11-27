@@ -68,6 +68,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "USER: " + this._username + " (" + this._date + ")";
+        return "USER: " + this._username + " (" + this._date + ", " + this._salt + ")";
     }
 }
