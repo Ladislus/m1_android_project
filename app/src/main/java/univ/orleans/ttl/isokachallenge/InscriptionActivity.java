@@ -8,13 +8,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
@@ -108,6 +113,8 @@ public class InscriptionActivity extends AppCompatActivity {
         EditText mdp1 = findViewById(R.id.inputmdp1Inscription);
         EditText mdp2 = findViewById(R.id.inputmdp2Inscription);
         TextView errorMsg = findViewById(R.id.errorLabelInscr);
+        ProgressBar pg = findViewById(R.id.progressBar);
+
 
         if(username.getText().toString().equals("") || mdp1.getText().toString().equals("") || mdp2.getText().toString().equals("")){
             errorMsg.setText(R.string.ErrorInscriptionInput);
@@ -119,11 +126,34 @@ public class InscriptionActivity extends AppCompatActivity {
                     //Faire l'insription
                     errorMsg.setText("");
                     User user = new User(username.getText().toString(), LocalDateTime.now());
-                    //TODO
-                    this.db.save(user);
-                    finish();
-                    Intent connect = new Intent(this, ConnexionView.class);
-                    startActivity(connect);
+                    RequestWrapper rq = new RequestWrapper();
+                    Intent connect = new Intent(this , ConnexionView.class);
+                    JSONObjectRequestListener callback = new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            db.save(user);
+                            finish();
+                            startActivity(connect);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d("inscrUser",anError.getErrorBody());
+                            Log.d("inscrUser", user.getDate());
+                            Log.d("inscrUser", user.getFormattedDate());
+                            Log.d("inscrUser",anError.getErrorDetail());
+                            Log.d("inscrUser", String.valueOf(anError.getErrorCode()));
+                            pg.setVisibility(View.INVISIBLE);
+                            errorMsg.setText(R.string.connexionImpossibleServ);
+                            if (anError.getErrorCode() == 409){
+                                errorMsg.setText(R.string.errorInscrDeja);
+
+                            }
+                        }
+                    };
+                    pg.setVisibility(View.VISIBLE);
+                    rq.save(RequestWrapper.ROUTES.USER, user.toJson(mdp1.getText().toString()), callback );
+
 
                 }
 

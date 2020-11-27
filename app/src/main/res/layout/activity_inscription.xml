@@ -17,6 +17,15 @@
         android:padding="30px"
         android:gravity="center"
         >
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circle_shape"
+            android:max="100"
+            android:progress="65" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
