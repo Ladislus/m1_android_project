@@ -61,7 +61,7 @@ public class Drawing {
             return new JSONObject()
                     .put("id", this._id)
                     .put("link", this._link)
-                    .put("date", this._date.toString());
+                    .put("date", this._date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
