@@ -110,13 +110,8 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();
             return false;
         });
-
         recyclerView = findViewById(R.id.myRecyclerView);
-
-
-
         challenges = db.getAllChallenges();
-
         challenges.sort((o1, o2) -> {
             String dateString1 = o1.getDate();
             String dateString2 = o2.getDate();
@@ -134,13 +129,9 @@ public class MainActivity extends AppCompatActivity {
                 return 0;
             }
         });
-
-
         monAdapteur = new ChallengeAdapter(challenges);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(monAdapteur);
-
         monAdapteur.setOnItemClickListener(position -> {
             Challenge chall = challenges.get(position);
             Intent gotoChall = new Intent(this, onChallenge.class);
@@ -232,10 +223,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    public void gotoOnChallenge(View view) {
-//        Intent act = new Intent(this, onChallenge.class);
-//        startActivity(act);
-//    }
-
 }

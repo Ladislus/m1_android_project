@@ -163,6 +163,9 @@ public class onParticiperChrono extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public void onPhoto(View view) {
+        /**
+         * Permet a l'utilisateur de prendre en photo son dessin.
+         */
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -195,6 +198,9 @@ public class onParticiperChrono extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * Get l'image de la caméra et lance l'activity onConfirmationParticipation avec le bitmap de l'image
+         */
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
