@@ -40,11 +40,13 @@ public class User {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    public JSONObject toJson() {
+    public JSONObject toJson(String password) {
         try {
             return new JSONObject()
                     .put("username", this._username)
-                    .put("date", this._date.toString());
+                    .put("password", User.hash(password))
+//                    .put("date", this._date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"T"+this._date.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                    .put("date", this._date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

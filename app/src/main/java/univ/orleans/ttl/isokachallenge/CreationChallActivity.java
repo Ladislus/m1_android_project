@@ -12,14 +12,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 
 public class CreationChallActivity extends AppCompatActivity {
@@ -106,7 +113,6 @@ public class CreationChallActivity extends AppCompatActivity {
             EditText name = findViewById(R.id.inputNameChall);
             EditText desc = findViewById(R.id.inputDesc);
             EditText theme = findViewById(R.id.inputTheme);
-//        EditText dateFin = findViewById(R.id.inputEndDate);
             DatePicker dateFin = findViewById(R.id.inputFinDate);
             EditText timer = findViewById(R.id.inputTimer);
             TextView errorLabel = findViewById(R.id.errorCreateChall);
@@ -120,11 +126,28 @@ public class CreationChallActivity extends AppCompatActivity {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 LocalDateTime dateTime = LocalDateTime.parse(dateFin.getDayOfMonth()+"/"+month+"/"+dateFin.getYear()+" 00:00", formatter);
                 Challenge chall = new Challenge(name.getText().toString(), true, theme.getText().toString(), dateTime, Integer.valueOf(timer.getText().toString()) ,desc.getText().toString());
-                this.db.save(chall);
                 Intent gotoChall = new Intent(this, onChallenge.class);
-                gotoChall.putExtra("idchall", chall.getId());
-                finish();
-                startActivity(gotoChall);
+                ProgressBar pg = findViewById(R.id.progressBar);
+                pg.setVisibility(View.VISIBLE);
+                new RequestWrapper().save(RequestWrapper.ROUTES.CHALLENGE, chall.toJson(), new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Challenge challenge = Challenge.fromJson(response);
+                            db.save(challenge);
+                            gotoChall.putExtra("idchall", challenge.getId());
+                            finish();
+                            startActivity(gotoChall);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        pg.setVisibility(View.INVISIBLE);
+
+                    }
+                });
 
             }
 
