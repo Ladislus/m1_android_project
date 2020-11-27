@@ -42,7 +42,8 @@ public class RequestWrapper {
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
-            json.put("password", User.hash(password));
+            json.put("password", password);
+//            json.put("password", User.hash(password));
         } catch (JSONException e) {
             e.printStackTrace();
             return;
