@@ -16,23 +16,20 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
+import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
 public class ConnexionView extends AppCompatActivity {
 
-    private EditText mdp, login;
+    private EditText mdpField, loginField;
     private CheckBox checkLogin;
     private boolean remember;
     private DB db;
@@ -45,8 +42,8 @@ public class ConnexionView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion_view);
-        this.login = findViewById(R.id.inputLogin);
-        this.mdp = findViewById(R.id.inputMDP);
+        this.loginField = findViewById(R.id.inputLogin);
+        this.mdpField = findViewById(R.id.inputMDP);
         this.checkLogin = findViewById(R.id.checkLogin);
         this.remember = false;
 
@@ -113,7 +110,8 @@ public class ConnexionView extends AppCompatActivity {
         RequestWrapper rq = new RequestWrapper();
         ProgressBar pg = findViewById(R.id.progressBar);
         Intent home = new Intent(this, MainActivity.class);
-        JSONObjectRequestListener callback = new JSONObjectRequestListener() {
+
+        JSONObjectRequestListener loginCallback = new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -131,16 +129,50 @@ public class ConnexionView extends AppCompatActivity {
 
             @Override
             public void onError(ANError anError) {
+                Log.d(RequestWrapper.REQUEST_LOG, "loginCallback");
+                Log.d(RequestWrapper.REQUEST_LOG, anError.toString());
+                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorBody());
+                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorDetail());
+                Log.d(RequestWrapper.REQUEST_LOG, String.valueOf(anError.getErrorCode()));
                 pg.setVisibility(View.INVISIBLE);
                 TextView labelError = findViewById(R.id.errorConnexion);
                 labelError.setText(R.string.connexionImpossibleServ);
                 if(anError.getErrorCode() == 400){
-                    labelError.setText(R.string.connexionImpossible);
+                    labelError.setText(R.string.invalidInfo);
                 }
             }
         };
+
+        JSONObjectRequestListener getUserCallback = new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(RequestWrapper.REQUEST_LOG, response.toString());
+                try {
+                    DB.getInstance().save(User.fromJson(response));
+                    new RequestWrapper().login(loginField.getText().toString(), mdpField.getText().toString(), loginCallback);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                Log.d(RequestWrapper.REQUEST_LOG, "getUserCallback");
+                Log.d(RequestWrapper.REQUEST_LOG, anError.toString());
+                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorBody());
+                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorDetail());
+                Log.d(RequestWrapper.REQUEST_LOG, String.valueOf(anError.getErrorCode()));
+                pg.setVisibility(View.INVISIBLE);
+                TextView labelError = findViewById(R.id.errorConnexion);
+                labelError.setText(R.string.connexionImpossibleServ);
+                if (anError.getErrorCode() == 400) {
+                    labelError.setText(R.string.invalidInfo);
+                }
+            }
+        };
+
         pg.setVisibility(View.VISIBLE);
-        rq.login(this.login.getText().toString(), this.mdp.getText().toString(), callback);
+        rq.getUser(this.loginField.getText().toString(), getUserCallback);
     }
 
     public void setUpToolbar() {
@@ -170,8 +202,8 @@ public class ConnexionView extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
 
         if(this.checkLogin.isChecked()){
-            editor.putString("login", String.valueOf(this.login.getText()));
-            editor.putString("mdp", String.valueOf(this.mdp.getText()));
+            editor.putString("login", String.valueOf(this.loginField.getText()));
+            editor.putString("mdp", String.valueOf(this.mdpField.getText()));
         }else{
             editor.putString("login", "");
             editor.putString("mdp", "");
@@ -184,8 +216,8 @@ public class ConnexionView extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        this.login.setText(sharedPref.getString("login",""));
-        this.mdp.setText(sharedPref.getString("mdp",""));
+        this.loginField.setText(sharedPref.getString("login",""));
+        this.mdpField.setText(sharedPref.getString("mdp",""));
         this.remember = sharedPref.getBoolean("isChecked",false);
         this.checkLogin.setChecked(this.remember);
 
