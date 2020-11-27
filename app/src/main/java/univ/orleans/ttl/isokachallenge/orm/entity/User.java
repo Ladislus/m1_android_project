@@ -58,7 +58,8 @@ public class User {
                     .put("username", this._username)
                     .put("salt", this._salt)
                     .put("password", User.hash(password, this._salt))
-                    .put("date", this._date.toString());
+                    .put("date", this._date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

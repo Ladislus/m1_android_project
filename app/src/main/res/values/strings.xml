@@ -85,6 +85,7 @@
     <string name="minutes" translatable="false">minutes</string>
     <string name="connexionImpossible">Cannot find user.</string>
     <string name="connexionImpossibleServ">It seems we cannot connect to the server, please try again later.</string>
+    <string name="errorInscrDeja">This username is already taken.</string>
 
 
 </resources>
