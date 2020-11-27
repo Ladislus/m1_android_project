@@ -156,7 +156,7 @@ public class InscriptionActivity extends AppCompatActivity {
                             pg.setVisibility(View.INVISIBLE);
                             errorMsg.setText(R.string.connexionImpossibleServ);
                             if (anError.getErrorCode() == 409){
-                                errorMsg.setText(R.string.errorInscrDeja);
+                                errorMsg.setText(R.string.ErrorInscriptionUsername);
                             }
                         }
                     };
