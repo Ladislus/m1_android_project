@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_menu);
 
         AndroidNetworking.initialize(getApplicationContext());
-        if(!(db.isInitialized())){
+        if(!DB.isInitialized()){
             DB.init(this);
         }
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         db = DB.getInstance();
 
         User user1 = new User(
-                "Tom99",
+                "WeeboMaster",
                 LocalDateTime.now()
         );
 

@@ -19,14 +19,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 
 import univ.orleans.ttl.isokachallenge.orm.DB;
+import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
@@ -40,6 +47,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
 
     private ImageView imageViewConfirmation;
     private DB db;
+    private Bitmap image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +104,7 @@ public class onConfirmationParticipation extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        Bitmap image = (Bitmap) intent.getParcelableExtra("bitmap");
+        this.image = (Bitmap) intent.getParcelableExtra("bitmap");
         imageViewConfirmation = findViewById(R.id.imageViewConfirmation);
         imageViewConfirmation.setImageBitmap(image);
 
@@ -137,28 +145,8 @@ public class onConfirmationParticipation extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageViewConfirmation.setImageBitmap(imageBitmap);
-        }
-    }
-
-
-
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-    public Bitmap StringToBitMap(String encodedString){
-        try {
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
+            this.image = (Bitmap) extras.get("data");
+            imageViewConfirmation.setImageBitmap(this.image);
         }
     }
 
@@ -167,19 +155,38 @@ public class onConfirmationParticipation extends AppCompatActivity {
         if( !(sharedPref.getString("username","").equals(""))){
             sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
             User userCourant = this.db.getUser(sharedPref.getString("username",""));
-            BitmapDrawable btmd = (BitmapDrawable) this.imageViewConfirmation.getDrawable();
-            Bitmap img = btmd.getBitmap();
-            Drawing dessin = new Drawing(BitMapToString(img), LocalDateTime.now());
-            Challenge chall = this.db.getChallenge(getIntent().getIntExtra("idchall",0));
-            this.db.save(dessin);
-            Participation participation = new Participation(userCourant, dessin, chall, false);
-            this.db.save(participation);
-            finish();
+            ProgressBar pg = findViewById(R.id.progressBar);
+
+            RequestWrapper rq = new RequestWrapper();
+            JSONObjectRequestListener callback = new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Drawing dessin = null;
+                    try {
+                        dessin = new Drawing(response.getJSONObject("data").getString("link"), LocalDateTime.now());
+                        Challenge chall = db.getChallenge(getIntent().getIntExtra("idchall",0));
+                        db.save(dessin);
+                        Participation participation = new Participation(userCourant, dessin, chall, false);
+                        db.save(participation);
+                        finish();
+                        pg.setVisibility(View.INVISIBLE);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onError(ANError anError) {
+                    pg.setVisibility(View.INVISIBLE);
+                    Log.d("onUploadIMG", String.valueOf(anError.getErrorCode()));
+                    Log.d("onUploadIMG", anError.getErrorDetail());
+                }
+            };
+            pg.setVisibility(View.VISIBLE);
+            rq.imgurUpload(this.image, callback);
         }else{
             Intent intent = new Intent(this, ConnexionView.class);
             startActivity(intent);
         }
-
     }
-
 }
