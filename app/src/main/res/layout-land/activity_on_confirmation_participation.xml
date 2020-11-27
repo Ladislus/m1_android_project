@@ -52,16 +52,17 @@
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+
             android:textStyle="bold"
-            android:layout_weight="12"
+            android:layout_weight="0"
             android:text="@string/confirmerLabel" />
 
     <LinearLayout
         android:layout_width="match_parent"
 
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
         <Button
@@ -78,10 +79,22 @@
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:onClick="onReprendrePhoto"
             android:text="Reprendre une photo" />
+
     </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="false"
+            android:layout_weight="0"
+            android:progressDrawable="@drawable/circle_shape"
+            android:max="100"
+            android:progress="65" />
+
 </LinearLayout>
 
 
