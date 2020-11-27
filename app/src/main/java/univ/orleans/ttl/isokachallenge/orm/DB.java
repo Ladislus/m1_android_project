@@ -71,6 +71,7 @@ public class DB extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(Tables.USER_NAME, user.getUsername());
             values.put(Tables.USER_DATE, user.getDate());
+            values.put(Tables.USER_SALT, user.getSalt());
 
             this.getWritableDatabase().insertOrThrow(Tables.USER_TABLE, null, values);
             Log.d(Tables.DB_LOG, "SAVED " + user);
@@ -143,6 +144,7 @@ public class DB extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Tables.USER_NAME, user.getUsername());
         values.put(Tables.USER_DATE, user.getDate());
+        values.put(Tables.USER_SALT, user.getSalt());
 
         int nbAffected = this.getWritableDatabase().update(Tables.USER_TABLE, values, Tables.USER_NAME + " = ?", new String[] { user.getUsername() });
         Log.d(Tables.DB_LOG, "(USER) NUMBER OF ROWS AFFECTED: " + nbAffected);
@@ -224,7 +226,7 @@ public class DB extends SQLiteOpenHelper {
         try (
             Cursor c =getReadableDatabase().query(
                 Tables.USER_TABLE,
-                new String[] { Tables.USER_NAME, Tables.USER_DATE },
+                new String[] { Tables.USER_NAME, Tables.USER_DATE, Tables.USER_SALT },
                 Tables.USER_NAME + " = ?",
                 new String[] { username },
                 null,
@@ -233,7 +235,7 @@ public class DB extends SQLiteOpenHelper {
             )
         ) {
            if (c.moveToFirst()) {
-               User returned = new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX)));
+               User returned = new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX)), c.getString(Tables.USER_SALT_INDEX));
                Log.d(Tables.DB_LOG, "(USER) FOUND " + returned);
                return returned;
            } else {
@@ -322,7 +324,7 @@ public class DB extends SQLiteOpenHelper {
         try (
                 Cursor c = getReadableDatabase().query(
                         Tables.USER_TABLE,
-                        new String[] { Tables.USER_NAME, Tables.USER_DATE },
+                        new String[] { Tables.USER_NAME, Tables.USER_DATE, Tables.USER_SALT },
                         null,
                         null,
                         null,
@@ -331,7 +333,7 @@ public class DB extends SQLiteOpenHelper {
                 )
         ) {
             while (c.moveToNext()) {
-                users.add(new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX))));
+                users.add(new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX)), c.getString(Tables.USER_SALT_INDEX)));
             }
         }
         StringBuilder sb = new StringBuilder("ALL USERS :\n\t[\n");
@@ -438,7 +440,7 @@ public class DB extends SQLiteOpenHelper {
         try (
                 Cursor c = getReadableDatabase().query(
                         Tables.USER_TABLE,
-                        new String[] { Tables.USER_NAME, Tables.USER_DATE },
+                        new String[] { Tables.USER_NAME, Tables.USER_DATE, Tables.USER_SALT },
                         query.toString(),
                         args,
                         null,
@@ -447,7 +449,7 @@ public class DB extends SQLiteOpenHelper {
                 )
         ) {
             while (c.moveToNext()) {
-                users.add(new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX))));
+                users.add(new User(c.getString(Tables.USER_NAME_INDEX), LocalDateTime.parse(c.getString(Tables.USER_DATE_INDEX)), c.getString(Tables.USER_SALT_INDEX)));
             }
         }
         StringBuilder sb = new StringBuilder("USERS FOUND :\n\t[\n");

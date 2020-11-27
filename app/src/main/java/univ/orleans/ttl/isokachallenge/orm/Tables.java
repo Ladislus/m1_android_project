@@ -20,8 +20,13 @@ public class Tables {
     public static final int USER_NAME_INDEX = 0;
     public static final String USER_DATE = "u_date";
     public static final int USER_DATE_INDEX = 1;
+    public static final String USER_SALT = "u_salt";
+    public static final int USER_SALT_INDEX = 2;
 
-    public static final String USER_CREATE = "CREATE TABLE " + USER_TABLE + "(" + USER_NAME + " VARCHAR(255) PRIMARY KEY NOT NULL," + USER_DATE + " DATE NOT NULL);";
+    public static final String USER_CREATE = "CREATE TABLE " + USER_TABLE + "("
+            + USER_NAME + " VARCHAR(255) PRIMARY KEY NOT NULL,"
+            + USER_DATE + " DATE NOT NULL,"
+            + USER_SALT + " VARCHAR(255) NOT NULL);";
 
     //  ####################
     //  #   DRAWING TABLE  #
