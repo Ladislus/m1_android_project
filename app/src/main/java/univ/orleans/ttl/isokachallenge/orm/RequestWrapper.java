@@ -151,5 +151,18 @@ public class RequestWrapper {
                     }
                 });
     }
+
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public void save(@NonNull String route, @NonNull JSONObject object, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST SAVE WITH ROUTE: " + route);
+
+        AndroidNetworking.post(_serverAPI + route)
+                .addHeaders("apiKey", _apiKey)
+                .addHeaders("Content-Type", "application/json")
+                .addJSONObjectBody(object)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
 }
 
