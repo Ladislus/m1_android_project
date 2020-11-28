@@ -26,6 +26,8 @@ public class Participation {
 
     /**
      * Constructeur par défaut
+     * Ce constructeur est utilisé lors de la reception
+     * d'une participation depuis la base de données distante
      * @param user L'utilisateur qui a participé
      * @param drawing Le dessin de l'utilisateur
      * @param challenge Le challenge sur lequel l'utilisateur a participé
@@ -41,7 +43,8 @@ public class Participation {
     }
 
     /**
-     * Constructeur de participation qui met à 0 le nombre de vote
+     * Constructeur de participation
+     * Permet d'omettre le nombre de votes (0 par défaut)
      * @param user L'utilisateur qui a participé
      * @param drawing Le dessin de l'utilisateur
      * @param challenge Le challenge sur lequel l'utilisateur a participé
@@ -56,7 +59,7 @@ public class Participation {
      * Fonction pour parser un JSONObject vers un Participation
      * @param json La participation au format JSONObject
      * @return La participation correspondante
-     * @throws JSONException Si le JSONObject ne contient pas tous les champs necessaire
+     * @throws JSONException Si le JSONObject ne contient pas tous les champs necessaires
      */
     @NonNull
     public static Participation fromJson(@NonNull JSONObject json) throws JSONException {
@@ -96,7 +99,7 @@ public class Participation {
 
     /**
      * Obtention de la représentation d'une participation au format JSON (pour l'envoi dans des requêtes)
-     * @return La participation au format JSONObject
+     * @return La participation au format JSONObject (Retourne null si l'opération s'est mal déroulée)
      */
     @Nullable
     public JSONObject toJson() {

@@ -25,6 +25,8 @@ public class User {
 
     /**
      * Constructeur par défaut
+     * Ce constructeur est utilisé lors de la reception
+     * d'un utilisateur depuis la base de données distante
      * @param username Le nom d'utilisateur
      * @param date La date d'inscription
      * @param salt Le sel utilisé pour hasher le mot de passe
@@ -49,7 +51,7 @@ public class User {
      * Fonction pour parser un JSONObject vers un User
      * @param json L'utilisateur au format JSONObject
      * @return L'utilisateur correspondant
-     * @throws JSONException Si le JSONObject ne contient pas tous les champs necessaire
+     * @throws JSONException Si le JSONObject ne contient pas tous les champs necessaires
      */
     @NonNull
     public static User fromJson(@NonNull JSONObject json) throws JSONException {
@@ -99,7 +101,7 @@ public class User {
     /**
      * Obtention de la représentation d'un utilisateur au format JSON (pour l'envoi dans des requêtes)
      * @param password Le mot de passe de l'utilisateur (necessaire pour les requêtes "save")
-     * @return L'utilisateur au format JSONObject et son mot de passe
+     * @return L'utilisateur au format JSONObject et son mot de passe (Retourne null si l'opération s'est mal déroulée)
      */
     @Nullable
     public JSONObject toJson(@NonNull String password) {
