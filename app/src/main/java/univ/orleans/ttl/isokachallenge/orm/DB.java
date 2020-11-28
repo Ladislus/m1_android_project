@@ -28,8 +28,8 @@ import univ.orleans.ttl.isokachallenge.orm.entity.*;
  * [ SINGLETON ]
  * Class permettant la manipulation de la base de données à l'aide
  * de méthodes prédéfinies, pour ne pas à avoir à écrire des requêtes
- * SQL brut dans le reste du code, permettant d'éviter la duplication de
- * code lourd
+ * SQL brutes dans le reste du code, permettant d'éviter la duplication de
+ * code lourd et long
  */
 public class DB extends SQLiteOpenHelper {
 
