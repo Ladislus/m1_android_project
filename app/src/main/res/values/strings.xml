@@ -93,4 +93,7 @@
     <string name="server_desync">The actual user does not exist in the remote database</string>
     <string name="oldPasswordConfirm">Confirm your actual password</string>
     <string name="communication_error">Error while communicating with the server</string>
+    <string name="unableToSaveParticipation">Couldn\'t save the participation, try again later</string>
+    <string name="unableToSaveDrawing">Couldn\'t save the drawing, try again later</string>
+    <string name="unableToSaveToImgur">Couldn\'t upload the drawing to Imgur, try again later</string>
 </resources>

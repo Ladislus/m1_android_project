@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -39,6 +40,8 @@ public class onConfirmationParticipation extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private ImageView imageViewConfirmation;
     private DB db;
     private Bitmap image;
@@ -48,16 +51,19 @@ public class onConfirmationParticipation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_confirmation_participation);
         navigationView = findViewById(R.id.navigation_menu);
+
+        this.db = DB.getInstance();
+
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
-        if( !(sharedPref.getString("username","").equals(""))){
+        if (!(sharedPref.getString("username","").equals(""))) {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
-        }else{
+        } else {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
+
         setUpToolbar();
-        this.db = DB.getInstance();
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
@@ -121,8 +127,6 @@ public class onConfirmationParticipation extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
     public void onReprendrePhoto(View view) {
         /**
          * Permet a l'utilisateur de changer la photo qu'il va envoyer.
@@ -159,65 +163,100 @@ public class onConfirmationParticipation extends AppCompatActivity {
          * Une fois ces trois requêtes terminées, l'activity se finish() et on revient logiquement la a
          * description du challenge (activity onChallenge).
          */
+
+        AppCompatActivity context = this;
+
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
-        if( !(sharedPref.getString("username","").equals(""))){
-            sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        if (!(sharedPref.getString("username","").equals(""))) {
             User userCourant = this.db.getUser(sharedPref.getString("username",""));
             ProgressBar pg = findViewById(R.id.progressBar);
-            JSONObjectRequestListener callback = new JSONObjectRequestListener() {
+
+            pg.setVisibility(View.VISIBLE);
+
+            // Lancement de la requête d'upload de l'image vers Imgur
+            new RequestWrapper().imgurUpload(this.image, new JSONObjectRequestListener() {
+                // Si l'upload réussi ...
                 @Override
                 public void onResponse(JSONObject response) {
-                    Drawing dessin = null;
                     try {
-                        dessin = new Drawing(response.getJSONObject("data").getString("link"), LocalDateTime.now());
-                        Challenge chall = db.getChallenge(getIntent().getIntExtra("idchall",0));
+                        // Création d'un nouveau dessin avec le lien obtenu de l'API Imgur
+                        Drawing dessin = new Drawing(response.getJSONObject("data").getString("link"), LocalDateTime.now());
+                        // Lancement de la requête de sauvegarde du dessin sur la base de données distante
                         new RequestWrapper().save(RequestWrapper.ROUTES.DRAWING, dessin.toJson(), new JSONObjectRequestListener() {
+                            // Si la sauvegarde sur la base de données distante réussie ...
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    Drawing dessin2 = Drawing.fromJson(response);
-                                    db.save(dessin2);
-                                    Participation participation = new Participation(userCourant, dessin2, chall, false);
+                                    // Récupération du dessin avec l'ID auto-généré (Drawing immuable)
+                                    Drawing newDessin = Drawing.fromJson(response);
+                                    // Sauvegarde du dessin en base de données locale
+                                    db.save(newDessin);
+                                    // Création de la participation
+                                    Participation participation = new Participation(userCourant, newDessin, db.getChallenge(getIntent().getIntExtra("idchall",0)), false);
+                                    // Lancement de la requête de sauvegarde de la participation
                                     new RequestWrapper().save(RequestWrapper.ROUTES.PARTICIPATION, participation.toJson(), new JSONObjectRequestListener() {
+                                        // Si la sauvegarde de la participation réussie ...
                                         @Override
                                         public void onResponse(JSONObject response) {
                                             try {
+                                                // Sauvegarde de la participation dans la base de données locale
                                                 db.save(Participation.fromJson(response));
+                                                // Fin de l'activity
                                                 finish();
                                                 pg.setVisibility(View.INVISIBLE);
                                             } catch (JSONException e) {
+                                                // Erreur de parse des données reçues dans response (Save Participation)
                                                 e.printStackTrace();
+                                                Toast.makeText(context, R.string.corrupted_response_data, Toast.LENGTH_LONG).show();
+                                                finish();
                                             }
                                         }
+
+                                        // Si la sauvegarde de la participation échoue
                                         @Override
                                         public void onError(ANError anError) {
-
+                                            // Affichage d'un Toast
+                                            Toast.makeText(context, R.string.unableToSaveParticipation, Toast.LENGTH_LONG).show();
+                                            pg.setVisibility(View.INVISIBLE);
+                                            // Puis ferme l'activity
+                                            finish();
                                         }
                                     });
                                 } catch (JSONException e) {
+                                    // Erreur de parse des données reçues dans response (Save Drawing)
                                     e.printStackTrace();
+                                    Toast.makeText(context, R.string.corrupted_response_data, Toast.LENGTH_LONG).show();
+                                    finish();
                                 }
                             }
-
+                            // Si la sauvegarde de l'image échoue
                             @Override
                             public void onError(ANError anError) {
-
+                                // Affichage d'un Toast
+                                Toast.makeText(context, R.string.unableToSaveDrawing, Toast.LENGTH_LONG).show();
+                                pg.setVisibility(View.INVISIBLE);
+                                // Puis ferme l'activity
+                                finish();
                             }
                         });
                     } catch (JSONException e) {
+                        // Erreur de parse des données reçues dans response (Upload)
                         e.printStackTrace();
+                        Toast.makeText(context, R.string.corrupted_response_data, Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }
+                // Si l'upload de l'image sur Imgur echoue
                 @Override
                 public void onError(ANError anError) {
+                    // Affichage d'un Toast
+                    Toast.makeText(context, R.string.unableToSaveToImgur, Toast.LENGTH_LONG).show();
                     pg.setVisibility(View.INVISIBLE);
-                    Log.d("onUploadIMG", String.valueOf(anError.getErrorCode()));
-                    Log.d("onUploadIMG", anError.getErrorDetail());
+                    // Puis ferme l'activity
+                    finish();
                 }
-            };
-            pg.setVisibility(View.VISIBLE);
-            new RequestWrapper().imgurUpload(this.image, callback);
-        }else{
+            });
+        } else {
             Intent intent = new Intent(this, ConnexionView.class);
             finish();
             startActivity(intent);
