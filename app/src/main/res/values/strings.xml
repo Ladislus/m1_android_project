@@ -96,4 +96,5 @@
     <string name="unableToSaveParticipation">Couldn\'t save the participation, try again later</string>
     <string name="unableToSaveDrawing">Couldn\'t save the drawing, try again later</string>
     <string name="unableToSaveToImgur">Couldn\'t upload the drawing to Imgur, try again later</string>
+    <string name="errorLoadChall">Couldn\'t load challenges from server</string>
 </resources>

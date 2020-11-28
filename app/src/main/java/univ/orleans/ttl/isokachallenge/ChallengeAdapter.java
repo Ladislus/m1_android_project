@@ -39,7 +39,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
 
     private List<Challenge> challenges; // contient tous les challenges de la BD
     private OnItemClickListener mListener; // Listener du click sur les challenge
-    private ProgressBar progressBar; // pour afficher la synchro entre la BD distante et local
 
     public  interface  OnItemClickListener{
         void OnItemClick(int position);
@@ -53,18 +52,12 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         mListener = listener;
     }
 
-    public void setListChallengeAdapter(List<Challenge> challenges) {
-        this.challenges = challenges;
-    }
-
     /**
      * Constructeur de l'adapteur des challenge
      * @param challenges, liste de tous les challenges de la BD
-     * @param progressBar
      */
-    public ChallengeAdapter(List<Challenge> challenges, ProgressBar progressBar) {
+    public ChallengeAdapter(List<Challenge> challenges) {
         this.challenges = challenges;
-        this.progressBar = progressBar;
     }
 
     @NonNull
@@ -82,7 +75,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
      */
     @Override
     public void onBindViewHolder(@NonNull ChallengeAdapter.MyViewHolder holder, int position) {
-        holder.display(this.challenges.get(position), this.progressBar);
+        holder.display(this.challenges.get(position));
         Log.d("bonjour", "onBindViewHolder: display");
     }
 
@@ -124,9 +117,8 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         /**
          * Affichage spécifié pour chaque challenge
          * @param challenge, un challenge de la liste challenges
-         * @param progressBar
          */
-        void display (Challenge challenge, ProgressBar progressBar){
+        void display (Challenge challenge){
             this.titreChallenge.setText(challenge.getName()); // affichage du Titre
 
             // Récupération de la liste des dessins pour un challenge en fonction de l'id du challenge via la

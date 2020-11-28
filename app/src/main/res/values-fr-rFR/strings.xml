@@ -86,4 +86,5 @@
     <string name="unableToSaveParticipation">Impossible de sauvegarder la participation, reessayez plus tard</string>
     <string name="unableToSaveDrawing">Impossible de sauvegarder le dessin, reessayez plus tard</string>
     <string name="unableToSaveToImgur">Impossible d\'envoyer le dessin vers Imgur, reessayez plus tard</string>
+    <string name="errorLoadChall">Chargement des challenges depuis le serveur impossible</string>
 </resources>

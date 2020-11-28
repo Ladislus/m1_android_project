@@ -23,6 +23,7 @@ import java.util.List;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,13 +48,8 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
-    // Base de données
-    public static DB db;
 
-    //TODO Ladislas enlever car jamais utilisé
-    public ActionBarDrawerToggle getActionBarDrawerToggle() {
-        return actionBarDrawerToggle;
-    }
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +63,12 @@ public class MainActivity extends AppCompatActivity {
         if(!DB.isInitialized()){
             DB.init(this);
         }
-        // mise en place des shared Preferences
-        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+
+        // Récupération des ShardPref
+        this.sharedPref = getSharedPreferences("session", Context.MODE_PRIVATE);
+
         // test pour savoir si l'user est connecté
-        if( !(sharedPref.getString("username","").equals(""))){
+        if( !(this.sharedPref.getString("username","").equals(""))){
             //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
@@ -80,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setUpToolbar(); // gestion de la bar de navigation
-
-        db = DB.getInstance();
 
         // Récupération d'élements du xml
         navigationView = findViewById(R.id.navigation_menu);
@@ -123,17 +119,14 @@ public class MainActivity extends AppCompatActivity {
         });
         // Récupération d'élements du xml
         recyclerView = findViewById(R.id.myRecyclerView);
-
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("Main", "onStart: ");
-        //TODO Ladislas enlever sharedpref car deja init dans onCreate
-        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
+    protected void onResume() {
+        super.onResume();
+
         // Test si user connecté
-        if( !(sharedPref.getString("username","").equals(""))){
+        if( !(this.sharedPref.getString("username","").equals(""))){
             //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
@@ -141,46 +134,9 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, false);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
-        // Récupération de tous les challenges de la BD
-        challenges =DB.getInstance().getAllChallenges();
 
-        // trie une liste de challenges en fonction de leurs date
-        //TODO Ladislas remplacé par sortList(challenges)
-        challenges.sort((o1, o2) -> {
-            String dateString1 = o1.getDate();
-            String dateString2 = o2.getDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-            LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter);
-            LocalDateTime dateTime2 = LocalDateTime.parse(dateString2, formatter);
-            if(dateTime1.isAfter(dateTime2)) {
-                Log.d("Sort","1");
-                return -1;
-            } else if(dateTime1.isBefore(dateTime2)) {
-                Log.d("Sort","-1");
-                return 1;
-            } else {
-                Log.d("Sort","0");
-                return 0;
-            }
-        });
-
-//        monAdapteur.setListChallengeAdapter(challenges);
-//        recyclerView.setAdapter(monAdapteur);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("Main", "onResume: ");
-        // Récupération de la BD de tous les challenges
-        challenges =DB.getInstance().getAllChallenges();
-
-        // affichage des challenges
+        // Mise à jour base de données locale
         loadChallenge();
-
-        // mise de la liste de challenge dans l'adapteur
-        monAdapteur.setListChallengeAdapter(challenges);
-        recyclerView.setAdapter(monAdapteur); //mise de l'adapteur dans le recyclerView
     }
 
     /**
@@ -213,44 +169,37 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Gestion de l'affichage des challenge
      */
-    public void loadChallenge(){
-        challenges = db.getAllChallenges(); // récupération de tous les challenges
+    public void loadChallenge() {
         // Synchronisation BD local et distante
         new RequestWrapper().get(new Callback() {
             @Override
             public void onResponse() { // Si les 2 BD arrivent à être synchro alors
-                challenges = db.getAllChallenges();// Récupération des challenges
 
-                sortList(challenges); // Trie par date
-                // récupération d'elements xml
-                pg = findViewById(R.id.progressBar);
-                // affectation un nouveau adapteur de challenges avec les datas mise à jours
-                monAdapteur = new ChallengeAdapter(challenges,pg);
-                // gestion recyclerView
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                recyclerView.setAdapter(monAdapteur);
-                // ajout du click listener
-                monAdapteur.setOnItemClickListener(position -> {
-                    Challenge chall = challenges.get(position);
-                    Intent gotoChall = new Intent(getApplicationContext(), onChallenge.class);
-                    gotoChall.putExtra("idchall", chall.getId());
-                    startActivity(gotoChall);
-                });
+                // Mise à jour de l'affichage des challenges après mise à jour de la base de données locale
+                displayChallenges();
+
                 pg.setVisibility(View.GONE); // disparition de la progress bar = fin synchro BD
             }
 
             @Override
             public void onError(ANError error) {
-                Log.d("bonjour", "onError: ");
+                Toast.makeText(getApplicationContext(), R.string.errorLoadChall, Toast.LENGTH_LONG).show();
                 pg.setVisibility(View.GONE); // disparition de la progress bar = fin synchro BD
             }
         });
         pg.setVisibility(View.VISIBLE); // tant que synchro pas fini progress bar visible
 
+        // Mise à jour de l'affichage des challenges après mise à jour de la base de données locale
+        displayChallenges();
+    }
+
+    public void displayChallenges() {
+        challenges = DB.getInstance().getAllChallenges(); // récupération de tous les challenges
+
         sortList(challenges); // trie challenge par date
 
         // affectation challenge adapteur
-        monAdapteur = new ChallengeAdapter(challenges,pg);
+        monAdapteur = new ChallengeAdapter(challenges);
         // gestion recyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(monAdapteur);
