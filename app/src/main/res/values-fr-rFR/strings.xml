@@ -82,4 +82,5 @@
     <string name="corrupted_response_data">Les informations reçues de la base de données sont corrompues</string>
     <string name="server_desync">L\'utilisateur actuel n\'existe pas dans la base de données distante</string>
     <string name="oldPasswordConfirm">Confirmez votre mot de passe actuel</string>
+    <string name="communication_error">Erreur lors de la communication avec le seveur</string>
 </resources>

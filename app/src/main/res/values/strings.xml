@@ -92,4 +92,5 @@
     <string name="corrupted_response_data">Informations received from the database are corruped</string>
     <string name="server_desync">The actual user does not exist in the remote database</string>
     <string name="oldPasswordConfirm">Confirm your actual password</string>
+    <string name="communication_error">Error while communicating with the server</string>
 </resources>
