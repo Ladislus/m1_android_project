@@ -73,11 +73,6 @@ public class Profil extends AppCompatActivity {
                     startActivity(challenge);
                     finish();
                     break;
-                case R.id.nav_challengeTest:
-                    Intent act = new Intent(this, onChallenge.class);
-                    startActivity(act);
-                    finish();
-                    break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);
