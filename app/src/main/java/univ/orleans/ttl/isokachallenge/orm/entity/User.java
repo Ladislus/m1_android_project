@@ -16,8 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
  */
 public class User {
 
+    @NonNull
     private final String _username;
+    @NonNull
     private final LocalDateTime _date;
+    @NonNull
     private final String _salt;
 
     /**
@@ -72,6 +75,7 @@ public class User {
      * Exemple: 29/10/2020, 19'20'00
      * @return La date d'inscription de l'utilisateur
      */
+    @NonNull
     public String getFormattedDate() {
         return this._date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH'h'mm"));
     }
@@ -87,6 +91,7 @@ public class User {
      * @param salt Le salt à utiliser
      * @return Le mot de passe hashé avec BCrypt
      */
+    @NonNull
     public static String hash(String password, String salt) {
         return BCrypt.hashpw(password, salt);
     }
