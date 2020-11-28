@@ -118,10 +118,10 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
          * Affichage spécifié pour chaque dessin
          * @param dessin, un dessin de la liste dessins
          */
-        void setLocationData(Drawing dessin){
+        void setLocationData(Drawing dessin) {
             // si les élements de la paire thème ne sont pas null alors
             // nous n'avons pas de dessin, et nous devons affiché le thème
-            if ( !(Objects.isNull(theme.first) && Objects.isNull(theme.second))){
+            if (!(Objects.isNull(theme.first) && Objects.isNull(theme.second))) {
                 Picasso.get().load(this.theme.first).into(imageView); // chargement de l'image avec le premier composant du thème
                 textTitle.setText(R.string.theme); // affichage du Titre qui est Thème
                 // Récupération et formatage de la date du thème
@@ -130,10 +130,11 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
                 String dateTheme = themeTime.format(formatter);
                 textLocation.setText(dateTheme);// Affichage de date
                 itemView.findViewById(R.id.votes).setVisibility(View.GONE); // Disparition du vote, car l'on ne peut pas voter sur un 1 thème
-            }else{ // si nous avons des dessins
+            } else {
+                // si nous avons des dessins
                 // Recherche dans la BD de la  participation du dessin au challenge
                 HashMap<String, Pair<String, String>> mapParticipation = new HashMap<>();
-                mapParticipation.put(Tables.PARTICIPATION_DRAWING_ID, new Pair(Tables.OPERATOR_EQ, dessin.getId().toString()));
+                mapParticipation.put(Tables.PARTICIPATION_DRAWING_ID, new Pair<>(Tables.OPERATOR_EQ, dessin.getId().toString()));
                 ArrayList<Participation> participations = new ArrayList<>(DB.getInstance().getParticipations(mapParticipation));
 
                 // Recherche dans la BD de l'user qui a fait le dessin
@@ -145,7 +146,6 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
                 // Mise en place de l'affichage des votes avec les infos de la participation
                 textStarRating.setText(String.valueOf(participations.get(0).getVotes()));
             }
-
         }
     }
 }
