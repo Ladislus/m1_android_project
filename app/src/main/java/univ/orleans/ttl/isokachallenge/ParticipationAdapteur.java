@@ -59,11 +59,11 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
 
                 //TODO Use request
                 try {
-                    new RequestWrapper().vote(mParticipation.get(position).toJson(), sharedPref.getString("username", ""),new JSONObjectRequestListener() {
+                    new RequestWrapper().vote(mParticipation.get(position).toJson(), sharedPref.getString("username", ""), new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                DB.getInstance().incrementParticipation(Participation.fromJson(response));
+                                DB.getInstance().update(Participation.fromJson(response));
                                 mParticipation.remove(position);
                                 mParticipation.add(position,Participation.fromJson(response));
                                 holder.votes.setText(mParticipation.get(position).getVotes().toString());
@@ -81,7 +81,6 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
                             Log.d(RequestWrapper.REQUEST_LOG, "onError: "+anError.getErrorCode());
                             if (anError.getErrorCode() == 409) {
                                 Log.d(RequestWrapper.REQUEST_LOG, "Déjà voté");
-                                //TODO
                                 Toast.makeText(mContext,R.string.toastVoteDeja, Toast.LENGTH_SHORT).show();
                             }
                         }
