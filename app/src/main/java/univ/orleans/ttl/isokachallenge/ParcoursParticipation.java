@@ -74,10 +74,6 @@ public class ParcoursParticipation extends AppCompatActivity {
                     Intent inscription = new Intent(this, InscriptionActivity.class);
                     startActivity(inscription);
                     break;
-                case R.id.nav_challengeTest:
-                    Intent act = new Intent(this, onChallenge.class);
-                    startActivity(act);
-                    break;
                 case R.id.nav_deconnexion:
                     Intent deco = new Intent(this, DeconnexionView.class);
                     startActivity(deco);

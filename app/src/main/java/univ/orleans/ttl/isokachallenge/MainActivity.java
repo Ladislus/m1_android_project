@@ -99,10 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_challenge:
                     this.onResume();
                     break;
-                case R.id.nav_challengeTest:
-                    Intent act = new Intent(this, onChallenge.class);
-                    startActivity(act);
-                    break;
                 case R.id.nav_profil:
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);

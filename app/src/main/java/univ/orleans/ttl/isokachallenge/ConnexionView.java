@@ -74,11 +74,6 @@ public class ConnexionView extends AppCompatActivity {
                     startActivity(challenge);
                     finish();
                     break;
-                case R.id.nav_challengeTest:
-                    Intent act = new Intent(this, onChallenge.class);
-                    startActivity(act);
-                    finish();
-                    break;
                 case R.id.nav_profil:
                     Intent profil = new Intent(this, Profil.class);
                     startActivity(profil);
