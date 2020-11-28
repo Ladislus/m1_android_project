@@ -106,7 +106,7 @@ public class ParcoursParticipation extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
 
         final ParticipationAdapteur[] monAdapteur = {null};
-        Context context =this;
+        AppCompatActivity context = this;
         final String[] txt = {""};
 
         final ArrayList<Participation>[] participations = new ArrayList[]{null};
