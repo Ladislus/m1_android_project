@@ -109,10 +109,11 @@ public class Profil extends AppCompatActivity {
     public void modifier_username(View view) {
         username.setText("Enter your actual password :");
         old_pass = edit_password.getText().toString();
-
-
     }
 
+    /**
+     * Change le textView, recupère le nouveau mdp et fait la requête pour le changer
+     */
     public void valider_new_mdp(View view) {
         username.setText(getResources().getString(R.string.pseudoTitre)+pref.getString("username",null));
         modifier.setVisibility(View.VISIBLE);
@@ -140,6 +141,9 @@ public class Profil extends AppCompatActivity {
         });
     }
 
+    /**
+     * configuration de ma Toolbar et de tiroir de navigation
+     */
     public void setUpToolbar() {
         drawerLayout = findViewById(R.id.drawerLayout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
@@ -152,6 +156,9 @@ public class Profil extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze_24);
     }
 
+    /**
+     * Affiche le bon textView et fait disparaitre les bouton
+     */
     public void verif_mdp(View view) {
         username.setText("Enter your actual password :");
 
@@ -160,6 +167,9 @@ public class Profil extends AppCompatActivity {
         validerMDP.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * recupère  l'ancien mot de passe, change le text et change le bouton
+     */
     public void new_mpd(View view) {
         old_pass = edit_password.getText().toString();
         edit_password.setText("");
