@@ -145,7 +145,7 @@ public class onChallenge extends AppCompatActivity {
 
             @Override
             public void onError(ANError error) {
-
+                //TODO
             }
         });
 

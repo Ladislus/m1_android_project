@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 
+// TODO Comments
 public class onParticiperChrono extends AppCompatActivity {
 
     private int id_chall;
@@ -145,6 +146,7 @@ public class onParticiperChrono extends AppCompatActivity {
                     try {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     } catch (ActivityNotFoundException e) {
+                        //TODO
                         // display error state to the user
                     }
 
@@ -204,11 +206,12 @@ public class onParticiperChrono extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Get l'image de la caméra et lance l'activity onConfirmationParticipation avec le bitmap de l'image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /**
-         * Get l'image de la caméra et lance l'activity onConfirmationParticipation avec le bitmap de l'image
-         */
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
