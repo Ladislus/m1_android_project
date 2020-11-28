@@ -23,6 +23,8 @@ public class Drawing {
 
     /**
      * Constructeur par défaut
+     * Ce constructeur est utilisé lors de la reception
+     * d'un dessin depuis la base de données distante (avec l'ID auto-généré)
      * @param id L'id du dessin
      * @param link Le lien Imgur de l'image
      * @param date La date de publication
@@ -34,8 +36,8 @@ public class Drawing {
     }
 
     /**
-     * Constructeur utilisé pour créer un nouvel utilisateur
-     * Un image qui n'est présente que en locale ne peut pas encore avoir d'ID,
+     * Constructeur utilisé pour créer une nouvelle image
+     * Une image qui n'est présente que en locale ne peut pas encore avoir d'ID,
      * car c'est l'auto-increment de la base de données distante qui attribut les IDs
      * Utiliser le constructeur par défaut et donner manuellement un ID à un dessin
      * Peut entrainer de gros problèmes
@@ -61,7 +63,7 @@ public class Drawing {
         );
     }
 
-    @NonNull
+    @Nullable
     public Integer getId() {
         return this._id;
     }
@@ -96,6 +98,7 @@ public class Drawing {
             return new JSONObject()
                     .put("id", this._id)
                     .put("link", this._link)
+                    // Formatage pour faciliter le parsing de ma date par le serveur Flask
                     .put("date", this._date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         } catch (JSONException e) {
             // Error lors du parsing de vers JSON
