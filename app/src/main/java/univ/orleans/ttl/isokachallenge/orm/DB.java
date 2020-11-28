@@ -617,11 +617,6 @@ public class DB extends SQLiteOpenHelper {
         return drawings;
     }
 
-    public void incrementParticipation(Participation participation) {
-        participation.addVote();
-        update(participation);
-    }
-
     public String maxDrawing() {
         try (Cursor c = DB.getInstance().getWritableDatabase().rawQuery("SELECT MAX(" + Tables.DRAWING_ID + ") FROM " + Tables.DRAWING_TABLE + ";", null)) {
             if (c.moveToFirst()) return String.valueOf(c.getInt(0));
