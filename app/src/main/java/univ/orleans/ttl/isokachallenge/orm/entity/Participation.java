@@ -53,7 +53,7 @@ public class Participation {
      * @return La participation correspondante
      * @throws JSONException Si le JSONObject ne contient pas tous les champs necessaire
      */
-    public static Participation fromJson(JSONObject json) throws JSONException {
+    public static Participation fromJson(@NonNull JSONObject json) throws JSONException {
         return new Participation(
                 DB.getInstance().getUser(json.getString("user")),
                 DB.getInstance().getDrawing(json.getInt("drawing")),
