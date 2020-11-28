@@ -65,6 +65,18 @@ public class RequestWrapper {
     }
 
     @RequiresPermission(Manifest.permission.INTERNET)
+    public void getUser(@NonNull String username, @Nullable JSONObjectRequestListener callback) {
+        Log.d(RequestWrapper.REQUEST_LOG, "REQUEST GET USER " + username);
+
+        AndroidNetworking.get(_serverAPI + ROUTES.USER._path + "get")
+                .addHeaders("apiKey", _apiKey)
+                .addQueryParameter("username", username)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(callback);
+    }
+
+    @RequiresPermission(Manifest.permission.INTERNET)
     public void login(@NonNull String username, @NonNull String password, @Nullable JSONObjectRequestListener callback) {
         Log.d(RequestWrapper.REQUEST_LOG, "REQUEST LOGIN");
 
@@ -176,7 +188,7 @@ public class RequestWrapper {
     }
 
     @RequiresPermission(Manifest.permission.INTERNET)
-    public void vote(@NonNull JSONObject participation, @Nullable JSONObjectRequestListener callback) throws JSONException {
+    public void vote(@NonNull JSONObject participation, @NonNull String username, @Nullable JSONObjectRequestListener callback) throws JSONException {
         Log.d(RequestWrapper.REQUEST_LOG, "ADD VOTE (" + participation.getString("u_id") + ", " + participation.getString("d_id") + ", " + participation.getString("c_id") + ")");
 
         AndroidNetworking.put(_serverAPI + ROUTES.PARTICIPATION._path + "vote")
@@ -184,6 +196,7 @@ public class RequestWrapper {
                 .addQueryParameter("u_id", participation.getString("u_id"))
                 .addQueryParameter("d_id", participation.getString("d_id"))
                 .addQueryParameter("c_id", participation.getString("c_id"))
+                .addQueryParameter("voter", username)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(callback);

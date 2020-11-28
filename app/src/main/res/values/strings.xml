@@ -25,7 +25,7 @@
     <string name="menu_challenge_en_cours">Ongoing Challenges</string>
     <string name="menu_stats">Statistics</string>
     <string name="menu_param">Settings</string>
-    <string name="connexion">Connexion</string>
+    <string name="connexion">Connection</string>
     <string name="challenge_en_cours">Ongoing challenge</string>
     <string name="statistiques">Statistics</string>
     <string name="desctitle">Description</string>
@@ -68,7 +68,7 @@
     <string name="NomChallLabel">Name</string>
     <string name="hintTitleChall" translatable="false">Hisoka</string>
     <string name="descChalllabel">Description</string>
-    <string name="hintDescChall">Enter your description text...</string>
+    <string name="hintDescChall">Enter your description text…</string>
     <string name="themeLabel">Challenge\'s theme</string>
     <string name="infoTheme">Enter the url of the image you want people to draw.</string>
     <string name="hintTheme" translatable="false">https://linkToTheimageFile.jpg</string>
@@ -85,7 +85,5 @@
     <string name="minutes" translatable="false">minutes</string>
     <string name="connexionImpossible">Cannot find user.</string>
     <string name="connexionImpossibleServ">It seems we cannot connect to the server, please try again later.</string>
-    <string name="errorInscrDeja">This username is already taken.</string>
-
-
+    <string name="invalidInfo">Invalid informations</string>
 </resources>

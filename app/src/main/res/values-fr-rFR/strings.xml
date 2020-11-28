@@ -74,6 +74,5 @@
     <string name="dateFin">Termine le :</string>
     <string name="connexionImpossible">Utilisateur introuvable.</string>
     <string name="connexionImpossibleServ">Il semble que le serveur soit introuvable ! Réessayez plus tard.</string>
-
-
+    <string name="invalidInfo">Informations invalides</string>
 </resources>
