@@ -34,6 +34,11 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
     private Context mContext;
     private List<Participation> mParticipation;
 
+    /**
+     * Constructeur des l'adapteur
+     * @param mContext
+     * @param mParticipation, liste de participation
+     */
     public ParticipationAdapteur(AppCompatActivity mContext, List<Participation> mParticipation) {
         this.mContext = mContext;
         this.mParticipation = mParticipation;
@@ -49,23 +54,27 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
 
     @Override
     public void onBindViewHolder(@NonNull ParticipationAdapteur.MyViewHolder holder, int position) {
+        // affichage participation
         holder.pseudo.setText(mParticipation.get(position).getUser().getUsername());
         Picasso.get().load(mParticipation.get(position).getDrawing().getLink()).into(holder.dessin);
         holder.votes.setText(mParticipation.get(position).getVotes().toString());
-
+        // recupération shared pref
         SharedPreferences sharedPref = mContext.getSharedPreferences("session", Context.MODE_PRIVATE);
-        if( !(sharedPref.getString("username","").equals(""))) {
-            holder.participationItem.setOnClickListener(v -> {
+        if( !(sharedPref.getString("username","").equals(""))) { // si connecté
+            holder.participationItem.setOnClickListener(v -> { // mettre un listener
 
                 //TODO Use request
-                try {
+                try { // synchro BD local et distante
                     new RequestWrapper().vote(mParticipation.get(position).toJson(), sharedPref.getString("username", ""), new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                // gestion du vote
                                 DB.getInstance().update(Participation.fromJson(response));
+                                // remplacement de paraticipation avec l'ancien vote avec le nouveau
                                 mParticipation.remove(position);
                                 mParticipation.add(position,Participation.fromJson(response));
+                                // maj affichage vote
                                 holder.votes.setText(mParticipation.get(position).getVotes().toString());
                             } catch (JSONException e) {
                                 Log.d("bonjour", "onResponse: salut");
@@ -96,18 +105,21 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
         }
     }
 
+    /**
+     * @return le nombre de participation contenu dans la liste des paricipations
+     */
     @Override
     public int getItemCount() { return this.mParticipation.size(); }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-
+        // composants d'une participations
         TextView pseudo, votes;
         ImageView dessin;
         CardView participationItem;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            // Récupération elemens xml
             pseudo = (TextView) itemView.findViewById(R.id.txtPseudo);
             dessin = (ImageView) itemView.findViewById(R.id.imgParticipation);
             votes = (TextView) itemView.findViewById(R.id.textVotesParticipation);

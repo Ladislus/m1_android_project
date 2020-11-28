@@ -40,6 +40,7 @@ import java.util.Objects;
 
 public class ParcoursParticipation extends AppCompatActivity {
 
+    // Composants de ParcoursParticipation
     private int id_chall;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -49,9 +50,9 @@ public class ParcoursParticipation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parcours_participation);
-
+        // recupération element xml
         navigationView = findViewById(R.id.navigation_menu);
-
+        // recupération des sharedPref
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))){
             //If user connecté
@@ -62,7 +63,8 @@ public class ParcoursParticipation extends AppCompatActivity {
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, true);
         }
 
-        setUpToolbar();
+        setUpToolbar(); // gestion de la Toolbar
+        //gestion de la navigationView
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
@@ -93,10 +95,10 @@ public class ParcoursParticipation extends AppCompatActivity {
             }
             return false;
         });
-
+        // Récupération de l'id du challenge par l'intent
         this.id_chall = getIntent().getIntExtra("id_chall", 0);
 
-
+        // Récupération des elements du xml
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myRecyclerViewParticipation);
         TextView pasParticipation = (TextView) findViewById(R.id.participation0);
         ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -104,15 +106,17 @@ public class ParcoursParticipation extends AppCompatActivity {
         final ParticipationAdapteur[] monAdapteur = {null};
         AppCompatActivity context = this;
         final String[] txt = {""};
-
         final ArrayList<Participation>[] participations = new ArrayList[]{null};
+        // synchro des BD local et distante
         new RequestWrapper().get(new Callback() {
             @Override
             public void onResponse() {
+                // requette pour avoir la liste des participations pour un challenges
                 HashMap<String, Pair<String, String>> map = new HashMap<>();
                 map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(id_chall)));
                 participations[0] = new ArrayList<>(DB.getInstance().getParticipations(map));
 
+                // tri des participation par date
                 participations[0].sort((o1, o2) -> {
                     String dateString1 = o1.getDrawing().getDate();
                     String dateString2 = o2.getDrawing().getDate();
@@ -131,16 +135,17 @@ public class ParcoursParticipation extends AppCompatActivity {
                     }
 
                 });
-
+                // si des participation
                 if (!Objects.isNull(participations[0])) {
                     if (participations[0].size() > 0) {
+                        // gestion de l'affichage des participation
                         recyclerView.setVisibility(View.VISIBLE);
                         pasParticipation.setVisibility(View.GONE);
                         monAdapteur[0] = new ParticipationAdapteur(context, participations[0]);
 
                         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
                         recyclerView.setAdapter(monAdapteur[0]);
-                    } else {
+                    } else {// si pas de participation
                         recyclerView.setVisibility(View.GONE);
                         pasParticipation.setVisibility(View.VISIBLE);
 
@@ -156,18 +161,19 @@ public class ParcoursParticipation extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE); //progress bar visible
 
-
+        // si des participation
         if (!Objects.isNull(participations[0])) {
             if (participations[0].size() > 0) {
+                // gestion de l'affichage des participation
                 recyclerView.setVisibility(View.VISIBLE);
                 pasParticipation.setVisibility(View.GONE);
                 monAdapteur[0] = new ParticipationAdapteur(this, participations[0]);
 
                 recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
                 recyclerView.setAdapter(monAdapteur[0]);
-            } else {
+            } else {// si pas de participation
                 recyclerView.setVisibility(View.GONE);
                 pasParticipation.setVisibility(View.VISIBLE);
 
@@ -177,6 +183,9 @@ public class ParcoursParticipation extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gestion de l'affichage des challenge
+     */
     public void setUpToolbar() {
         drawerLayout = findViewById(R.id.drawerLayout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
@@ -189,6 +198,9 @@ public class ParcoursParticipation extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze_24);
     }
 
+    /**
+     * Gestion du click sur le symbol du tiroir de navigation
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
