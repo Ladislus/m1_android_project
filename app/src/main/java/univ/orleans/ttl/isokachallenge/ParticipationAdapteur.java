@@ -105,7 +105,9 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
                 }
             });
         } else {
-            Toast.makeText(mContext, R.string.toatConnexionVote, Toast.LENGTH_LONG).show();
+            holder.participationItem.setOnClickListener(v -> {
+                Toast.makeText(mContext, R.string.toatConnexionVote, Toast.LENGTH_LONG).show();
+            });
         }
     }
 
