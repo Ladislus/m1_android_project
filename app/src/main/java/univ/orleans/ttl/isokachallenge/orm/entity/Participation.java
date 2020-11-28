@@ -13,10 +13,15 @@ import univ.orleans.ttl.isokachallenge.orm.DB;
  */
 public class Participation {
 
+    @NonNull
     private final User _user;
+    @NonNull
     private final Drawing _drawing;
+    @NonNull
     private final Challenge _challenge;
+    @NonNull
     private final Boolean _isCreator;
+    @NonNull
     private final Integer _votes;
 
     /**
@@ -53,6 +58,7 @@ public class Participation {
      * @return La participation correspondante
      * @throws JSONException Si le JSONObject ne contient pas tous les champs necessaire
      */
+    @NonNull
     public static Participation fromJson(@NonNull JSONObject json) throws JSONException {
         return new Participation(
                 DB.getInstance().getUser(json.getString("user")),
