@@ -39,6 +39,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,19 +143,23 @@ public class onChallenge extends AppCompatActivity {
         new RequestWrapper().get(new Callback() {
             @Override
             public void onResponse() {
+                Challenge challenge = DB.getInstance().getChallenge(chall.getId());
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                LocalDateTime dateTime = LocalDateTime.parse(challenge.getDate(), formatter);
 
                 if( !(sharedPref.getString("username","").equals(""))) {
-                    User user = DB.getInstance().getUser(sharedPref.getString("username", ""));
+                    if (LocalDateTime.now().isBefore(dateTime)){
 
-                    HashMap<String, Pair<String, String>> map = new HashMap<>();
-                    map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(idchall)));
-                    map.put(Tables.PARTICIPATION_USER_ID, new Pair(Tables.OPERATOR_EQ, user.getUsername()));
+                        User user = DB.getInstance().getUser(sharedPref.getString("username", ""));
 
-                    List<Participation> participations = DB.getInstance().getParticipations(map);
+                        HashMap<String, Pair<String, String>> map = new HashMap<>();
+                        map.put(Tables.PARTICIPATION_CHALLENGE_ID, new Pair(Tables.OPERATOR_EQ, String.valueOf(idchall)));
+                        map.put(Tables.PARTICIPATION_USER_ID, new Pair(Tables.OPERATOR_EQ, user.getUsername()));
 
-
-                    if (participations.isEmpty()) {
-                        findViewById(R.id.btnParticipe).setEnabled(true);
+                        List<Participation> participations = DB.getInstance().getParticipations(map);
+                        if (participations.isEmpty()) {
+                            findViewById(R.id.btnParticipe).setEnabled(true);
+                        }
                     }
                 }else{
                     findViewById(R.id.btnParticipe).setEnabled(true);

@@ -1,5 +1,6 @@
 package univ.orleans.ttl.isokachallenge;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,6 +51,9 @@ public class onParticiperChrono extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
+    private CountDownTimer timer;
+    private Long timeleft;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,10 +120,13 @@ public class onParticiperChrono extends AppCompatActivity {
             ImageView iv = findViewById(R.id.imageViewChrono);
             Picasso.get().load(chall.getTheme()).into(iv);
             TextView labelChrono = findViewById(R.id.chronoLabel);
+            if(savedInstanceState != null){
+                this.timeleft = savedInstanceState.getLong("timeleft", Long.valueOf(chall.getTimer() * 60000));
+            }else{
+                this.timeleft = Long.valueOf(chall.getTimer() * 60000);
+            }
 
-            long tempsTotal = chall.getTimer()*60000;
-            new CountDownTimer(tempsTotal, 1) {
-                long tempsEcoule = 0;
+            this.timer = new CountDownTimer(this.timeleft, 1) {
                 String labelSecondes = "00";
                 String labelMinutes = "00";
                 String labelHeures = "00";
@@ -126,8 +134,7 @@ public class onParticiperChrono extends AppCompatActivity {
                 long nbMinutes = 0;
                 long nbHeures = 0;
                 public void onTick(long millisUntilFinished) {
-
-                    tempsEcoule = tempsTotal - millisUntilFinished;
+                    timeleft = millisUntilFinished;
                     nbSecondes = millisUntilFinished / 1000;
                     nbMinutes = nbSecondes / 60;
                     nbHeures = nbMinutes / 60;
@@ -161,13 +168,36 @@ public class onParticiperChrono extends AppCompatActivity {
 
                 public void onFinish() {
                     labelChrono.setText("Fini ! Prennez le en photo !");
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    try {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    } catch (ActivityNotFoundException e) {
+                        // display error state to the user
+                    }
+
                 }
-            }.start();
+            };
+            timer.start();
         }
     }
 
-
     static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("timeleft", this.timeleft);
+        timer.cancel();
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.timeleft = savedInstanceState.getLong("timeleft");
+
+
+    }
 
     public void onPhoto(View view) {
         /**
@@ -200,8 +230,6 @@ public class onParticiperChrono extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
