@@ -86,4 +86,6 @@
     <string name="connexionImpossible">Cannot find user.</string>
     <string name="connexionImpossibleServ">It seems we cannot connect to the server, please try again later.</string>
     <string name="invalidInfo">Invalid informations</string>
+    <string name="toastVoteDeja">You have already voted !</string>
+    <string name="toatConnexionVote">You must be logged in.</string>
 </resources>

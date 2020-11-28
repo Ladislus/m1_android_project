@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -20,10 +21,12 @@ import org.json.JSONObject;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
+import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAdapteur.MyViewHolder> {
@@ -31,11 +34,10 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
     private Context mContext;
     private List<Participation> mParticipation;
 
-    public ParticipationAdapteur(Context mContext, List<Participation> mParticipation) {
+    public ParticipationAdapteur(AppCompatActivity mContext, List<Participation> mParticipation) {
         this.mContext = mContext;
         this.mParticipation = mParticipation;
     }
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -80,8 +82,7 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
                             if (anError.getErrorCode() == 409) {
                                 Log.d(RequestWrapper.REQUEST_LOG, "Déjà voté");
                                 //TODO
-                                //Si pas connecté => Toast : "connectez vous pour voter"
-                                //Toast : "Déjà voté"
+                                Toast.makeText(mContext,R.string.toastVoteDeja, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -91,6 +92,8 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
 
                 //holder.votes.setText(mParticipation.get(position).getVotes().toString());
             });
+        }else{
+            Toast.makeText(mContext, R.string.toatConnexionVote, Toast.LENGTH_LONG).show();
         }
     }
 
