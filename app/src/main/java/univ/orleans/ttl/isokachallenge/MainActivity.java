@@ -17,7 +17,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
