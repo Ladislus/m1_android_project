@@ -63,7 +63,7 @@ public class ParticipationAdapteur extends RecyclerView.Adapter<ParticipationAda
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                DB.getInstance().incrementParticipation(Participation.fromJson(response));
+                                DB.getInstance().update(Participation.fromJson(response));
                                 mParticipation.remove(position);
                                 mParticipation.add(position,Participation.fromJson(response));
                                 holder.votes.setText(mParticipation.get(position).getVotes().toString());

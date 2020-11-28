@@ -11,7 +11,7 @@ public class Participation {
     private final Drawing _drawing;
     private final Challenge _challenge;
     private final Boolean _isCreator;
-    private Integer _votes;
+    private final Integer _votes;
 
     public Participation(User user, Drawing drawing, Challenge challenge, Boolean isCreator, Integer votes) {
         this._user = user;
@@ -72,9 +72,5 @@ public class Participation {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public int addVote() {
-        return ++this._votes;
     }
 }
