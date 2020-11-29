@@ -216,15 +216,12 @@ public class onConfirmationParticipation extends AppCompatActivity {
                                             // Affichage d'un Toast
                                             Toast.makeText(context, R.string.unableToSaveParticipation, Toast.LENGTH_LONG).show();
                                             pg.setVisibility(View.INVISIBLE);
-                                            // Puis ferme l'activity
-                                            finish();
                                         }
                                     });
                                 } catch (JSONException e) {
                                     // Erreur de parse des données reçues dans response (Save Drawing)
                                     e.printStackTrace();
                                     Toast.makeText(context, R.string.corrupted_response_data, Toast.LENGTH_LONG).show();
-                                    finish();
                                 }
                             }
                             // Si la sauvegarde de l'image échoue
@@ -233,15 +230,12 @@ public class onConfirmationParticipation extends AppCompatActivity {
                                 // Affichage d'un Toast
                                 Toast.makeText(context, R.string.unableToSaveDrawing, Toast.LENGTH_LONG).show();
                                 pg.setVisibility(View.INVISIBLE);
-                                // Puis ferme l'activity
-                                finish();
                             }
                         });
                     } catch (JSONException e) {
                         // Erreur de parse des données reçues dans response (Upload)
                         e.printStackTrace();
                         Toast.makeText(context, R.string.corrupted_response_data, Toast.LENGTH_LONG).show();
-                        finish();
                     }
                 }
                 // Si l'upload de l'image sur Imgur echoue
@@ -250,8 +244,6 @@ public class onConfirmationParticipation extends AppCompatActivity {
                     // Affichage d'un Toast
                     Toast.makeText(context, R.string.unableToSaveToImgur, Toast.LENGTH_LONG).show();
                     pg.setVisibility(View.INVISIBLE);
-                    // Puis ferme l'activity
-                    finish();
                 }
             });
         } else {
