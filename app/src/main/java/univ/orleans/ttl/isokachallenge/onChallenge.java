@@ -98,6 +98,7 @@ public class onChallenge extends AppCompatActivity {
         });
         Challenge chall = db.getChallenge(this.idchall);
         if(chall != null){
+            //Remplissage des champs avec les infos du challenge
             TextView title = findViewById(R.id.nomChall);
             title.setText(chall.getName());
             Picasso.get().load(chall.getTheme()).into(iv);
@@ -120,13 +121,13 @@ public class onChallenge extends AppCompatActivity {
         new RequestWrapper().get(new Callback() {
             @Override
             public void onResponse() {
+                //Check si la date de fin du challenge est dépassée
                 Challenge challenge = DB.getInstance().getChallenge(chall.getId());
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
                 LocalDateTime dateTime = LocalDateTime.parse(challenge.getDate(), formatter);
 
                 if( !(sharedPref.getString("username","").equals(""))) {
                     if (LocalDateTime.now().isBefore(dateTime)){
-
                         User user = DB.getInstance().getUser(sharedPref.getString("username", ""));
 
                         HashMap<String, Pair<String, String>> map = new HashMap<>();
@@ -135,10 +136,13 @@ public class onChallenge extends AppCompatActivity {
 
                         List<Participation> participations = DB.getInstance().getParticipations(map);
                         if (participations.isEmpty()) {
+                            //Si l'utilisateur n'a pas encore participer, alors il peut
                             findViewById(R.id.btnParticipe).setEnabled(true);
                         }
                     }
                 }else{
+                    //Si l'utilisateur est déconnecté, alors il peut cliquer sur participer mais il sera redirigé
+                    //Vers la connexion
                     findViewById(R.id.btnParticipe).setEnabled(true);
                 }
             }
@@ -170,12 +174,12 @@ public class onChallenge extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Fonction du clique sur le bouton "Participer" d'un challenge
+     * Lance l'activity onParticiperChrono
+     * Nécessite d'être connecté
+     */
     public void onParticiper(View view) {
-        /**
-         * Fonction du clique sur le bouton "Participer" d'un challenge
-         * Lance l'activity onParticiperChrono
-         * Nécessite d'être connecté
-         */
         SharedPreferences sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
         if( !(sharedPref.getString("username","").equals(""))) {
             Intent intent = new Intent(this, onParticiperChrono.class);
@@ -187,11 +191,11 @@ public class onChallenge extends AppCompatActivity {
          }
     }
 
+    /**
+     * Fonction du clique sur le bouton "Parcourir" d'un challenge
+     * Lance l'activity ParcoursParticipation
+     */
     public void parcoursParticipation(View view) {
-        /**
-         * Fonction du clique sur le bouton "Parcourir" d'un challenge
-         * Lance l'activity ParcoursParticipation
-         */
         Intent intent = new Intent(this, ParcoursParticipation.class);
         intent.putExtra("id_chall", this.idchall);
         startActivity(intent);

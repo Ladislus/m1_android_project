@@ -42,6 +42,7 @@ public class ConnexionView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion_view);
+        //Récupération des inputs de l'utilisateur
         this.loginField = findViewById(R.id.inputLogin);
         this.mdpField = findViewById(R.id.inputMDP);
         this.checkLogin = findViewById(R.id.checkLogin);
@@ -92,15 +93,14 @@ public class ConnexionView extends AppCompatActivity {
             return false;
         });
     }
-
+    /**
+     * Fonction qui connecte un utilisateur à l'application en stockant dans une
+     * sharepref global (nommée 'session') sont id (username).
+     * L'utilisateur est ensuite redirigé vers l'activité MainActivity (challenge en cours a.k.a l'acceuil).
+     * Fonction appelée lors du clique sur le bouton 'connexion' de l'activité
+     * ConnexionView
+     */
     public void onConnexion(View view) {
-        /**
-         * Fonction qui connecte un utilisateur à l'application en stockant dans une
-         * sharepref global (nommée 'session') sont id (username).
-         * L'utilisateur est ensuite redirigé vers l'activité MainActivity (challenge en cours a.k.a l'acceuil).
-         * Fonction appelée lors du clique sur le bouton 'connexion' de l'activité
-         * ConnexionView
-         */
         RequestWrapper rq = new RequestWrapper();
         ProgressBar pg = findViewById(R.id.progressBar);
         Intent home = new Intent(this, MainActivity.class);
@@ -109,11 +109,14 @@ public class ConnexionView extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    //Une fois le mot de passe validé, on ajoute l'utilisateur
+                    //dans le shared pref session sous la clé "username"
                     pg.setVisibility(View.INVISIBLE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("username", response.getString("username"));
                     editor.apply();
                     finish();
+                    //Redirection vers l'accueil
                     startActivity(home);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -135,6 +138,8 @@ public class ConnexionView extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    //Après avoir récupéré l'utilisateur, on l'ajoute en BD local puis on lance la
+                    //Requete login pour vérifier son mot de passe
                     DB.getInstance().save(User.fromJson(response));
                     new RequestWrapper().login(loginField.getText().toString(), mdpField.getText().toString(), loginCallback);
                 } catch (JSONException e) {
@@ -177,6 +182,10 @@ public class ConnexionView extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Save les inputs si la case "Se souvenir de moi" et cochée
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -192,7 +201,9 @@ public class ConnexionView extends AppCompatActivity {
         editor.putBoolean("isChecked", this.checkLogin.isChecked());
         editor.apply();
     }
-
+    /**
+     * Restore les inputs s'ils étaient save
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -200,7 +211,6 @@ public class ConnexionView extends AppCompatActivity {
         this.mdpField.setText(this.sharedPref.getString("mdp",""));
         this.remember = this.sharedPref.getBoolean("isChecked",false);
         this.checkLogin.setChecked(this.remember);
-
     }
 
     /**

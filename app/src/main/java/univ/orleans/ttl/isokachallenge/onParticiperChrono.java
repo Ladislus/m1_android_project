@@ -158,6 +158,10 @@ public class onParticiperChrono extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    /**
+     * Save le temps restant du timer
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -166,6 +170,10 @@ public class onParticiperChrono extends AppCompatActivity {
 
     }
 
+    /**
+     * Restore le temps restant du timer
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -174,10 +182,10 @@ public class onParticiperChrono extends AppCompatActivity {
 
     }
 
+    /**
+     * Permet a l'utilisateur de prendre en photo son dessin.
+     */
     public void onPhoto(View view) {
-        /**
-         * Permet a l'utilisateur de prendre en photo son dessin.
-         */
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
