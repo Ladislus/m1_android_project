@@ -105,13 +105,13 @@ public class InscriptionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Fonction qui valide l'inscription et ajoute l'utilisateur à la fois dans la
+     * BD locale et Distante.
+     * Nécessite d'avoir remplis tout les champs
+     * Que les deux mots de passe correspondent et que le username soit inutilisé.
+     */
     public void onInscrire(View view) {
-        /**
-         * Fonction qui valide l'inscription et ajoute l'utilisateur à la fois dans la
-         * BD locale et Distante.
-         * Nécessite d'avoir remplis tout les champs
-         * Que les deux mots de passe correspondent et que le username soit inutilisé.
-         */
         EditText username = findViewById(R.id.inputLoginInscr);
         EditText mdp1 = findViewById(R.id.inputmdp1Inscription);
         EditText mdp2 = findViewById(R.id.inputmdp2Inscription);
