@@ -79,7 +79,7 @@
     <string name="toatConnexionVote">Vous devez être connecté !</string>
     <string name="ActualPasswordDisplay">Entrez votre mot de passe actuel :</string>
     <string name="NewPasswordDisplay">Entrez votre nouveau mot de passe :</string>
-    <string name="corrupted_response_data">Les informations reçues de la base de données sont corrompues</string>
+    <string name="corrupted_response_data">Les informations reçues de la base de données sont corrompues, veuillez réessayez</string>
     <string name="server_desync">L\'utilisateur actuel n\'existe pas dans la base de données distante</string>
     <string name="oldPasswordConfirm">Confirmez votre mot de passe actuel</string>
     <string name="communication_error">Erreur lors de la communication avec le seveur</string>
@@ -87,4 +87,5 @@
     <string name="unableToSaveDrawing">Impossible de sauvegarder le dessin, reessayez plus tard</string>
     <string name="unableToSaveToImgur">Impossible d\'envoyer le dessin vers Imgur, reessayez plus tard</string>
     <string name="errorLoadChall">Chargement des challenges depuis le serveur impossible</string>
+    <string name="unableToSaveChallenge">Impossible de sauvegarder le challenge, reessayez plus tard</string>
 </resources>
