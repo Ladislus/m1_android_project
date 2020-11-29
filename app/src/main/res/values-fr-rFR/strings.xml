@@ -71,7 +71,7 @@
     <string name="no_participation_challenge">Il n\'y a pas de participation pour ce challenge</string>
     <string name="text_validation_password_updated">Votre mot de passe à été modifié</string>
     <string name="txt_validate_password_not_updated">Le mot de passe actuel renseigné est érroné</string>
-    <string name="dateFin">Termine le :</string>
+    <string name="dateFin">"Termine le : "</string>
     <string name="connexionImpossible">Utilisateur introuvable.</string>
     <string name="connexionImpossibleServ">Il semble que le serveur soit introuvable ! Réessayez plus tard.</string>
     <string name="invalidInfo">Informations invalides</string>

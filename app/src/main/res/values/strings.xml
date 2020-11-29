@@ -80,7 +80,7 @@
     <string name="no_participation_challenge">There is no participation for this challenge</string>
     <string name="text_validation_password_updated">Your password has been updated</string>
     <string name="txt_validate_password_not_updated">The old password thaht you entered is wrong</string>
-    <string name="dateFin">End the :</string>
+    <string name="dateFin">"End the : "</string>
     <string name="minutes" translatable="false">" minutes"</string>
     <string name="connexionImpossible">Cannot find user.</string>
     <string name="connexionImpossibleServ">It seems we cannot connect to the server, please try again later.</string>
