@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,16 +26,17 @@ import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
+//TODO comments
 public class ConnexionView extends AppCompatActivity {
 
     private EditText mdpField, loginField;
     private CheckBox checkLogin;
     private boolean remember;
-    private DB db;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,8 @@ public class ConnexionView extends AppCompatActivity {
 
         navigationView = findViewById(R.id.navigation_menu);
 
-        SharedPreferences sharedPref = this.getSharedPreferences("session",Context.MODE_PRIVATE);
-        if( !(sharedPref.getString("username","").equals(""))){
+        this.sharedPref = this.getSharedPreferences("session", Context.MODE_PRIVATE);
+        if(!(this.sharedPref.getString("username","").equals(""))){
             //If user connecté
             navigationView.getMenu().setGroupVisible(R.id.groupeConnecter, true);
             navigationView.getMenu().setGroupVisible(R.id.groupeDeco, false);
@@ -60,7 +60,6 @@ public class ConnexionView extends AppCompatActivity {
         }
 
         setUpToolbar();
-        this.db = DB.getInstance();
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId())
             {
@@ -111,7 +110,6 @@ public class ConnexionView extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     pg.setVisibility(View.INVISIBLE);
-                    SharedPreferences sharedPref = getSharedPreferences("session",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("username", response.getString("username"));
                     editor.apply();
@@ -124,11 +122,6 @@ public class ConnexionView extends AppCompatActivity {
 
             @Override
             public void onError(ANError anError) {
-                Log.d(RequestWrapper.REQUEST_LOG, "loginCallback");
-                Log.d(RequestWrapper.REQUEST_LOG, anError.toString());
-                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorBody());
-                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorDetail());
-                Log.d(RequestWrapper.REQUEST_LOG, String.valueOf(anError.getErrorCode()));
                 pg.setVisibility(View.INVISIBLE);
                 TextView labelError = findViewById(R.id.errorConnexion);
                 labelError.setText(R.string.connexionImpossibleServ);
@@ -141,7 +134,6 @@ public class ConnexionView extends AppCompatActivity {
         JSONObjectRequestListener getUserCallback = new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d(RequestWrapper.REQUEST_LOG, response.toString());
                 try {
                     DB.getInstance().save(User.fromJson(response));
                     new RequestWrapper().login(loginField.getText().toString(), mdpField.getText().toString(), loginCallback);
@@ -152,11 +144,6 @@ public class ConnexionView extends AppCompatActivity {
 
             @Override
             public void onError(ANError anError) {
-                Log.d(RequestWrapper.REQUEST_LOG, "getUserCallback");
-                Log.d(RequestWrapper.REQUEST_LOG, anError.toString());
-                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorBody());
-                Log.d(RequestWrapper.REQUEST_LOG, anError.getErrorDetail());
-                Log.d(RequestWrapper.REQUEST_LOG, String.valueOf(anError.getErrorCode()));
                 pg.setVisibility(View.INVISIBLE);
                 TextView labelError = findViewById(R.id.errorConnexion);
                 labelError.setText(R.string.connexionImpossibleServ);
@@ -193,8 +180,7 @@ public class ConnexionView extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences.Editor editor = this.sharedPref.edit();
 
         if(this.checkLogin.isChecked()){
             editor.putString("login", String.valueOf(this.loginField.getText()));
@@ -210,18 +196,17 @@ public class ConnexionView extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        this.loginField.setText(sharedPref.getString("login",""));
-        this.mdpField.setText(sharedPref.getString("mdp",""));
-        this.remember = sharedPref.getBoolean("isChecked",false);
+        this.loginField.setText(this.sharedPref.getString("login",""));
+        this.mdpField.setText(this.sharedPref.getString("mdp",""));
+        this.remember = this.sharedPref.getBoolean("isChecked",false);
         this.checkLogin.setChecked(this.remember);
 
     }
 
+    /**
+     * Setteur de l'attribut remember lors du clique sur la checkbox 'Se souvenir de moi'
+     */
     public void onChecked(View view) {
-        /**
-         * Setteur de l'attribut remember lors du clique sur la checkbox 'Se souvenir de moi'
-         */
         this.remember = this.checkLogin.isChecked();
     }
 }
