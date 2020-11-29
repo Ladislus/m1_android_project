@@ -27,7 +27,7 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
 
     private final List<Drawing> dessins; // liste contenant tous les dessins d'un challenge
     private OnItemClickListener mListenerDessin;
-    private Pair<String, LocalDateTime> theme; // paire représentant le thème d'un challenge
+    private final Pair<String, LocalDateTime> theme; // paire représentant le thème d'un challenge
 
     public  interface  OnItemClickListener{
         void OnItemClick(int position);
@@ -91,7 +91,7 @@ public class ImageDessinAdapter extends  RecyclerView.Adapter<ImageDessinAdapter
         private final TextView textTitle;
         private final TextView textLocation;
         private final TextView textStarRating;
-        private Pair<String, LocalDateTime> theme;
+        private final Pair<String, LocalDateTime> theme;
 
         public ImageDessinViewHolder(@NonNull View itemView, OnItemClickListener listener, Pair<String, LocalDateTime> theme) {
             super(itemView);
