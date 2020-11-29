@@ -20,16 +20,13 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-
 import univ.orleans.ttl.isokachallenge.orm.DB;
 import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
 import univ.orleans.ttl.isokachallenge.orm.entity.User;
 
+// TODO Comments
 public class InscriptionActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
@@ -143,11 +140,6 @@ public class InscriptionActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(ANError anError) {
-                            Log.d("inscrUser",anError.getErrorBody());
-                            Log.d("inscrUser", user.getDate());
-                            Log.d("inscrUser", user.getFormattedDate());
-                            Log.d("inscrUser",anError.getErrorDetail());
-                            Log.d("inscrUser", String.valueOf(anError.getErrorCode()));
                             pg.setVisibility(View.INVISIBLE);
                             errorMsg.setText(R.string.connexionImpossibleServ);
                             if (anError.getErrorCode() == 409){
@@ -162,8 +154,5 @@ public class InscriptionActivity extends AppCompatActivity {
                 errorMsg.setText(R.string.ErrorInscriptionMDP);
             }
         }
-
-
-
     }
 }

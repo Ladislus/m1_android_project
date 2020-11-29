@@ -2,44 +2,31 @@ package univ.orleans.ttl.isokachallenge;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.androidnetworking.error.ANError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.TintInfo;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
-
-import univ.orleans.ttl.isokachallenge.orm.Callback;
 import univ.orleans.ttl.isokachallenge.orm.DB;
-import univ.orleans.ttl.isokachallenge.orm.RequestWrapper;
-import univ.orleans.ttl.isokachallenge.orm.Tables;
 import univ.orleans.ttl.isokachallenge.orm.entity.Challenge;
 import univ.orleans.ttl.isokachallenge.orm.entity.Drawing;
-import univ.orleans.ttl.isokachallenge.orm.entity.Participation;
 
 public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyViewHolder> {
 
-    private List<Challenge> challenges; // contient tous les challenges de la BD
+    private final List<Challenge> challenges; // contient tous les challenges de la BD
     private OnItemClickListener mListener; // Listener du click sur les challenge
-    private ProgressBar progressBar; // pour afficher la synchro entre la BD distante et local
 
     public  interface  OnItemClickListener{
         void OnItemClick(int position);
@@ -53,18 +40,12 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         mListener = listener;
     }
 
-    public void setListChallengeAdapter(List<Challenge> challenges) {
-        this.challenges = challenges;
-    }
-
     /**
      * Constructeur de l'adapteur des challenge
      * @param challenges, liste de tous les challenges de la BD
-     * @param progressBar
      */
-    public ChallengeAdapter(List<Challenge> challenges, ProgressBar progressBar) {
+    public ChallengeAdapter(List<Challenge> challenges) {
         this.challenges = challenges;
-        this.progressBar = progressBar;
     }
 
     @NonNull
@@ -82,7 +63,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
      */
     @Override
     public void onBindViewHolder(@NonNull ChallengeAdapter.MyViewHolder holder, int position) {
-        holder.display(this.challenges.get(position), this.progressBar);
+        holder.display(this.challenges.get(position));
         Log.d("bonjour", "onBindViewHolder: display");
     }
 
@@ -102,7 +83,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         // composants de l'affichage d'un challenge
         private final TextView titreChallenge;
         private final ViewPager2 imagesCaroussel;
-        private Context context;
+        private final Context context;
 
         public MyViewHolder(@NonNull View itemView,OnItemClickListener listener) {
             super(itemView);
@@ -124,17 +105,16 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
         /**
          * Affichage spécifié pour chaque challenge
          * @param challenge, un challenge de la liste challenges
-         * @param progressBar
          */
-        void display (Challenge challenge, ProgressBar progressBar){
+        void display (Challenge challenge) {
             this.titreChallenge.setText(challenge.getName()); // affichage du Titre
 
             // Récupération de la liste des dessins pour un challenge en fonction de l'id du challenge via la
             // BD local
-            final ArrayList<Drawing>[] listDessinChallenge = new ArrayList[]{new ArrayList<>(DB.getInstance().getDrawingsFromChallenge(challenge.getId()))};
-            Pair<String, LocalDateTime> theme = new Pair(null,null); // Paire pour récupérer le thème d'un challenge
+            List<Drawing> listDessinChallenge = DB.getInstance().getDrawingsFromChallenge(challenge.getId());
+            Pair<String, LocalDateTime> theme = new Pair<>(null, null); // Paire pour récupérer le thème d'un challenge
             Log.d("bonjour", "display: listDessinChallenge");
-            if (listDessinChallenge[0].size()==0){ // si nous n'avons pas de participation = pas de dessin pour un challenge
+            if (listDessinChallenge.isEmpty()) { // si nous n'avons pas de participation = pas de dessin pour un challenge
                 // convertion de la date du challenge en LocalDatetTime
                 String dateChallenge = challenge.getDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -145,38 +125,31 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                 Log.d("bonjour", "display: après pair "+theme.first);
 
                 // ajout d'un drawing fictif pour que l'on puisse afficher le thème
-                listDessinChallenge[0].add(new Drawing(challenge.getTheme(),dateTimeChallenge));
+                listDessinChallenge.add(new Drawing(challenge.getTheme(),dateTimeChallenge));
             }
 
             // trie de la liste en focntion de leur date (+ recent au - recent)
-            sortList(listDessinChallenge[0]);
+            sortList(listDessinChallenge);
 
             // n'afficher que 5 dessins pour un challenge, sur la page d'accueil
             ArrayList<Drawing> listDessinChallengeTrier = new ArrayList<>();
-            if (listDessinChallenge[0].size()>=5) {
+            if (listDessinChallenge.size()>=5) {
                 for (int i = 0; i < 5; i++) {
-                    listDessinChallengeTrier.add(listDessinChallenge[0].get(i));
+                    listDessinChallengeTrier.add(listDessinChallenge.get(i));
                 }
             }
 
-            final ImageDessinAdapter[] dessinAdapter = {null};
-            if (listDessinChallenge[0].size()>=5){ // si plus de 5 dessins
-                Log.d("bonjour", "display: premier if"+theme.first);
+            ImageDessinAdapter dessinAdapter;
+            if (listDessinChallenge.size() >= 5){ // si plus de 5 dessins
                 // afficher que 5 dessins avec un thème null
-                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallengeTrier, theme);
-            }else if (listDessinChallenge[0].size()>0){ //TODO Ladislas peut laisse que le else car if qui ne sert pas
-                Log.d("bonjour", "display: second if"+theme.first);
-                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0], theme);
-            }else{
-                Log.d("bonjour", "display: dernier if"+theme.first);
+                dessinAdapter = new ImageDessinAdapter(listDessinChallengeTrier, theme);
+            } else {
                 // afficher le thème car pas de dessin, juste un dessin fictif dans la listDessinChallenge
-                dessinAdapter[0] = new ImageDessinAdapter(listDessinChallenge[0], theme);
+                dessinAdapter = new ImageDessinAdapter(listDessinChallenge, theme);
             }
 
-            Log.d("bonjour", "display: "+ listDessinChallenge[0]);
-
             // un listener sur le click des dessins, peut importe si dessin ou thème de challenge
-            dessinAdapter[0].setOnItemClickListener(
+            dessinAdapter.setOnItemClickListener(
                     position -> {
                         // Lancer l'activité de la descritpion d'un challenge si click sur un dessin du
                         // dit challenge
@@ -186,7 +159,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
                     }
             );
             // Initialisation du caroussel des dessins d'un challenge
-            this.imagesCaroussel.setAdapter(dessinAdapter[0]);
+            this.imagesCaroussel.setAdapter(dessinAdapter);
             this.imagesCaroussel.setClipToPadding(false);
             this.imagesCaroussel.setClipChildren(false);
             this.imagesCaroussel.setOffscreenPageLimit(3);
@@ -195,8 +168,8 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
             CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
             compositePageTransformer.addTransformer(new MarginPageTransformer(40));
             compositePageTransformer.addTransformer((page, position) -> {
-                float r= 1 - Math.abs(position);
-                page.setScaleY(0.95f+r*0.05f);
+                float r = 1 - Math.abs(position);
+                page.setScaleY(0.95f + r * 0.05f);
             });
 
             this.imagesCaroussel.setPageTransformer(compositePageTransformer);
@@ -207,7 +180,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.MyVi
          * les plus recent avant le plus ancien
          * @param list, liste de drawings (dessin)
          */
-        void sortList(ArrayList<Drawing> list){
+        void sortList(List<Drawing> list){
             list.sort((o1, o2) -> {
                 // Récupération de la date en string des 2 dessins
                 String dateString1 = o1.getDate();

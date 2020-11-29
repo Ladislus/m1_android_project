@@ -37,10 +37,9 @@
     <string name="confirmePartTitle">Confirm participation</string>
     <string name="confirmerLabel">Confirm ?</string>
     <string name="nomChall">"Challenge's name "</string>
-    <string name="testActivityChall" translatable="false">GotoActivityChallTEST</string>
-    <string name="descChall" translatable="false">desc</string>
-    <string name="placeholderTemps" translatable="false">placeHolder</string>
-    <string name="dateFinph" translatable="false">plaxceHoleccccsfv</string>
+    <string name="descChall" translatable="false">description</string>
+    <string name="placeholderTemps" translatable="false">time</string>
+    <string name="dateFinph" translatable="false">end_date</string>
 
     <string name="pseudoTitre">Your username is :</string>
     <string name="btn_modifier">Modify password</string>
@@ -80,12 +79,23 @@
     <string name="errorCreateChallEmpty">Please fill all field.</string>
     <string name="no_participation_challenge">There is no participation for this challenge</string>
     <string name="text_validation_password_updated">Your password has been updated</string>
-    <string name="txt_validate_password_not_updated">Your password has NOT been updated</string>
-    <string name="dateFin">End the :</string>
-    <string name="minutes" translatable="false">minutes</string>
+    <string name="txt_validate_password_not_updated">The old password thaht you entered is wrong</string>
+    <string name="dateFin">"End the : "</string>
+    <string name="minutes" translatable="false">" minutes"</string>
     <string name="connexionImpossible">Cannot find user.</string>
     <string name="connexionImpossibleServ">It seems we cannot connect to the server, please try again later.</string>
     <string name="invalidInfo">Invalid informations</string>
     <string name="toastVoteDeja">You have already voted !</string>
     <string name="toatConnexionVote">You must be logged in.</string>
+    <string name="ActualPasswordDisplay">Enter your actual password :</string>
+    <string name="NewPasswordDisplay">Enter your new password :</string>
+    <string name="corrupted_response_data">Informations received from the database are corruped, please try again</string>
+    <string name="server_desync">The actual user does not exist in the remote database</string>
+    <string name="oldPasswordConfirm">Confirm your actual password</string>
+    <string name="communication_error">Error while communicating with the server</string>
+    <string name="unableToSaveParticipation">Couldn\'t save the participation, try again later</string>
+    <string name="unableToSaveDrawing">Couldn\'t save the drawing, try again later</string>
+    <string name="unableToSaveToImgur">Couldn\'t upload the drawing to Imgur, try again later</string>
+    <string name="errorLoadChall">Couldn\'t load challenges from server</string>
+    <string name="unableToSaveChallenge">Couldn\'t save the challenge, try again later</string>
 </resources>
